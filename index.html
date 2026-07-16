@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  	<link rel="manifest" href="manifest.json">
+		<meta name="theme-color" content="#1e1e2e">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>स्मार्ट स्टोर मैनेजर</title>
+    
+    <meta name="theme-color" id="theme-color-meta" content="#007AFF"/>
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/007AFF/FFFFFF?text=SSM">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getDatabase, ref, onValue, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        const userProvidedConfig = {
+            apiKey: "AIzaSyCSneZofrBGOwHDLNK2f2SDUiiwnoah2cM",
+            authDomain: "personal-54ee0.firebaseapp.com",
+            databaseURL: "https://personal-54ee0-default-rtdb.firebaseio.com",
+            projectId: "personal-54ee0",
+            storageBucket: "personal-54ee0.firebasestorage.app",
+            messagingSenderId: "478812450198",
+            appId: "1:478812450198:web:483b14772d4b2b5f5301b7"
+        };
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userProvidedConfig;
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+        const appId = firebaseConfig.projectId;
+
+        window.loginWithEmail = () => {
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value.trim();
+            if(!email || !password) { alert("कृपया ईमेल और पासवर्ड दोनों दर्ज करें!"); return; }
+            signInWithEmailAndPassword(auth, email, password).catch(error => {
+                alert("लॉगिन विफल रहा। कृपया सही ईमेल और पासवर्ड जांचें।");
+            });
+        };
+
+        window.signUpWithEmail = () => {
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value.trim();
+            if(!email || !password) { alert("कृपया ईमेल और पासवर्ड दोनों दर्ज करें!"); return; }
+            if(password.length < 6) { alert("पासवर्ड कम से कम 6 अक्षरों का होना चाहिए!"); return; }
+            createUserWithEmailAndPassword(auth, email, password).then(() => {
+                alert("खाता सफलतापूर्वक बन गया!");
+            }).catch(error => {
+                alert("खाता बनाने में त्रुटि: " + error.message);
+            });
+        };
+
+        window.logoutUser = () => {
+            signOut(auth).then(() => {
+                window.location.reload();
+            });
+        };
+
+        window.dbRef = null;
+        window.firebaseSet = set;
+        window.firebaseServerTimestamp = serverTimestamp;
+
+        onAuthStateChanged(auth, (user) => {
+            const loader = document.getElementById('loader');
+            const loginScreen = document.getElementById('loginScreen');
+            
+            if (user) {
+                if(loginScreen) loginScreen.classList.add('hidden');
+                
+                window.dbRef = ref(db, `mystore/${user.uid}`);
+                
+                onValue(window.dbRef, (snapshot) => {
+                    if (snapshot.exists()) {
+                        window.updateAppState(snapshot.val());
+                    } else {
+                        window.updateAppState(null);
+                    }
+                    if (loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.style.display = 'none', 300);
+                    }
+                }, (error) => {
+                    console.error("Database connection error: ", error);
+                    alert("डेटाबेस से कनेक्ट नहीं हो सका।");
+                });
+
+            } else {
+                if(loginScreen) loginScreen.classList.remove('hidden');
+                if(loader) loader.classList.add('hidden');
+                window.dbRef = null;
+            }
+        });
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            font-smooth: antialiased;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        :root {
+            --primary: #007AFF;
+            --primary-content: #FFFFFF;
+            --secondary: #34C759;
+            --secondary-content: #FFFFFF;
+            --bg-start: #F2F2F7;
+            --bg-end: #FFFFFF;
+            --card: #FFFFFF;
+            --text: #1F2937;
+            --text-light: #6B7280;
+            --border-color: #E5E5EA;
+            --text-heading: #111827;
+            --text-product-name: #1F2937;
+            --text-price: var(--primary);
+            --text-meta: #8A8A8E;
+            --input-bg: #F9FAFB;
+        }
+
+        html.dark:root {
+            --primary: #0A84FF;
+            --secondary: #30D158;
+            --bg-start: #000000;
+            --bg-end: #1C1C1E;
+            --card: #1C1C1E;
+            --text: #E5E5EA;
+            --text-light: #8D8D93;
+            --border-color: #38383A;
+            --text-heading: #FFFFFF;
+            --text-product-name: #E5E5EA;
+            --text-price: var(--primary);
+            --text-meta: #8D8D93;
+            --input-bg: #2C2C2E;
+        }
+
+        body { background-color: var(--bg-start); color: var(--text); transition: background-color 0.3s, color 0.3s; }
+        .primary-bg { background-color: var(--primary) !important; color: var(--primary-content) !important; }
+        .primary-text { color: var(--primary) !important; }
+        .secondary-bg { background-color: var(--secondary) !important; color: var(--secondary-content) !important; }
+        .card-bg { background-color: var(--card) !important; }
+        
+        .product-name-text { color: var(--text-product-name); }
+        .price-text { color: var(--text-price); }
+        .meta-text { color: var(--text-meta); }
+        
+        .modern-card { 
+            background: var(--card); 
+            border: 1px solid var(--border-color); 
+            border-radius: 0.75rem; 
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+        }
+        html.dark .modern-card { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.1); }
+        .modern-card:hover { border-color: color-mix(in srgb, var(--primary) 40%, transparent); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07); }
+        .modern-input { border: 1px solid var(--border-color); border-radius: 0.5rem; transition: all 0.2s ease; background-color: var(--input-bg); color: var(--text); }
+        .modern-input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent); outline: none; background-color: var(--card); }
+        .modern-input.error { border-color: #EF4444; animation: shake 0.5s; }
+        label { color: var(--text-light); }
+        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+        
+        .modern-btn { border-radius: 0.5rem; font-weight: 600; transition: opacity 0.2s ease, transform 0.2s ease; border: 1px solid transparent; }
+        .modern-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+        .modern-btn:active { opacity: 0.7; transform: translateY(0px); }
+
+        .barcode-badge { background-color: color-mix(in srgb, var(--text) 5%, transparent); color: var(--text-light); font-family: monospace; font-size: 0.65rem; padding: 2px 6px; border-radius: 9999px; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        
+        .scanner-container { width: 100%; max-width: 280px; margin: 0 auto; border-radius: 1rem; overflow: hidden; background: #000; }
+        #reader, #storeReader, #shoppingReader, #dashboardReader { width: 100% !important; border-radius: 14px; height: 160px; }
+        #reader video, #storeReader video, #shoppingReader video, #dashboardReader video { border-radius: 14px !important; object-fit: cover !important; width: 100% !important; height: 100% !important; }
+        
+        .zoom-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; outline: none; transition: opacity .2s; }
+        .zoom-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; background: white; cursor: pointer; border-radius: 50%; border: 2px solid var(--primary);}
+        
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .slide-up { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .highlight-total { animation: highlight 0.7s ease-out; }
+        @keyframes highlight { 0%, 100% { background-color: transparent; } 50% { background-color: color-mix(in srgb, var(--secondary) 20%, transparent); } }
+        
+        @media (min-width: 768px) {
+             body { display: flex; }
+             .sidebar { width: 220px; flex-shrink: 0; }
+             main { flex-grow: 1; background-color: var(--bg-start); max-width: 1280px; margin-left: auto; margin-right: auto; }
+             .section-container { max-width: 100%; margin: 0; }
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: #ffffff !important; color: #000000 !important; font-size: 10pt; }
+            main, .section-container, .md\:pl-\[220px\] { padding: 0 !important; max-width: 100% !important; }
+            .modern-card { box-shadow: none !important; border: 1px solid #ddd !important; border-radius: 0 !important; }
+            .price-text, .primary-text, .product-name-text, h1, h2, h3, h4, th { color: #000000 !important; }
+            a::after { content: "" !important; }
+            @page { margin: 0.75in; size: A4; }
+        }
+    </style>
+</head>
+<div id="loader" class="hidden fixed inset-0 bg-white dark:bg-black z-[100] flex flex-col items-center justify-center transition-opacity duration-300">
+        <svg class="h-8 w-8 primary-text animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="mt-3 text-sm font-medium text-gray-500">Loading...</p>
+    </div>
+
+  <div id="loginScreen" class="fixed inset-0 bg-white dark:bg-gray-900 z-[90] flex flex-col items-center justify-center hidden">
+        <div class="modern-card p-6 w-full max-w-sm text-center">
+            <h2 class="text-2xl font-bold primary-text mb-2">स्मार्ट स्टोर मैनेजर</h2>
+            <p class="text-sm text-gray-500 mb-5">अपने स्टोर का डेटा सुरक्षित रखने के लिए लॉगिन करें</p>
+            
+            <div class="space-y-3 mb-5 text-left">
+                <input type="email" id="userEmail" placeholder="ईमेल आईडी" class="w-full p-3 modern-input text-sm" required>
+                <input type="password" id="userPassword" placeholder="पासवर्ड" class="w-full p-3 modern-input text-sm" required>
+            </div>
+
+            <div class="flex flex-col space-y-3">
+                <button onclick="loginWithEmail()" class="w-full primary-bg text-white py-3 rounded-lg font-semibold modern-btn text-sm">लॉगिन करें</button>
+                
+            </div>
+        </div>
+    </div>
+
+    <aside class="sidebar fixed top-0 left-0 h-full card-bg border-r z-30 flex-col p-3 hidden md:flex no-print" style="border-color: var(--border-color);">
+        <div class="flex items-center mb-6 px-2">
+            <svg class="h-7 w-7 primary-text" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5A2.25 2.25 0 0 0 11.25 11.25H4.5A2.25 2.25 0 0 0 2.25 13.5V21M3 3h12M3 7.5h12M3 12h12M3 16.5h12M17.25 3v18" /></svg>
+            <h1 id="storeName" class="ml-2 text-lg font-bold primary-text">मेरा स्टोर</h1>
+        </div>
+        <nav class="flex flex-col space-y-1">
+            <button onclick="showSection('home')" id="homeTabDesktop" class="nav-tab-desktop active"><svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span data-lang-key="tab_home">होम</span></button>
+            <button onclick="showSection('store')" id="storeTabDesktop" class="nav-tab-desktop"><svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg><span data-lang-key="tab_store">स्टोर</span></button>
+            <button onclick="showSection('shopping')" id="shoppingTabDesktop" class="nav-tab-desktop"><svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span data-lang-key="tab_shopping">शॉपिंग</span></button>
+            <button onclick="showSection('history')" id="historyTabDesktop" class="nav-tab-desktop"><svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg><span data-lang-key="tab_history">हिस्ट्री</span></button>
+        </nav>
+        <div class="mt-auto">
+            <button onclick="logoutUser()" class="w-full text-left px-3 py-2 mb-2 rounded-lg flex items-center space-x-3 text-sm text-red-600 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <span class="font-medium" data-lang-key="menu_logout">लॉगआउट</span>
+            </button>
+            <button onclick="toggleMenu()" class="w-full text-left px-3 py-2 rounded-lg flex items-center space-x-3 text-sm" style="background-color: color-mix(in srgb, var(--primary) 10%, transparent);"><svg class="w-5 h-5" style="color: var(--text-light);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0 3.35a1.724 1.724 0 001.066 2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg><span class="font-medium" data-lang-key="menu_settings">सेटिंग्स और टूल्स</span></button>
+        </div>
+    </aside>
+
+    <div class="md:pl-[220px] w-full">
+        <header class="card-bg sticky top-0 z-30 border-b md:hidden no-print" style="border-color: var(--border-color);">
+            <div class="px-3">
+                <div class="flex items-center justify-between h-12">
+                    <div class="flex items-center">
+                        <svg class="h-6 w-6 primary-text" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5A2.25 2.25 0 0 0 11.25 11.25H4.5A2.25 2.25 0 0 0 2.25 13.5V21M3 3h12M3 7.5h12M3 12h12M3 16.5h12M17.25 3v18" /></svg>
+                        <h1 id="mobileStoreName" class="ml-2 text-md font-bold primary-text">मेरा स्टोर</h1>
+                    </div>
+                    <button onclick="toggleMenu()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg></button>
+                </div>
+            </div>
+        </header>
+        
+        <div id="menuDropdown" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-end no-print" onclick="if(event.target === this) toggleMenu()">
+            <div id="menuContent" class="card-bg w-full rounded-t-2xl shadow-xl slide-up">
+                <div class="p-2 space-y-1">
+                    <div class="w-10 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-2"></div>
+                    <button onclick="handleEditStoreName()" class="w-full text-left px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg flex items-center space-x-3 text-sm"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg><span data-lang-key="menu_rename_store">स्टोर का नाम बदलें</span></button>
+                    <button onclick="toggleTheme()" class="w-full text-left px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg flex items-center space-x-3 text-sm"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg><span data-lang-key="menu_theme">थीम बदलें (लाइट/डार्क)</span></button>
+                    <button onclick="toggleLanguage()" class="w-full text-left px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg flex items-center space-x-3 text-sm"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m4 13l4-4M19 5h-4M16 19l-4-4M5 19h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg><span data-lang-key="menu_change_language">भाषा बदलें / Language</span></button>
+                    <button onclick="showNotesModal()" class="w-full text-left px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg flex items-center space-x-3 text-sm"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg><span data-lang-key="menu_notes">नोट्स</span></button>
+                    <hr class="my-1" style="border-color: var(--border-color);">
+                    <button onclick="exportData()" class="w-full text-left px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg flex items-center space-x-3 text-sm"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg><span data-lang-key="menu_export">डेटा एक्सपोर्ट करें</span></button>
+                    <button onclick="document.getElementById('importFile').click()" class="w-full text-left px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg flex items-center space-x-3 text-sm"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg><span data-lang-key="menu_import">डेटा इम्पोर्ट करें</span></button>
+                    <hr class="my-1" style="border-color: var(--border-color);">
+                    <button onclick="printAllProducts()" class="w-full text-left px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg flex items-center space-x-3 text-sm"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg><span data-lang-key="menu_print_products">सभी प्रोडक्ट्स प्रिंट करें</span></button>
+                    <hr class="my-1" style="border-color: var(--border-color);">
+                    <button onclick="logoutUser()" class="w-full text-left px-3 py-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 rounded-lg flex items-center space-x-3 text-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span data-lang-key="menu_logout">लॉगआउट</span></button>
+                </div>
+            </div>
+        </div>
+        
+        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+
+        <main>
+            <div id="homeSection" class="fade-in section-container p-3 md:p-4">
+                <div id="dashboardHeader" class="flex items-center justify-between cursor-pointer mb-3">
+                    <h2 data-lang-key="dashboard_title" class="text-xl font-bold">डैशबोर्ड</h2>
+                    <svg id="dashboardToggleIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+                <div id="statsContainer" class="grid grid-cols-2 gap-3 hidden">
+                    <div onclick="showSection('store')" class="modern-card p-3 text-center cursor-pointer">
+                        <div class="p-2.5 rounded-full secondary-bg text-white inline-block mb-1.5"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
+                        <p id="totalProductsStat" class="text-xl font-bold">0</p>
+                        <p data-lang-key="dashboard_total_products" class="text-xs font-medium" style="color: var(--text-light);">कुल प्रोडक्ट्स</p>
+                    </div>
+                    <div onclick="showSection('history')" class="modern-card p-3 text-center cursor-pointer">
+                        <div class="p-2.5 rounded-full primary-bg text-white inline-block mb-1.5"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+                        <p id="totalBillsStat" class="text-xl font-bold">0</p>
+                        <p data-lang-key="dashboard_saved_bills" class="text-xs font-medium" style="color: var(--text-light);">सेव बिल</p>
+                    </div>
+                </div>
+                <div class="space-y-3 mt-4">
+                     <button onclick="showAddModal();" class="modern-card p-3 text-left flex items-center space-x-3 w-full"><div class="text-3xl">📦</div><div><h3 data-lang-key="dashboard_add_product" class="font-semibold text-sm">नया प्रोडक्ट जोड़ें</h3><p class="text-xs" style="color: var(--text-light);" data-lang-key="dashboard_add_product_desc">अपने स्टोर में एक नया आइटम दर्ज करें।</p></div></button>
+                     <button onclick="showSection('shopping')" class="modern-card p-3 text-left flex items-center space-x-3 w-full"><div class="text-3xl">🛒</div><div><h3 data-lang-key="dashboard_create_bill" class="font-semibold text-sm">नया बिल बनाएं</h3><p class="text-xs" style="color: var(--text-light);" data-lang-key="dashboard_create_bill_desc">ग्राहक के लिए एक नया बिल तैयार करें।</p></div></button>
+                </div>
+                <div class="mt-4">
+                    <div class="modern-card p-3">
+                        <h3 class="text-sm font-bold mb-2 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 primary-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h-1m-2-11h1m-1 11h1M4 12H3m11 6v-1m-2 2v1m-7-2v1M7.5 7.5h9v9h-9v-9z" /></svg><span data-lang-key="dashboard_scanner_title">त्वरित स्कैन</span></h3>
+                        <button onclick="startScanning('dashboard')" id="dashboardScanBtn" class="w-full primary-bg text-white py-2 px-4 rounded-lg font-semibold modern-btn text-sm flex items-center justify-center space-x-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1v4m0 0h-4m4 0l-5-5M4 16v4m0 0h4m-4 0l-5-5M4 16v4m0 0h4m-4 0l-5 5" />
+                            </svg>
+                            <span data-lang-key="dashboard_scanner_btn">स्कैन शुरू करें</span>
+                        </button>
+                        <div id="dashboardScanner" class="hidden my-2">
+                            <div class="scanner-container">
+                                <div id="dashboardReader"></div>
+                            </div>
+                            <div class="scanner-controls mt-2">
+                                <div id="dashboardZoomControl" class="hidden items-center gap-2 mb-2 px-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg><input type="range" id="dashboardZoomSlider" oninput="applyZoom()" class="zoom-slider bg-gray-300"></div>
+                                <div class="flex items-center gap-2">
+                                   <button onclick="toggleFlashlight('dashboard')" class="flash-toggle-btn w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-1.5 px-3 rounded-md font-semibold modern-btn text-xs flex items-center justify-center gap-1.5"><span class="flash-icon">🔦</span> <span data-lang-key="scanner_flash">फ्लैश</span></button>
+                                   <button onclick="stopScanning('dashboard')" data-lang-key="scanner_stop" class="w-full bg-red-500 text-white py-1.5 px-3 rounded-md font-semibold modern-btn text-xs">स्कैन बंद करें</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="dashboardScanResult" class="hidden mt-2 p-2.5 rounded-lg border" style="background-color: color-mix(in srgb, var(--bg-end) 50%, var(--card)); border-color: var(--border-color);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="storeSection" class="hidden section-container p-3 md:p-4">
+                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
+                    <h2 class="text-xl font-bold flex-shrink-0"><span data-lang-key="store_title_emoji">📦</span> <span data-lang-key="store_title">स्टोर मैनेजमेंट</span></h2>
+                    <div class="flex items-center space-x-2 w-full sm:w-auto">
+                        <div class="relative flex-grow">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></div>
+                            <input type="text" id="storeSearchInput" oninput="debouncedSearch()" data-lang-key="placeholder_search_product" placeholder="प्रोडक्ट खोजें..." class="modern-input p-2 pl-9 pr-8 text-sm w-full" autocomplete="off">
+                            <button id="clearStoreSearch" class="absolute inset-y-0 right-0 pr-2 flex items-center cursor-pointer hidden"><svg class="w-4 h-4 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between gap-2 mb-3">
+                     <div class="relative"><select id="sortOrderSelect" class="modern-input p-2 text-sm" onchange="searchAndSortProducts()"><option value="date-desc" data-lang-key="sort_newest">सबसे नया</option><option value="date-asc" data-lang-key="sort_oldest">सबसे पुराना</option><option value="name-asc" data-lang-key="sort_name_az">नाम (A-Z)</option><option value="name-desc" data-lang-key="sort_name_za">नाम (Z-A)</option><option value="price-desc" data-lang-key="sort_price_high">कीमत (महंगा)</option><option value="price-asc" data-lang-key="sort_price_low">कीमत (सस्ता)</option></select></div>
+                     <div class="flex items-center gap-2">
+                        <button id="editModeBtn" onclick="toggleStoreEditMode()" class="p-1.5 rounded-lg flex items-center bg-gray-200 text-gray-500 text-xs gap-1 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"></path></svg>
+                            <span data-lang-key="btn_edit_mode" class="hidden sm:inline">एडिट मोड</span>
+                        </button>
+                        <div id="view-switcher" class="p-0.5 rounded-lg flex items-center bg-gray-200 text-gray-500 text-xs">
+                            <button onclick="changeStoreView('grid')" class="view-btn active" title="Grid View"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg></button>
+                            <button onclick="changeStoreView('list')" class="view-btn" title="List View"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+                            <button onclick="changeStoreView('compact')" class="view-btn" title="Compact List View"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
+                        </div>
+                    </div>
+                </div>
+                 <div id="productsList"></div>
+                 <style>.view-btn{padding: 4px 8px; border-radius: 6px; transition: all 0.2s ease;} .view-btn.active{background: var(--card); color: var(--primary); box-shadow: 0 1px 2px rgba(0,0,0,0.05);}</style>
+            </div>
+
+            <div id="shoppingSection" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 section-container p-3 md:p-4">
+                    <div class="lg:col-span-2">
+                        <div class="modern-card p-3 sticky top-4">
+                             <h3 data-lang-key="billing_add_product" class="text-md font-bold mb-2">प्रोडक्ट जोड़ें</h3>
+                             <div class="flex items-center gap-2 mb-2">
+                                 <div class="relative flex-grow">
+                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg></div>
+                                    <input type="text" id="searchProduct" data-lang-key="placeholder_search_product" placeholder="प्रोडक्ट खोजें..." class="w-full p-2 pl-9 pr-8 modern-input text-sm" onkeyup="searchProducts(this.value)" autocomplete="off">
+                                    <button id="clearShoppingSearch" class="absolute inset-y-0 right-0 pr-2 flex items-center cursor-pointer hidden"><svg class="w-4 h-4 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                                 </div>
+                                 <button onclick="showManualAddModal()" id="manualAddBtn" class="secondary-bg text-white p-2 rounded-lg font-semibold modern-btn text-sm flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg></button>
+                                 <button onclick="startScanning('shopping')" id="shoppingScanBtn" class="primary-bg text-white p-2 rounded-lg font-semibold modern-btn text-sm flex-shrink-0">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1v4m0 0h-4m4 0l-5-5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 0l-5 5" />
+                                     </svg>
+                                 </button>
+                             </div>
+                            <div id="shoppingScanner" class="hidden my-2">
+                                <div class="scanner-container">
+                                   <div id="shoppingReader"></div>
+                                </div>
+                               <div class="scanner-controls mt-2">
+                                   <div id="shoppingZoomControl" class="hidden items-center gap-2 text-gray-500 mb-2 px-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg><input type="range" id="shoppingZoomSlider" oninput="applyZoom()" class="zoom-slider bg-gray-300"></div>
+                                   <div class="flex items-center gap-2">
+                                      <button onclick="toggleFlashlight('shopping')" class="flash-toggle-btn w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-1.5 px-3 rounded-md font-semibold modern-btn text-xs flex items-center justify-center gap-1.5"><span class="flash-icon">🔦</span> <span data-lang-key="scanner_flash">फ्लैश</span></button>
+                                      <button onclick="stopScanning('shopping')" data-lang-key="scanner_stop" class="w-full bg-red-500 text-white py-1.5 px-3 rounded-md font-semibold modern-btn text-xs">स्कैन बंद करें</button>
+                                   </div>
+                               </div>
+                            </div>
+                            <div id="searchResults" class="hidden mt-2 space-y-1 max-h-60 overflow-y-auto"></div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-3">
+                        <div>
+                            <div class="modern-card p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h3 class="text-md font-bold"><span data-lang-key="billing_current_bill_emoji">🛒</span> <span data-lang-key="billing_current_bill">वर्तमान बिल</span></h3>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>
+                                        <input type="text" id="customerName" data-lang-key="placeholder_customer_name" placeholder="ग्राहक का नाम" class="p-2 pl-7 modern-input text-sm w-36" autocomplete="new-password">
+                                        <div id="customerNameSuggestions" class="hidden absolute z-10 w-full mt-1 card-bg border rounded-lg shadow-lg max-h-40 overflow-y-auto" style="border-color: var(--border-color);"></div>
+                                    </div>
+                                </div>
+                                <div id="billItems" class="space-y-2 mb-2 min-h-[100px]"></div>
+                                <div class="border-t pt-2" style="border-color: var(--border-color);"><div class="flex justify-between items-center text-lg font-bold price-text px-3 py-1.5 rounded-lg" style="background-color: color-mix(in srgb, var(--secondary) 10%, transparent);"><span data-lang-key="billing_total_amount" class="text-sm font-semibold" style="color: var(--text-product-name);">कुल राशि:</span><span id="totalAmount" class="transition-all duration-300 text-lg">₹0.00</span></div></div>
+                            </div>
+                             <div class="grid grid-cols-3 gap-2 mt-3">
+                                <button onclick="handleClearBill()" class="bg-red-500 text-white py-2 px-2 rounded-lg font-semibold modern-btn text-xs flex items-center justify-center space-x-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg><span data-lang-key="btn_clear">क्लियर</span></button>
+                                <button onclick="printBill()" class="bg-blue-500 text-white py-2 px-2 rounded-lg font-semibold modern-btn text-xs flex items-center justify-center space-x-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg><span data-lang-key="btn_download">प्रिंट/PDF</span></button>
+                                <button onclick="saveBill()" class="secondary-bg text-white py-2 px-2 rounded-lg font-semibold modern-btn text-xs flex items-center justify-center space-x-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg><span data-lang-key="btn_save">सेव</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="historySection" class="hidden section-container p-3 md:p-4">
+                <h2 class="text-xl font-bold mb-3"><span data-lang-key="history_title_emoji">📋</span> <span data-lang-key="history_title">बिल हिस्ट्री</span></h2>
+                <div class="flex flex-col sm:flex-row gap-2 mb-3">
+                     <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></div>
+                        <input type="text" id="historySearchInput" oninput="filterAndDisplayHistory()" data-lang-key="placeholder_search_history" placeholder="ग्राहक या प्रोडक्ट से खोजें..." class="modern-input p-2 pl-9 pr-8 text-sm w-full" autocomplete="off">
+                        <button id="clearHistorySearch" class="absolute inset-y-0 right-0 pr-2 flex items-center cursor-pointer hidden"><svg class="w-4 h-4 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    </div>
+                     <div class="relative">
+                        <input type="date" id="historyDateInput" onchange="filterAndDisplayHistory()" class="modern-input p-2 text-sm w-full">
+                    </div>
+                </div>
+                <div id="billHistory" class="space-y-2"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="floatingAddBtn" class="hidden fixed bottom-20 md:bottom-5 right-5 w-12 h-12 primary-bg text-white rounded-2xl flex items-center justify-center shadow-lg transition-transform hover:scale-110 active:scale-100 no-print" onclick="showAddModal()"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg></div>
+    
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 card-bg border-t z-40 flex justify-around no-print" style="border-color: var(--border-color);"><button onclick="showSection('home')" id="homeTabMobile" class="nav-tab-mobile active"><svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-xs font-medium" data-lang-key="tab_home">होम</span></button><button onclick="showSection('store')" id="storeTabMobile" class="nav-tab-mobile"><svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg><span class="text-xs font-medium" data-lang-key="tab_store">स्टोर</span></button><button onclick="showSection('shopping')" id="shoppingTabMobile" class="nav-tab-mobile"><svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span class="text-xs font-medium" data-lang-key="tab_shopping">शॉपिंग</span></button><button onclick="showSection('history')" id="historyTabMobile" class="nav-tab-mobile"><svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg><span class="text-xs font-medium" data-lang-key="tab_history">हिस्ट्री</span></button></nav>
+    <style>.nav-tab-desktop { padding: 0.5rem 0.75rem; border-radius: 0.5rem; font-weight: 500; font-size: 0.9rem; display: flex; align-items: center; transition: all 0.2s; color: var(--text-light); }.nav-tab-desktop:hover { background-color: color-mix(in srgb, var(--primary) 10%, transparent); color: var(--text); }.nav-tab-desktop.active { color: var(--primary); background-color: color-mix(in srgb, var(--primary) 15%, transparent); font-weight: 600; }.nav-tab-mobile { flex: 1; padding-top: 0.4rem; padding-bottom: 0.25rem; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-light); border-top: 3px solid transparent; transition: all 0.2s; position: relative; }.nav-tab-mobile.active { color: var(--primary); }.nav-tab-mobile.active::before { content: ''; position: absolute; top: -1px; left: 50%; transform: translateX(-50%); width: 30px; height: 3px; background-color: var(--primary); border-radius: 0 0 3px 3px; }</style>
+
+    <div id="addProductModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-2" onclick="if(event.target === this) history.back()">
+        <div class="modern-card p-4 w-full max-w-sm slide-up flex flex-col">
+            <h3 class="text-lg font-bold mb-3 text-main flex-shrink-0"><span data-lang-key="modal_add_product_emoji">✨</span> <span data-lang-key="modal_add_product_title">नया प्रोडक्ट जोड़ें</span></h3>
+            <div class="overflow-y-auto pr-1" style="max-height: 75vh;">
+                <div id="storeScanner" class="hidden mb-3">
+                    <div class="scanner-container">
+                        <div id="storeReader"></div>
+                    </div>
+                     <div class="scanner-controls mt-2">
+                        <div id="storeZoomControl" class="hidden items-center gap-2 text-gray-500 mb-2 px-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg><input type="range" id="storeZoomSlider" oninput="applyZoom()" class="zoom-slider bg-gray-300"></div>
+                         <div class="flex items-center gap-2">
+                           <button onclick="toggleFlashlight('store')" class="flash-toggle-btn w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-1.5 px-3 rounded-md font-semibold modern-btn text-xs flex items-center justify-center gap-1.5"><span class="flash-icon">🔦</span> <span data-lang-key="scanner_flash">फ्लैश</span></button>
+                           <button onclick="stopScanning('store')" data-lang-key="scanner_stop" class="w-full bg-red-500 text-white py-1.5 px-3 rounded-md font-semibold modern-btn text-xs">स्कैन बंद करें</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div><label for="productBarcode" data-lang-key="form_barcode" class="block text-xs font-medium mb-1">बारकोड (स्कैन किया हुआ)</label><div class="flex items-center gap-2"><input type="text" id="productBarcode" data-lang-key="placeholder_product_id" placeholder="प्रोडक्ट ID" class="w-full p-2 modern-input text-sm" onchange="fetchProductDetails(this.value)" autocomplete="off"><button onclick="startScanning('store')" id="storeScanBtn" class="primary-bg text-white p-2 rounded-lg font-semibold modern-btn text-sm flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1v4m0 0h-4m4 0l-5-5M4 16v4m0 0h4m-4 0l-5-5m11 5v-4m0 0h-4m4 0l-5 5" /></svg></button></div></div>
+                    <div><label for="productManualId" class="block text-xs font-medium mb-1" data-lang-key="form_manual_id">मैन्युअल ID (आपकी अपनी ID)</label><input type="text" id="productManualId" data-lang-key="placeholder_manual_id" placeholder="स्कैन करें या खुद टाइप करें" class="w-full p-2 modern-input text-sm"></div>
+                    <div><label for="productName" data-lang-key="form_product_name" class="block text-xs font-medium mb-1">प्रोडक्ट का नाम</label><input type="text" id="productName" data-lang-key="placeholder_product_name" placeholder="जैसे, मैगी नूडल्स" class="w-full p-2 modern-input text-sm" required autocomplete="new-password"></div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label for="productFillingQuantity" data-lang-key="form_quantity" class="block text-xs font-medium mb-1">मात्रा</label><input type="number" id="productFillingQuantity" data-lang-key="placeholder_quantity" placeholder="जैसे, 100" class="w-full p-2 modern-input text-sm" value="1"></div>
+                        <div>
+                            <label for="productUnit" data-lang-key="form_unit" class="block text-xs font-medium mb-1">यूनिट</label>
+                            <select id="productUnit" class="w-full p-2 modern-input text-sm">
+                                <option value="piece" data-lang-key="unit_piece">नग (piece)</option>
+                                <option value="packet" data-lang-key="unit_packet">पैकेट (packet)</option>
+                                <option value="gram" data-lang-key="unit_gram">ग्राम (gram)</option>
+                                <option value="kg" data-lang-key="unit_kg">कि.ग्रा. (kg)</option>
+                                <option value="litre" data-lang-key="unit_litre">लीटर (litre)</option>
+                                <option value="ml" data-lang-key="unit_ml">मि.ली. (ml)</option>
+                                <option value="dozen" data-lang-key="unit_dozen">दर्जन (dozen)</option>
+                                <option value="box" data-lang-key="unit_box">बॉक्स (box)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div><label for="productPrice" data-lang-key="form_price" class="block text-xs font-medium mb-1">कीमत (₹)</label><input type="number" id="productPrice" data-lang-key="placeholder_price" placeholder="जैसे, 12" class="w-full p-2 modern-input text-sm" required></div>
+                    <div><label for="productDetails" data-lang-key="form_details" class="block text-xs font-medium mb-1">विवरण</label><textarea id="productDetails" data-lang-key="placeholder_details" placeholder="जैसे, 2 मिनट नूडल्स" class="w-full p-2 modern-input h-16 resize-none text-sm" autocomplete="new-password"></textarea></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mt-4 flex-shrink-0"><button onclick="history.back()" data-lang-key="btn_close" class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">बंद करें</button><button onclick="addProduct()" data-lang-key="btn_add" class="secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm">जोड़ें</button></div>
+        </div>
+    </div>
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-2" onclick="if(event.target === this) history.back()">
+        <div class="modern-card p-4 w-full max-w-sm slide-up">
+            <h3 class="text-lg font-bold mb-4 text-main"><span data-lang-key="modal_edit_product_emoji">✏️</span> <span data-lang-key="modal_edit_product_title">प्रोडक्ट एडिट करें</span></h3>
+            <div class="space-y-3">
+                <div><label for="editProductBarcode" data-lang-key="form_barcode" class="block text-xs font-medium mb-1">बारकोड (ID)</label><input type="text" id="editProductBarcode" class="w-full p-2 modern-input text-sm" autocomplete="off"></div>
+                <div><label for="editProductManualId" data-lang-key="form_manual_id" class="block text-xs font-medium mb-1">मैन्युअल ID</label><input type="text" id="editProductManualId" class="w-full p-2 modern-input text-sm"></div>
+                <div><label for="editProductName" data-lang-key="form_product_name" class="block text-xs font-medium mb-1">प्रोडक्ट का नाम</label><input type="text" id="editProductName" class="w-full p-2 modern-input text-sm" autocomplete="new-password"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label for="editProductFillingQuantity" data-lang-key="form_quantity" class="block text-xs font-medium mb-1">मात्रा</label><input type="number" id="editProductFillingQuantity" class="w-full p-2 modern-input text-sm"></div>
+                    <div>
+                        <label for="editProductUnit" data-lang-key="form_unit" class="block text-xs font-medium mb-1">यूनिट</label>
+                        <select id="editProductUnit" class="w-full p-2 modern-input text-sm">
+                            <option value="piece" data-lang-key="unit_piece">नग (piece)</option>
+                            <option value="packet" data-lang-key="unit_packet">पैकेट (packet)</option>
+                            <option value="gram" data-lang-key="unit_gram">ग्राम (gram)</option>
+                            <option value="kg" data-lang-key="unit_kg">कि.ग्रा. (kg)</option>
+                            <option value="litre" data-lang-key="unit_litre">लीटर (litre)</option>
+                            <option value="ml" data-lang-key="unit_ml">मि.ली. (ml)</option>
+                            <option value="dozen" data-lang-key="unit_dozen">दर्जन (dozen)</option>
+                            <option value="box" data-lang-key="unit_box">बॉक्स (box)</option>
+                        </select>
+                    </div>
+                </div>
+                <div><label for="editProductPrice" data-lang-key="form_price" class="block text-xs font-medium mb-1">कीमत (₹)</label><input type="number" id="editProductPrice" class="w-full p-2 modern-input text-sm"></div>
+                <div><label for="editProductDetails" data-lang-key="form_details" class="block text-xs font-medium mb-1">विवरण</label><textarea id="editProductDetails" class="w-full p-2 modern-input h-16 resize-none text-sm" autocomplete="new-password"></textarea></div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mt-4">
+                <button onclick="history.back()" data-lang-key="btn_cancel" class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">कैंसल</button>
+                <button onclick="updateProduct()" data-lang-key="btn_update" class="secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm">अपडेट</button>
+            </div>
+        </div>
+    </div>
+    <div id="notesModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-2 modal-backdrop" onclick="if(event.target === this) history.back()"><div class="modern-card p-4 w-full max-w-sm slide-up"><h3 class="text-lg font-bold mb-3 text-main" data-lang-key="notes_title">📝 नोट्स</h3><textarea id="notesText" data-lang-key="placeholder_notes" placeholder="यहाँ अपने नोट्स लिखें..." class="w-full p-2 modern-input h-32 resize-none mb-3 text-sm" autocomplete="off"></textarea><div class="grid grid-cols-2 gap-3"><button onclick="history.back()" data-lang-key="btn_close" class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">बंद करें</button><button onclick="saveNotes()" data-lang-key="btn_save" class="secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm">सेव करें</button></div></div></div>
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4 modal-backdrop"><div class="modern-card p-4 w-full max-w-xs slide-up text-center"><h3 id="confirmModalTitle" class="text-lg font-bold mb-2 text-main"></h3><p id="confirmModalMessage" class="text-sm text-gray-600 mb-5"></p><div class="grid grid-cols-2 gap-3"><button id="confirmModalCancel" data-lang-key="btn_cancel" class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">कैंसल</button><button id="confirmModalConfirm" data-lang-key="btn_confirm" class="bg-red-500 text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm">कन्फर्म</button></div></div></div>
+    <div id="promptModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4 modal-backdrop"><div class="modern-card p-4 w-full max-w-xs slide-up"><h3 id="promptModalTitle" class="text-lg font-bold mb-2 text-main"></h3><p id="promptModalMessage" class="text-sm text-gray-600 mb-3"></p><input type="text" id="promptModalInput" class="w-full p-2 modern-input text-sm mb-4" autocomplete="off"><div class="grid grid-cols-2 gap-3"><button id="promptModalCancel" data-lang-key="btn_cancel" class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">कैंसल</button><button id="promptModalConfirm" data-lang-key="btn_save" class="secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm">सेव</button></div></div></div>
+    <div id="manualAddModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-2" onclick="if(event.target === this) history.back()">
+        <div class="modern-card p-4 w-full max-w-sm slide-up">
+            <h3 class="text-lg font-bold mb-4 text-main" data-lang-key="manual_add_title">मैन्युअल आइटम जोड़ें</h3>
+            <div class="space-y-3">
+                <div><label for="manualItemName" class="block text-xs font-medium mb-1" data-lang-key="form_product_name">प्रोडक्ट का नाम</label><input type="text" id="manualItemName" data-lang-key="placeholder_manual_item" placeholder="जैसे, समोसा" class="w-full p-2 modern-input text-sm" required autocomplete="new-password"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label for="manualItemQuantity" class="block text-xs font-medium mb-1" data-lang-key="form_quantity">मात्रा</label><input type="number" id="manualItemQuantity" placeholder="जैसे, 2" class="w-full p-2 modern-input text-sm" value="1" required></div>
+                    <div>
+                        <label for="manualItemUnit" class="block text-xs font-medium mb-1" data-lang-key="form_unit">यूनिट</label>
+                        <select id="manualItemUnit" class="w-full p-2 modern-input text-sm">
+                            <option value="piece" data-lang-key="unit_piece">नग</option>
+                            <option value="packet" data-lang-key="unit_packet">पैकेट</option>
+                            <option value="gram" data-lang-key="unit_gram">ग्राम</option>
+                            <option value="kg" data-lang-key="unit_kg">कि.ग्रा.</option>
+                            <option value="litre" data-lang-key="unit_litre">लीटर</option>
+                            <option value="ml" data-lang-key="unit_ml">मि.ली.</option>
+                            <option value="dozen" data-lang-key="unit_dozen">दर्जन</option>
+                            <option value="box" data-lang-key="unit_box">बॉक्स</option>
+                        </select>
+                    </div>
+                </div>
+                <div><label for="manualItemPrice" class="block text-xs font-medium mb-1" data-lang-key="form_total_price">कुल कीमत (₹)</label><input type="number" id="manualItemPrice" placeholder="जैसे, 15" class="w-full p-2 modern-input text-sm" required></div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mt-4">
+                <button onclick="history.back()" data-lang-key="btn_close" class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">बंद करें</button>
+                <button onclick="addManualItemToBill()" data-lang-key="btn_add_to_bill" class="secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm">बिल में जोड़ें</button>
+            </div>
+        </div>
+    </div>
+    <div id="paymentTypeModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4 modal-backdrop">
+        <div class="modern-card p-4 w-full max-w-xs slide-up text-center">
+            <h3 id="paymentTypeModalTitle" class="text-lg font-bold mb-2 text-main" data-lang-key="payment_modal_title">भुगतान का प्रकार चुनें</h3>
+            <p id="paymentTypeModalMessage" class="text-sm text-gray-600 mb-5" data-lang-key="payment_modal_desc">यह बिल नगद है या उधार?</p>
+            <div class="grid grid-cols-2 gap-3">
+                <button id="paymentTypeCashBtn" data-lang-key="btn_cash" class="bg-green-500 text-white py-2.5 px-3 rounded-lg font-semibold modern-btn text-sm hover:bg-green-600">नगद</button>
+                <button id="paymentTypeCreditBtn" data-lang-key="btn_credit" class="bg-orange-500 text-white py-2.5 px-3 rounded-lg font-semibold modern-btn text-sm hover:bg-orange-600">उधार</button>
+            </div>
+            <button id="paymentTypeCancelBtn" data-lang-key="btn_cancel" class="w-full mt-3 bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">कैंसल</button>
+        </div>
+    </div>
+    
+    <script>
+        let products = {};
+        let billItems = [];
+        let billHistory = [];
+        let storeName = 'मेरा स्टोर';
+        let notes = '';
+        
+        let currentEditingProduct = null;
+        let html5QrCode = null;
+        let isScanning = false;
+        let flashlightEnabled = false;
+        let currentSection = 'home';
+        let currentScanningSection = null;
+        let currentLanguage = localStorage.getItem('language') || 'hi';
+        let currentCameraTrack = null;
+        let storeView = localStorage.getItem('storeView') || 'list';
+        let isStoreEditMode = false;
+        let currentBillAction = null;
+
+        const unitTextMap = { 'piece': 'नग', 'packet': 'पैकेट', 'gram': 'ग्राम', 'kg': 'कि.ग्रा.', 'litre': 'लीटर', 'ml': 'मि.ली.', 'dozen': 'दर्जन', 'box': 'बॉक्स' };
+        const productDatabase = { '8901030895566': { name: 'मैगी नूडल्स', price: 12, details: '2 मिनट नूडल्स', fillingQuantity: 1, unit: 'packet' }, '8901030895573': { name: 'लेज चिप्स', price: 20, details: 'आलू के चिप्स', fillingQuantity: 50, unit: 'gram' }, '8901030895580': { name: 'कोका कोला', price: 40, details: '600ml बोतल', fillingQuantity: 600, unit: 'ml'}, };
+        const translations = { 'hi': { 'tab_home': 'होम', 'tab_store': 'स्टोर', 'tab_shopping': 'शॉपिंग', 'tab_history': 'हिस्ट्री', 'menu_rename_store': 'स्टोर का नाम बदलें', 'menu_change_language': 'भाषा बदलें / Language', 'menu_notes': 'नोट्स', 'menu_export': 'डेटा एक्सपोर्ट करें', 'menu_import': 'डेटा इम्पोर्ट करें', 'menu_print_products': 'सभी प्रोडक्ट्स प्रिंट करें', 'menu_logout': 'लॉगआउट', 'menu_theme': 'थीम बदलें (लाइट/डार्क)', 'menu_settings': 'सेटिंग्स और टूल्स', 'dashboard_title': 'डैशबोर्ड', 'dashboard_total_products': 'कुल प्रोडक्ट्स', 'dashboard_saved_bills': 'सेव बिल', 'dashboard_add_product': 'नया प्रोडक्ट जोड़ें', 'dashboard_add_product_desc': 'अपने स्टोर में एक नया आइटम दर्ज करें।', 'dashboard_create_bill': 'नया बिल बनाएं', 'dashboard_create_bill_desc': 'ग्राहक के लिए एक नया बिल तैयार करें।', 'dashboard_scanner_title': 'त्वरित स्कैन', 'dashboard_scanner_btn': 'स्कैन शुरू करें', 'scanner_flash': 'फ्लैश', 'scan_result_not_found': 'प्रोडक्ट स्टोर में नहीं मिला!', 'scan_add_as_new': 'इसे नए प्रोडक्ट के रूप में जोड़ें', 'scan_add_to_bill': 'बिल में जोड़ें', 'scan_result_title': 'स्कैन का परिणाम', 'store_title_emoji': '📦', 'store_title': 'स्टोर मैनेजमेंट', 'placeholder_search_product': 'प्रोडक्ट खोजें...', 'sort_newest': 'सबसे नया', 'sort_oldest': 'सबसे पुराना', 'sort_name_az': 'नाम (A-Z)', 'sort_name_za': 'नाम (Z-A)', 'sort_price_high': 'कीमत (महंगा)', 'sort_price_low': 'कीमत (सस्ता)', 'btn_edit_mode': 'एडिट मोड', 'billing_add_product': 'प्रोडक्ट जोड़ें', 'billing_current_bill_emoji': '🛒', 'billing_current_bill': 'वर्तमान बिल', 'placeholder_customer_name': 'ग्राहक का नाम', 'billing_total_amount': 'कुल राशि:', 'customer_name_required': '❌ कृपया ग्राहक का नाम दर्ज करें!', 'history_title_emoji': '📋', 'history_title': 'बिल हिस्ट्री', 'placeholder_search_history': 'ग्राहक या प्रोडक्ट से खोजें...', 'modal_add_product_emoji': '✨', 'modal_add_product_title': 'नया प्रोडक्ट जोड़ें', 'scanner_stop': 'स्कैन बंद करें', 'form_barcode': 'बारकोड', 'placeholder_product_id': 'प्रोडक्ट ID', 'form_manual_id': 'मैन्युअल ID', 'placeholder_manual_id': 'स्कैन करें या खुद टाइप करें', 'form_product_name': 'प्रोडक्ट का नाम', 'placeholder_product_name': 'जैसे, मैगी नूडल्स', 'form_quantity': 'मात्रा', 'placeholder_quantity': 'जैसे, 100', 'form_unit': 'यूनिट', 'unit_piece': 'नग (piece)', 'unit_packet': 'पैकेट (packet)', 'unit_gram': 'ग्राम (gram)', 'unit_kg': 'कि.ग्रा. (kg)', 'unit_litre': 'लीटर (litre)', 'unit_ml': 'मि.ली. (ml)', 'unit_dozen': 'दर्जन (dozen)', 'unit_box': 'बॉक्स (box)', 'form_price': 'कीमत (₹)', 'placeholder_price': 'जैसे, 12', 'form_details': 'विवरण', 'placeholder_details': 'जैसे, 2 मिनट नूडल्स', 'btn_close': 'बंद करें', 'btn_add': 'जोड़ें', 'btn_clear': 'क्लियर', 'btn_download': 'प्रिंट/PDF', 'btn_save': 'सेव', 'btn_cancel': 'कैंसल', 'btn_update': 'अपडेट', 'btn_confirm': 'कन्फर्म', 'btn_delete': 'डिलीट', 'btn_edit': 'एडिट', 'modal_edit_product_emoji': '✏️', 'modal_edit_product_title': 'प्रोडक्ट एडिट करें', 'notes_title': '📝 नोट्स', 'placeholder_notes': 'यहाँ अपने नोट्स लिखें...', 'text_total': 'कुल', 'btn_load_bill': 'बिल लोड करें', 'btn_rename': 'नाम बदलें', 'confirm_load_bill_title': 'बिल लोड करें?', 'confirm_load_bill_message': 'यह वर्तमान बिल की जगह ले लेगा। क्या आप जारी रखना चाहते हैं?', 'rename_customer_title': 'ग्राहक का नाम बदलें', 'rename_customer_message': 'ग्राहक के लिए नया नाम दर्ज करें:', 'bill_loaded_success': '✅ बिल सफलतापूर्वक लोड हो गया!', 'customer_renamed_success': '✅ ग्राहक का नाम अपडेट हो गया!', 'login_btn': 'Google से लॉगिन करें', 'login_desc': 'अपने स्टोर का डेटा सुरक्षित रखने के लिए लॉगिन करें', 'manual_add_title': 'मैन्युअल आइटम जोड़ें', 'placeholder_manual_item': 'जैसे, समोसा', 'form_total_price': 'कुल कीमत (₹)', 'btn_add_to_bill': 'बिल में जोड़ें', 'payment_modal_title': 'भुगतान का प्रकार चुनें', 'payment_modal_desc': 'यह बिल नगद है या उधार?', 'btn_cash': 'नगद', 'btn_credit': 'उधार' }, 'en': { 'tab_home': 'Home', 'tab_store': 'Store', 'tab_shopping': 'Shopping', 'tab_history': 'History', 'menu_rename_store': 'Rename Store', 'menu_change_language': 'भाषा बदलें / Language', 'menu_notes': 'Notes', 'menu_export': 'Export Data', 'menu_import': 'Import Data', 'menu_print_products': 'Print All Products', 'menu_logout': 'Logout', 'menu_theme': 'Change Theme (Light/Dark)', 'menu_settings': 'Settings & Tools', 'dashboard_title': 'Dashboard', 'dashboard_total_products': 'Total Products', 'dashboard_saved_bills': 'Saved Bills', 'dashboard_add_product': 'Add New Product', 'dashboard_add_product_desc': 'Enter a new item into your store.', 'dashboard_create_bill': 'Create New Bill', 'dashboard_create_bill_desc': 'Prepare a new bill for a customer.', 'dashboard_scanner_title': 'Quick Scan', 'dashboard_scanner_btn': 'Start Scan', 'scanner_flash': 'Flash', 'scan_result_not_found': 'Product not found in store!', 'scan_add_as_new': 'Add as a new product', 'scan_add_to_bill': 'Add to Bill', 'scan_result_title': 'Scan Result', 'store_title_emoji': '📦', 'store_title': 'Store Management', 'placeholder_search_product': 'Search product...', 'sort_newest': 'Newest', 'sort_oldest': 'Oldest', 'sort_name_az': 'Name (A-Z)', 'sort_name_za': 'Name (Z-A)', 'sort_price_high': 'Price (High)', 'sort_price_low': 'Price (Low)', 'btn_edit_mode': 'Edit Mode', 'billing_add_product': 'Add Product', 'billing_current_bill_emoji': '🛒', 'billing_current_bill': 'Current Bill', 'placeholder_customer_name': 'Customer name', 'billing_total_amount': 'Total Amount:', 'customer_name_required': '❌ Please enter the customer name!', 'history_title_emoji': '📋', 'history_title': 'Bill History', 'placeholder_search_history': 'Search by customer or product...', 'modal_add_product_emoji': '✨', 'modal_add_product_title': 'Add New Product', 'scanner_stop': 'Stop Scan', 'form_barcode': 'Barcode', 'placeholder_product_id': 'Product ID', 'form_manual_id': 'Manual ID', 'placeholder_manual_id': 'Scan or type manually', 'form_product_name': 'Product Name', 'placeholder_product_name': 'e.g., Maggi Noodles', 'form_quantity': 'Quantity', 'placeholder_quantity': 'e.g., 100', 'form_unit': 'Unit', 'unit_piece': 'Piece', 'unit_packet': 'Packet', 'unit_gram': 'Gram', 'unit_kg': 'Kg', 'unit_litre': 'Litre', 'unit_ml': 'ml', 'unit_dozen': 'Dozen', 'unit_box': 'Box', 'form_price': 'Price (₹)', 'placeholder_price': 'e.g., 12', 'form_details': 'Details', 'placeholder_details': 'e.g., 2-minute noodles', 'btn_close': 'Close', 'btn_add': 'Add', 'btn_clear': 'Clear', 'btn_download': 'Print/PDF', 'btn_save': 'Save', 'btn_cancel': 'Cancel', 'btn_update': 'Update', 'btn_confirm': 'Confirm', 'btn_delete': 'Delete', 'btn_edit': 'Edit', 'modal_edit_product_emoji': '✏️', 'modal_edit_product_title': 'Edit Product', 'notes_title': '📝 Notes', 'placeholder_notes': 'Write your notes here...', 'text_total': 'Total', 'btn_load_bill': 'Load Bill', 'btn_rename': 'Rename', 'confirm_load_bill_title': 'Load Bill?', 'confirm_load_bill_message': 'This will replace the current bill. Do you want to continue?', 'rename_customer_title': 'Rename Customer', 'rename_customer_message': 'Enter the new name for the customer:', 'bill_loaded_success': '✅ Bill loaded successfully!', 'customer_renamed_success': '✅ Customer name updated!', 'login_btn': 'Login with Google', 'login_desc': 'Login to keep your store data secure', 'manual_add_title': 'Add Manual Item', 'placeholder_manual_item': 'e.g., Samosa', 'form_total_price': 'Total Price (₹)', 'btn_add_to_bill': 'Add to Bill', 'payment_modal_title': 'Select Payment Type', 'payment_modal_desc': 'Is this bill Cash or Credit?', 'btn_cash': 'Cash', 'btn_credit': 'Credit' } };
+
+  async function saveAllDataToFirestore() {
+            const sanitizedProducts = {};
+            for (let key in products) {
+                let cleanKey = String(key).replace(/[.#$/\[\]]/g, '_');
+                products[key].id = cleanKey;
+                sanitizedProducts[cleanKey] = products[key];
+            }
+            products = sanitizedProducts;
+
+            const localData = { products, billHistory, storeName, notes };
+            localStorage.setItem('offlineStoreData', JSON.stringify(localData));
+
+            if(!window.dbRef) {
+                showToast('⚠️ डेटा सिर्फ डिवाइस में सेव हुआ है।', 'info');
+                return;
+            }
+            
+            try {
+                const cleanData = JSON.parse(JSON.stringify({
+                    products: products || {},
+                    billHistory: billHistory || [],
+                    storeName: storeName || 'मेरा स्टोर',
+                    notes: notes || ''
+                }));
+                
+                cleanData.lastUpdated = window.firebaseServerTimestamp();
+                await window.firebaseSet(window.dbRef, cleanData);
+                
+            } catch (error) {
+                console.error("Firebase Save Error: ", error);
+                alert("Firebase Error: " + error.message); 
+                showToast('❌ ऑनलाइन सिंक फेल!', 'error');
+            }
+        }
+
+        function transliterateHinglish(text) {
+            const map = { 'a': 'अ', 'aa': 'आ', 'i': 'इ', 'ee': 'ई', 'u': 'उ', 'oo': 'ऊ', 'ri': 'ऋ', 'e': 'ए', 'ai': 'ऐ', 'o': 'ओ', 'au': 'औ', 'k': 'क', 'kh': 'ख', 'g': 'ग', 'gh': 'घ', 'ch': 'च', 'chh': 'छ', 'j': 'ज', 'jh': 'झ', 't': 'ट', 'th': 'ठ', 'd': 'ड', 'dh': 'ढ', 'n': 'न', 'p': 'प', 'ph': 'फ', 'f': 'फ', 'b': 'ब', 'bh': 'भ', 'm': 'म', 'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व', 'w': 'व', 'sh': 'श', 's': 'स', 'h': 'ह', 'gy': 'ज्ञ', 'tr': 'त्र', 'ksh': 'क्ष', 'shree': 'श्री', 'chini': 'चीनी', 'namak': 'नमक', 'tel': 'तेल', 'chai': 'चाय', 'doodh': 'दूध', 'pani': 'पानी', 'biscuit': 'बिस्किट', 'dal': 'दाल' };
+            let result = '';
+            let lowerText = text.toLowerCase();
+            if (map[lowerText]) { return map[lowerText]; }
+            for (let i = 0; i < lowerText.length; i++) { let found = false; for (let len = 4; len > 0; len--) { if (i + len <= lowerText.length) { const sub = lowerText.substring(i, i + len); if (map[sub]) { result += map[sub]; i += len - 1; found = true; break; } } } if (!found) { result += lowerText[i]; } }
+            return result;
+        }
+
+        function toggleBodyScroll(lock) { document.body.style.overflow = lock ? 'hidden' : ''; }
+        function triggerHapticFeedback(duration = 50) { if (navigator.vibrate) { try { navigator.vibrate(duration); } catch (e) {} } }
+        function showConfirmModal(title, message, onConfirm, confirmButtonClass = 'bg-red-500') { toggleBodyScroll(true); const modal = document.getElementById('confirmModal'); modal.innerHTML = `<div class="modern-card p-4 w-full max-w-xs slide-up text-center"><h3 class="text-lg font-bold mb-2 text-main">${title}</h3><p class="text-sm text-gray-600 mb-5">${message}</p><div class="grid grid-cols-2 gap-3"><button id="confirmModalCancel" data-lang-key="btn_cancel" class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">${translations[currentLanguage].btn_cancel}</button><button id="confirmModalConfirm" data-lang-key="btn_confirm" class="text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm">${translations[currentLanguage].btn_confirm}</button></div></div>`; const confirmBtn = document.getElementById('confirmModalConfirm'); confirmBtn.className += ` ${confirmButtonClass}`; const cancelBtn = document.getElementById('confirmModalCancel'); const confirmHandler = () => { onConfirm(); modal.classList.add('hidden'); toggleBodyScroll(false); }; const cancelHandler = () => { modal.classList.add('hidden'); toggleBodyScroll(false); }; confirmBtn.addEventListener('click', confirmHandler, { once: true }); cancelBtn.addEventListener('click', cancelHandler, { once: true }); modal.classList.remove('hidden'); }
+        function showPromptModal(title, message, defaultValue, onConfirm) { toggleBodyScroll(true); const modal = document.getElementById('promptModal'); modal.innerHTML = `<div class="modern-card p-4 w-full max-w-xs slide-up"><h3 class="text-lg font-bold mb-2 text-main">${title}</h3><p class="text-sm text-gray-600 mb-3">${message}</p><input type="text" id="promptModalInput" class="w-full p-2 modern-input text-sm mb-4" autocomplete="off"><div class="grid grid-cols-2 gap-3"><button id="promptModalCancel" data-lang-key="btn_cancel" class="bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">${translations[currentLanguage].btn_cancel}</button><button id="promptModalConfirm" data-lang-key="btn_save" class="secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm">${translations[currentLanguage].btn_save}</button></div></div>`; const input = document.getElementById('promptModalInput'); input.value = defaultValue; const confirmBtn = document.getElementById('promptModalConfirm'); const cancelBtn = document.getElementById('promptModalCancel'); const confirmHandler = () => { onConfirm(input.value); modal.classList.add('hidden'); toggleBodyScroll(false); }; const cancelHandler = () => { modal.classList.add('hidden'); toggleBodyScroll(false); }; confirmBtn.addEventListener('click', confirmHandler, { once: true }); cancelBtn.addEventListener('click', cancelHandler, { once: true }); modal.classList.remove('hidden'); input.focus(); input.select(); }
+        function debounce(func, delay) { let timeout; return function(...args) { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), delay); }; }
+        
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            localStorage.setItem('theme', theme);
+            updateThemeColorMeta();
+        }
+        function toggleTheme() {
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+            toggleMenu();
+        }
+        function updateThemeColorMeta() {
+            setTimeout(() => {
+                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+                document.getElementById('theme-color-meta').setAttribute('content', primaryColor);
+            }, 50);
+        }
+
+       window.updateAppState = function(data) {
+            if (data) {
+                products = data.products || {};
+                billHistory = data.billHistory || [];
+                storeName = data.storeName || 'मेरा स्टोर';
+                notes = data.notes || '';
+            } else {
+                // Try loading from LocalStorage if Firebase is empty/offline
+                const offlineData = JSON.parse(localStorage.getItem('offlineStoreData'));
+                if (offlineData) {
+                    products = offlineData.products || {};
+                    billHistory = offlineData.billHistory || [];
+                    storeName = offlineData.storeName || 'मेरा स्टोर';
+                    notes = offlineData.notes || '';
+                } else {
+                    products = {}; billHistory = []; storeName = 'मेरा स्टोर'; notes = '';
+                }
+            }
+            updateUIWithNewData();
+        };
+
+        document.addEventListener('DOMContentLoaded', function() { 
+            const savedTheme = localStorage.getItem('theme');
+            applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+
+            setLanguage(currentLanguage); 
+            changeStoreView(localStorage.getItem('storeView') || 'list');
+            history.replaceState({ section: 'home' }, '', '#home'); 
+
+            const offlineData = JSON.parse(localStorage.getItem('offlineStoreData'));
+            if (offlineData) {
+                products = offlineData.products || {};
+                billHistory = offlineData.billHistory || [];
+                storeName = offlineData.storeName || 'मेरा स्टोर';
+                notes = offlineData.notes || '';
+                updateUIWithNewData();
+            }
+
+            window.addEventListener('popstate', handleBackButton); 
+            const initialSection = location.hash.substring(1) || 'home'; 
+            showSection(initialSection, false);
+            
+            document.getElementById('dashboardHeader').addEventListener('click', () => {
+                document.getElementById('statsContainer').classList.toggle('hidden');
+                document.getElementById('dashboardToggleIcon').classList.toggle('rotate-180');
+            });
+            document.getElementById('productsList').addEventListener('click', handleProductListActions);
+            document.getElementById('paymentTypeCashBtn').addEventListener('click', () => handlePaymentTypeSelection('cash'));
+            document.getElementById('paymentTypeCreditBtn').addEventListener('click', () => handlePaymentTypeSelection('credit'));
+            document.getElementById('paymentTypeCancelBtn').addEventListener('click', closePaymentTypeModal);
+            document.getElementById('customerName').addEventListener('input', showCustomerSuggestions);
+            document.addEventListener('click', (e) => {
+                if (!document.getElementById('customerName')?.contains(e.target)) {
+                    document.getElementById('customerNameSuggestions')?.classList.add('hidden');
+                }
+            });
+            function setupSearchClear(inputId, buttonId, callback) { const input = document.getElementById(inputId); const button = document.getElementById(buttonId); if (!input || !button) return; input.addEventListener('input', () => { button.classList.toggle('hidden', !input.value); }); button.addEventListener('click', () => { input.value = ''; input.dispatchEvent(new Event('input')); input.focus(); if (callback) callback(); }); } 
+            setupSearchClear('storeSearchInput', 'clearStoreSearch', debouncedSearch); 
+            setupSearchClear('searchProduct', 'clearShoppingSearch', () => searchProducts('')); 
+            setupSearchClear('historySearchInput', 'clearHistorySearch', filterAndDisplayHistory); 
+        });
+        
+        function updateUIWithNewData() {
+            document.getElementById('storeName').textContent = storeName; 
+            document.getElementById('mobileStoreName').textContent = storeName;
+            searchAndSortProducts(); 
+            filterAndDisplayHistory(); 
+            updateDashboardStats();
+            if (currentSection === 'shopping') { displayBillItems(); }
+        }
+        function updateDashboardStats() { document.getElementById('totalProductsStat').textContent = Object.keys(products).length; document.getElementById('totalBillsStat').textContent = billHistory.length; }
+        function showAddModal() { 
+            toggleBodyScroll(true);
+            const modal = document.getElementById('addProductModal');
+            modal.classList.remove('hidden'); 
+            modal.querySelector('#productBarcode').value = '';
+            modal.querySelector('#productManualId').value = ''; 
+            modal.querySelector('#productName').value = ''; 
+            modal.querySelector('#productPrice').value = ''; 
+            modal.querySelector('#productDetails').value = ''; 
+            modal.querySelector('#productFillingQuantity').value = '1'; 
+            modal.querySelector('#productUnit').value = 'piece'; 
+            history.pushState({ modal: 'add' }, '', location.href); 
+        }
+        function closeAddModal() { toggleBodyScroll(false); const modal = document.getElementById('addProductModal'); if (!modal.classList.contains('hidden')) { modal.classList.add('hidden'); if (isScanning) { stopScanning(currentScanningSection); } } }
+        function showManualAddModal() { toggleBodyScroll(true); const modal = document.getElementById('manualAddModal'); modal.classList.remove('hidden'); modal.querySelector('#manualItemName').value = ''; modal.querySelector('#manualItemPrice').value = ''; modal.querySelector('#manualItemQuantity').value = '1'; modal.querySelector('#manualItemUnit').value = 'piece'; history.pushState({ modal: 'manualAdd' }, '', location.href); }
+        function closeManualAddModal() { toggleBodyScroll(false); document.getElementById('manualAddModal').classList.add('hidden'); }
+        function toggleMenu() { 
+            const menu = document.getElementById('menuDropdown'); 
+            const menuContent = document.getElementById('menuContent');
+            const isOpening = menu.classList.contains('hidden');
+            if (isOpening) {
+                menu.classList.remove('hidden');
+                history.pushState({ menu: 'open' }, '', location.href);
+            } else {
+                 menuContent.classList.remove('slide-up');
+                 menuContent.style.animation = 'slideDown 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards';
+                 setTimeout(() => {
+                     menu.classList.add('hidden');
+                     menuContent.style.animation = '';
+                     menuContent.classList.add('slide-up');
+                 }, 300);
+            }
+        }
+        function showToast(message, type = 'info') { const toast = document.createElement('div'); const bgColor = type === 'success' ? 'secondary-bg' : type === 'error' ? 'bg-red-500' : 'primary-bg'; toast.className = `fixed top-14 right-3 ${bgColor} text-white px-3 py-1.5 rounded-lg shadow-lg z-[101] fade-in text-sm font-medium`; toast.textContent = message; document.body.appendChild(toast); setTimeout(() => { toast.remove(); }, 2000); }
+        function showSection(section, pushToHistory = true) { if (currentSection === section && !pushToHistory) return; ['home', 'store', 'shopping', 'history'].forEach(s => { document.getElementById(s + 'Section').classList.add('hidden'); document.getElementById(s + 'TabMobile').classList.remove('active'); document.getElementById(s + 'TabDesktop').classList.remove('active'); }); document.getElementById(section + 'Section').classList.remove('hidden'); document.getElementById(section + 'Section').classList.add('fade-in'); document.getElementById(section + 'TabMobile').classList.add('active'); document.getElementById(section + 'TabDesktop').classList.add('active'); document.getElementById('floatingAddBtn').classList.toggle('hidden', section !== 'store'); currentSection = section; if (pushToHistory) { history.pushState({ section: section }, '', `#${section}`); } if (section === 'store') { searchAndSortProducts(); } else if (isScanning) { stopScanning(currentScanningSection); } }
+        function startScanning(section) { 
+            if (isScanning) return; 
+            currentScanningSection = section; 
+            const scannerDiv = document.getElementById(section + 'Scanner'); 
+            scannerDiv.classList.remove('hidden'); 
+            isScanning = true; 
+            history.pushState({ scanner: 'open' }, '', location.href); 
+            const readerElement = document.getElementById(section + 'Reader'); 
+            html5QrCode = new Html5Qrcode(readerElement.id); 
+            const config = { fps: 25, rememberLastUsedCamera: true, supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA], disableFlip: false }; 
+            html5QrCode.start({ facingMode: 'environment' }, config, handleScanResult)
+                .then(() => { setupCameraControls(section); })
+                .catch(err => { showToast('❌ कैमरा एक्सेस नहीं हो सका।', 'error'); if(history.state && history.state.scanner){ history.back(); } }); 
+        }
+        function stopScanning(section) { if (html5QrCode && html5QrCode.isScanning) { html5QrCode.stop().catch(err => {}); } if (section) { const scannerDiv = document.getElementById(section + 'Scanner'); if (scannerDiv) { scannerDiv.classList.add('hidden'); } const flashIcon = scannerDiv.querySelector('.flash-icon'); if (flashIcon) flashIcon.textContent = '🔦'; } isScanning = false; flashlightEnabled = false; currentCameraTrack = null; }
+        function handleScanResult(decodedText, decodedResult) {
+            triggerHapticFeedback(50);
+            const section = currentScanningSection;
+            stopScanning(section);
+            if (section === 'store') {
+                document.getElementById('productBarcode').value = decodedText;
+                document.getElementById('productManualId').value = decodedText;
+                fetchProductDetails(decodedText);
+                showToast('📱 बारकोड स्कैन हो गया!', 'success');
+            } else {
+                if (history.state && history.state.scanner) { history.back(); }
+                const product = Object.values(products).find(p => p.barcode === decodedText || p.manualId === decodedText);
+                if (section === 'shopping') {
+                    if (product) { addToBill(product.id); } else { showToast(`❌ प्रोडक्ट '${decodedText}' स्टोर में नहीं है!`, 'error'); }
+                } else if (section === 'dashboard') {
+                    displayDashboardScanResult(decodedText);
+                    showToast('📱 बारकोड स्कैन हो गया!', 'success');
+                }
+            }
+        }
+        function setupCameraControls(section) { const readerElement = document.getElementById(section + 'Reader'); const videoElement = readerElement.querySelector('video'); if (!videoElement || !videoElement.srcObject) return; currentCameraTrack = videoElement.srcObject.getVideoTracks()[0]; const capabilities = currentCameraTrack.getCapabilities(); const zoomControl = document.getElementById(section + 'ZoomControl'); const zoomSlider = document.getElementById(section + 'ZoomSlider'); if (capabilities.zoom) { zoomControl.classList.remove('hidden'); zoomControl.classList.add('flex'); zoomSlider.min = capabilities.zoom.min; zoomSlider.max = capabilities.zoom.max; zoomSlider.step = capabilities.zoom.step; zoomSlider.value = currentCameraTrack.getSettings().zoom || capabilities.zoom.min; } }
+        function applyZoom() { if (!currentCameraTrack || !currentScanningSection) return; const zoomSlider = document.getElementById(currentScanningSection + 'ZoomSlider'); if(zoomSlider) { const zoomValue = parseFloat(zoomSlider.value); currentCameraTrack.applyConstraints({ advanced: [{ zoom: zoomValue }] }).catch(e => console.error("Zoom apply error:", e)); } }
+        function toggleFlashlight(section) { if (!currentCameraTrack) { showToast('❌ कैमरा ट्रैक नहीं मिला।', 'error'); return; } const capabilities = currentCameraTrack.getCapabilities(); if (capabilities.torch) { flashlightEnabled = !flashlightEnabled; currentCameraTrack.applyConstraints({ advanced: [{ torch: flashlightEnabled }] }).then(() => { const scannerControls = document.querySelector(`#${section}Scanner .scanner-controls`); const flashIcon = scannerControls.querySelector('.flash-icon'); if(flashIcon) flashIcon.textContent = flashlightEnabled ? '💡' : '🔦'; }).catch(() => showToast('❌ फ्लैशलाइट ऑन नहीं हो सकी', 'error')); } else { showToast('❌ इस डिवाइस पर फ्लैशलाइट सपोर्ट नहीं है', 'error'); } }
+        async function addProduct() { 
+            const barcode = document.getElementById('productBarcode').value.trim();
+            const manualId = document.getElementById('productManualId').value.trim();
+            const name = document.getElementById('productName').value.trim(); 
+            const price = parseFloat(document.getElementById('productPrice').value); 
+            const details = document.getElementById('productDetails').value.trim(); 
+            const fillingQuantity = parseFloat(document.getElementById('productFillingQuantity').value) || 1; 
+            const unit = document.getElementById('productUnit').value; 
+            if (!name || isNaN(price) || isNaN(fillingQuantity) || fillingQuantity <= 0) { showToast('❌ कृपया सही नाम, कीमत और मात्रा डालें', 'error'); return; }
+            if (!manualId && !barcode) { showToast('❌ कृपया बारकोड स्कैन करें या मैन्युअल ID डालें', 'error'); return; }
+            const productId = manualId || barcode;
+            if(products[productId]){ showToast('❌ यह मैन्युअल ID/बारकोड पहले से मौजूद है!', 'error'); return; } 
+            products[productId] = { id: productId, barcode, manualId, name, price, details, fillingQuantity, unit, dateAdded: new Date().toISOString() }; 
+            await saveAllDataToFirestore();
+            triggerHapticFeedback(); 
+            if (history.state && history.state.modal) { history.back(); } else { closeAddModal(); } 
+            showToast('✅ प्रोडक्ट सफलतापूर्वक जोड़ा गया!', 'success'); 
+        }
+        const debouncedSearch = debounce(searchAndSortProducts, 300);
+        function searchAndSortProducts() { 
+            const searchQuery = document.getElementById('storeSearchInput').value.trim().toLowerCase(); 
+            const hinglishQuery = transliterateHinglish(searchQuery);
+            const sortBy = document.getElementById('sortOrderSelect').value; 
+            let productArray = Object.values(products); 
+            if (searchQuery) { 
+                productArray = productArray.filter(p => p.name.toLowerCase().includes(searchQuery) || (hinglishQuery && p.name.includes(hinglishQuery)) || (p.barcode && p.barcode.toLowerCase().includes(searchQuery)) || (p.manualId && p.manualId.toLowerCase().includes(searchQuery)) || p.id.toString().includes(searchQuery)); 
+            } 
+            productArray.sort((a, b) => { switch (sortBy) { case 'name-asc': return a.name.localeCompare(b.name); case 'name-desc': return b.name.localeCompare(a.name); case 'price-asc': return a.price - b.price; case 'price-desc': return b.price - a.price; case 'date-asc': return new Date(a.dateAdded) - new Date(b.dateAdded); case 'date-desc': default: return new Date(b.dateAdded) - new Date(a.dateAdded); } }); 
+            displayProducts(productArray); 
+        }
+        function toggleStoreEditMode() { isStoreEditMode = !isStoreEditMode; const btn = document.getElementById('editModeBtn'); btn.classList.toggle('primary-bg', isStoreEditMode); btn.classList.toggle('text-white', isStoreEditMode); btn.classList.toggle('bg-gray-200', !isStoreEditMode); btn.classList.toggle('text-gray-500', !isStoreEditMode); searchAndSortProducts(); }
+        function changeStoreView(view) { storeView = view; localStorage.setItem('storeView', view); const switcher = document.getElementById('view-switcher'); switcher.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active')); switcher.querySelector(`button[onclick="changeStoreView('${view}')"]`).classList.add('active'); searchAndSortProducts(); }
+        function displayProducts(productsToDisplay) {
+            const list = document.getElementById('productsList');
+            list.innerHTML = '';
+            list.style.gridTemplateColumns = '';
+            const productArray = productsToDisplay || Object.values(products);
+            document.getElementById('view-switcher').querySelector(`button[onclick="changeStoreView('${storeView}')"]`).classList.add('active');
+
+            if (storeView === 'grid') {
+                list.className = 'grid gap-3';
+                list.style.gridTemplateColumns = 'repeat(auto-fit, minmax(170px, 1fr))';
+            } else {
+                list.className = 'space-y-2';
+            }
+            if (productArray.length === 0) {
+                list.className = ''; list.style.gridTemplateColumns = '';
+                list.innerHTML = `<div class="text-center text-gray-500 col-span-full py-16 flex flex-col items-center"><svg class="w-16 h-16 text-gray-300 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg><h3 class="font-bold text-md" data-lang-key="empty_state_no_products_title">अभी कोई प्रोडक्ट नहीं है</h3><p class="mb-4 text-sm" data-lang-key="empty_state_no_products_desc">नीचे दिए गए बटन से अपना पहला प्रोडक्ट जोड़ें।</p><button onclick="showAddModal()" class="primary-bg text-white py-2 px-5 rounded-lg font-semibold modern-btn text-sm flex items-center justify-center space-x-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg><span data-lang-key="empty_state_add_product_btn">नया प्रोडक्ट जोड़ें</span></button></div>`;
+            } else {
+                productArray.forEach(p => {
+                    const card = document.createElement('div');
+                    card.dataset.id = p.id;
+                    const unitLabel = unitTextMap[p.unit] || p.unit;
+                    let cardHTML = '';
+                    const editBtn = `<button data-action="edit" class="bg-blue-100 text-blue-700 font-semibold py-1.5 px-2 rounded-md hover:bg-blue-200 transition-colors flex items-center justify-center space-x-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"></path></svg></button>`;
+                    const deleteBtn = `<button data-action="delete" class="bg-red-100 text-red-700 font-semibold py-1.5 px-2 rounded-md hover:bg-red-200 transition-colors flex items-center justify-center space-x-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>`;
+                    const addBtnGrid = `<button data-action="add" class="w-full bg-green-100 text-green-700 font-semibold py-1.5 rounded-md hover:bg-green-200 transition-colors flex items-center justify-center space-x-1 text-xs"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg><span data-lang-key="btn_add">${translations[currentLanguage].btn_add}</span></button>`;
+                    let buttonsHTML = isStoreEditMode ? `<div class="grid grid-cols-2 gap-1.5">${editBtn}${deleteBtn}</div>` : addBtnGrid;
+                    
+                    if (storeView === 'grid') {
+                        card.className = 'modern-card p-2.5 flex flex-col justify-between fade-in';
+                        cardHTML = `<div class="flex-grow"><div class="flex justify-between items-start gap-2 mb-1"><h4 class="font-bold text-sm leading-tight flex-1 product-name-text">${p.name}</h4><div class="barcode-badge" title="#${p.manualId || p.id}">${p.manualId || p.id}</div></div><p class="price-text font-bold text-md mb-1">₹${p.price} <span class="text-xs font-medium meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p>${p.details ? `<p class="text-xs" style="color: var(--text-light);">${p.details}</p>` : ''}</div><div class="border-t pt-2 mt-2 text-xs" style="border-color: color-mix(in srgb, var(--text) 8%, transparent);">${buttonsHTML}</div>`;
+                    } else {
+                        const isCompact = storeView === 'compact';
+                        let listButtonsHTML = '';
+                        if (isStoreEditMode) {
+                            listButtonsHTML = `<button data-action="edit" class="bg-blue-100 text-blue-700 font-semibold p-2 rounded-lg hover:bg-blue-200 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"></path></svg></button><button data-action="delete" class="bg-red-100 text-red-700 font-semibold p-2 rounded-lg hover:bg-red-200 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>`;
+                        } else {
+                            listButtonsHTML = `<button data-action="add" class="bg-green-100 text-green-700 font-semibold p-2 rounded-lg hover:bg-green-200 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>`;
+                        }
+                        card.className = `modern-card ${isCompact ? 'p-2' : 'p-2.5'} flex items-center justify-between gap-3 fade-in`;
+                        cardHTML = `<div class="flex-1 overflow-hidden"><h4 class="font-bold product-name-text ${isCompact ? 'text-sm':'text-base'} leading-tight truncate">${p.name}</h4><p class="price-text font-semibold ${isCompact ? 'text-xs':'text-sm'}">₹${p.price} <span class="text-xs font-medium meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p>${!isCompact && p.details ? `<p class="text-xs mt-1 truncate" style="color: var(--text-light);">${p.details}</p>`:''}</div><div class="flex items-center ${isCompact ? 'gap-1.5':'gap-2'} text-xs">${listButtonsHTML}</div>`;
+                    }
+                    card.innerHTML = cardHTML;
+                    list.appendChild(card);
+                });
+            }
+            updateDashboardStats();
+            setLanguage(currentLanguage);
+        }
+        function handleProductListActions(event) { const button = event.target.closest('[data-action]'); if (!button) return; const card = button.closest('[data-id]'); const productId = card.dataset.id; const action = button.dataset.action; switch (action) { case 'add': addToBillFromStore(productId, button); break; case 'edit': editProduct(productId); break; case 'delete': handleDeleteProduct(productId); break; } }
+        function editProduct(productId) { toggleBodyScroll(true); const product = products[productId]; if (!product) return; currentEditingProduct = productId; const modal = document.getElementById('editModal'); modal.classList.remove('hidden'); modal.querySelector('#editProductBarcode').value = product.barcode || ''; modal.querySelector('#editProductManualId').value = product.manualId || ''; modal.querySelector('#editProductName').value = product.name; modal.querySelector('#editProductPrice').value = product.price; modal.querySelector('#editProductDetails').value = product.details || ''; modal.querySelector('#editProductFillingQuantity').value = product.fillingQuantity || 1; modal.querySelector('#editProductUnit').value = product.unit || 'piece'; history.pushState({ modal: 'edit' }, '', location.href); }
+        async function updateProduct() { 
+            if (!currentEditingProduct) return; 
+            const newBarcode = document.getElementById('editProductBarcode').value.trim();
+            const newManualId = document.getElementById('editProductManualId').value.trim();
+            const newProductId = newManualId || newBarcode;
+            if (!newProductId) { showToast('❌ मैन्युअल ID या बारकोड खाली नहीं हो सकता!', 'error'); return; }
+            if (newProductId !== currentEditingProduct && products[newProductId]) { showToast('❌ यह मैन्युअल ID/बारकोड पहले से मौजूद है!', 'error'); return; } 
+            const name = document.getElementById('editProductName').value.trim(); 
+            const price = parseFloat(document.getElementById('editProductPrice').value); 
+            const details = document.getElementById('editProductDetails').value.trim(); 
+            const fillingQuantity = parseFloat(document.getElementById('editProductFillingQuantity').value) || 1; 
+            const unit = document.getElementById('editProductUnit').value; 
+            if (!name || isNaN(price) || isNaN(fillingQuantity) || fillingQuantity <= 0) { showToast('❌ कृपया सही नाम, कीमत और मात्रा डालें', 'error'); return; } 
+            const updatedProduct = { ...products[currentEditingProduct], id: newProductId, barcode: newBarcode, manualId: newManualId, name, price, details, fillingQuantity, unit }; 
+            delete products[currentEditingProduct];
+            products[newProductId] = updatedProduct;
+            await saveAllDataToFirestore();
+            triggerHapticFeedback(); 
+            if (history.state && history.state.modal) { history.back(); } else { closeEditModal(); } 
+            showToast('✅ प्रोडक्ट अपडेट हो गया!', 'success'); 
+        }
+        function handleDeleteProduct(productId) { showConfirmModal('🗑️ प्रोडक्ट डिलीट करें?', 'क्या आप वाकई इस प्रोडक्ट को डिलीट करना चाहते हैं?', async () => { delete products[productId]; await saveAllDataToFirestore(); triggerHapticFeedback(); showToast('✅ प्रोडक्ट डिलीट हो गया!', 'success'); }); }
+        function displayDashboardScanResult(barcode) { 
+            const resultDiv = document.getElementById('dashboardScanResult'); 
+            const product = Object.values(products).find(p => p.barcode === barcode || p.manualId === barcode);
+            resultDiv.classList.remove('hidden'); resultDiv.innerHTML = ''; 
+            const content = document.createElement('div'); content.className = 'fade-in'; 
+            let productInfoHtml = ''; 
+            if (product) { 
+                const unitLabel = unitTextMap[product.unit] || product.unit; 
+                productInfoHtml = `<h4 class="font-bold text-md mb-1 product-name-text">${product.name}</h4><p class="price-text font-bold text-lg mb-2">₹${product.price} <span class="text-sm font-medium meta-text">/ ${product.fillingQuantity || 1} ${unitLabel}</span></p>${product.details ? `<p class="text-sm mb-3" style="color:var(--text-light)">${product.details}</p>` : ''}<button onclick="addToBillFromDashboard('${product.id}')" class="w-full secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm" data-lang-key="scan_add_to_bill">बिल में जोड़ें</button>`; 
+            } else { 
+                productInfoHtml = `<p class="text-center font-semibold text-red-600" data-lang-key="scan_result_not_found">प्रोडक्ट स्टोर में नहीं मिला!</p><p class="text-center text-sm my-2" style="color:var(--text-light)">ID: ${barcode}</p><button onclick="showAddModalWithBarcode('${barcode}')" class="w-full primary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm" data-lang-key="scan_add_as_new">इसे नए प्रोडक्ट के रूप में जोड़ें</button>`; 
+            } 
+            content.innerHTML = `<div class="flex justify-between items-center mb-2 pb-2 border-b" style="border-color: var(--border-color);"><h4 class="font-bold text-sm" data-lang-key="scan_result_title" style="color:var(--text-light)">स्कैन का परिणाम</h4><button onclick="closeDashboardResult()" class="text-gray-400 hover:text-red-500 text-2xl font-bold">&times;</button></div>${productInfoHtml}`; 
+            resultDiv.appendChild(content); 
+            setLanguage(currentLanguage); 
+        }
+        function closeDashboardResult() { document.getElementById('dashboardScanResult').classList.add('hidden'); }
+        function addToBillFromDashboard(productId) { addToBill(productId); showSection('shopping'); }
+        function showAddModalWithBarcode(barcode) { closeDashboardResult(); showAddModal(); setTimeout(() => { document.getElementById('productBarcode').value = barcode; document.getElementById('productManualId').value = barcode; fetchProductDetails(barcode); }, 100); }
+        function addManualItemToBill() {
+            const name = document.getElementById('manualItemName').value.trim();
+            const totalPrice = parseFloat(document.getElementById('manualItemPrice').value); 
+            const fillingQuantity = parseInt(document.getElementById('manualItemQuantity').value); 
+            const unit = document.getElementById('manualItemUnit').value;
+            if (!name || isNaN(totalPrice) || isNaN(fillingQuantity) || totalPrice <= 0 || fillingQuantity <= 0) { showToast('❌ कृपया सही नाम, कीमत और मात्रा डालें', 'error'); return; }
+            const manualItem = { id: 'manual_' + Date.now(), name: name, price: totalPrice, quantity: 1, unit: unit, fillingQuantity: fillingQuantity };
+            const existingItem = billItems.find(item => item.id.startsWith('manual_') && item.name === manualItem.name && item.price === manualItem.price && item.fillingQuantity === manualItem.fillingQuantity && item.unit === manualItem.unit);
+            if (existingItem) { existingItem.quantity += 1; } else { billItems.push(manualItem); }
+            displayBillItems(); updateTotal(); showToast('✅ आइटम बिल में जोड़ा गया!', 'success');
+            if (history.state && history.state.modal) { history.back(); } else { closeManualAddModal(); }
+        }
+        function addToBill(productId, element) { const product = products[productId]; if (!product) { showToast('❌ प्रोडक्ट नहीं मिला!', 'error'); return; } const existingItem = billItems.find(item => item.id === productId); if (existingItem) { existingItem.quantity += 1; } else { billItems.push({ id: productId, name: product.name, price: product.price, quantity: 1, unit: product.unit, fillingQuantity: product.fillingQuantity }); } if (element) { element.classList.add('bg-green-300'); setTimeout(() => element.classList.remove('bg-green-300'), 400); } document.getElementById('searchProduct').value = ''; document.getElementById('clearShoppingSearch').classList.add('hidden'); document.getElementById('searchResults').classList.add('hidden'); displayBillItems(); updateTotal(); showToast('✅ प्रोडक्ट बिल में जोड़ा गया!', 'success'); }
+        function addToBillFromStore(productId, element) { addToBill(productId, element); showSection('shopping'); }
+        function displayBillItems() { const billDiv = document.getElementById('billItems'); if (billItems.length === 0) { billDiv.innerHTML = `<div class="text-center py-8 text-gray-400 flex flex-col items-center"><svg class="w-12 h-12 text-gray-300 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.812a1.5 1.5 0 00-1.423-1.884H5.318a1.5 1.5 0 00-1.423 1.884l1.823 6.812zM7.5 14.25h11.218M7.5 14.25a3 3 0 01-3-3h.008v.008h-.008v-.008zm12 0a3 3 0 01-3-3h.008v.008h-.008v-.008z" /></svg><h3 class="font-bold text-sm" data-lang-key="empty_state_bill_title">बिल अभी खाली है</h3><p class="text-xs" data-lang-key="empty_state_bill_desc">शुरू करने के लिए प्रोडक्ट जोड़ें।</p></div>`; return; } billDiv.innerHTML = billItems.map((item, index) => { const unitLabel = unitTextMap[item.unit] || item.unit; const totalUnits = item.quantity * item.fillingQuantity; const formattedTotalUnits = parseFloat(totalUnits.toFixed(2).replace(/\.00$/, '')); return `<div class="p-2 rounded-lg border fade-in" style="background-color: color-mix(in srgb, var(--text) 3%, transparent); border-color: var(--border-color);"><div class="flex justify-between items-start gap-2"><div class="flex-1"><h4 class="font-bold text-sm leading-tight product-name-text">${item.name} <span class="font-semibold meta-text text-xs">(${formattedTotalUnits} ${unitLabel})</span></h4></div><span class="font-bold text-sm text-right flex-shrink-0 price-text">₹${(item.price * item.quantity).toFixed(2)}</span></div><div class="flex justify-between items-center mt-1"><p class="text-xs" style="color: var(--text-light);">@ ₹${item.price} / ${item.fillingQuantity} ${unitLabel}</p><div class="flex items-center space-x-2"><button onclick="updateQuantity(${index}, -1)" class="w-6 h-6 bg-red-100 text-red-600 rounded-full font-bold hover:bg-red-200 transition-colors flex-shrink-0 flex items-center justify-center">-</button><span class="w-5 text-center font-bold text-sm">${item.quantity}</span><button onclick="updateQuantity(${index}, 1)" class="w-6 h-6 bg-green-100 text-green-600 rounded-full font-bold hover:bg-green-200 transition-colors flex-shrink-0 flex items-center justify-center">+</button></div></div></div>`; }).join(''); setLanguage(currentLanguage); }
+        function updateQuantity(index, change) { if (!billItems[index]) return; const newQuantity = billItems[index].quantity + change; if (newQuantity < 1) { showConfirmModal( `"${billItems[index].name}" हटाएं?`, 'क्या आप वाकई इस आइटम को बिल से हटाना चाहते हैं?', () => { billItems.splice(index, 1); displayBillItems(); updateTotal(); showToast('आइटम हटा दिया गया', 'info'); } ); } else { billItems[index].quantity = newQuantity; displayBillItems(); updateTotal(); } }
+        function updateTotal() { const total = billItems.reduce((sum, item) => sum + (item.price * item.quantity), 0); const totalEl = document.getElementById('totalAmount'); totalEl.textContent = `₹${total.toFixed(2)}`; totalEl.classList.add('highlight-total'); setTimeout(() => totalEl.classList.remove('highlight-total'), 700); }
+        function handleClearBill() { if (billItems.length > 0) { showConfirmModal('🗑️ बिल क्लियर करें?', 'क्या आप इस बिल के सभी आइटम्स को हटाना चाहते हैं?', () => { billItems = []; document.getElementById('customerName').value = ''; displayBillItems(); updateTotal(); triggerHapticFeedback(); showToast('✅ बिल क्लियर हो गया!', 'success'); }); } }
+        function generateBillId(date) { const d = date; const day = String(d.getDate()).padStart(2, '0'); const month = String(d.getMonth() + 1).padStart(2, '0'); const year = String(d.getFullYear()); const todayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); const todayEnd = todayStart + (24 * 60 * 60 * 1000); const billsToday = billHistory.filter(b => { const billTime = new Date(b.date).getTime(); return billTime >= todayStart && billTime < todayEnd; }).length; const sequence = String(billsToday + 1).padStart(3, '0'); return `${day}${month}${year}${sequence}`; }
+        function showPaymentTypeModal(action) {
+            if (billItems.length === 0) { showToast('❌ बिल में कोई आइटम नहीं है!', 'error'); return; }
+            const customerNameInput = document.getElementById('customerName');
+            if (!customerNameInput.value.trim()) { showToast(translations[currentLanguage].customer_name_required, 'error'); customerNameInput.focus(); customerNameInput.classList.add('error'); setTimeout(() => customerNameInput.classList.remove('error'), 1000); return; }
+            currentBillAction = action;
+            document.getElementById('paymentTypeModal').classList.remove('hidden');
+            toggleBodyScroll(true);
+            history.pushState({ modal: 'payment' }, '', location.href);
+        }
+        function closePaymentTypeModal() { document.getElementById('paymentTypeModal').classList.add('hidden'); toggleBodyScroll(false); currentBillAction = null; }
+        function handlePaymentTypeSelection(type) { if (currentBillAction === 'save') { executeSaveBill(type); } else if (currentBillAction === 'print') { executePrintBill(type); } if (history.state && history.state.modal === 'payment') { history.back(); } else { closePaymentTypeModal(); } }
+        function saveBill() { showPaymentTypeModal('save'); }
+        function printBill() { showPaymentTypeModal('print'); }
+        async function executeSaveBill(paymentType) {
+            const customerName = document.getElementById('customerName').value.trim();
+            const now = new Date();
+            const bill = { id: generateBillId(now), date: now.toISOString(), customerName: customerName, items: [...billItems], total: billItems.reduce((sum, item) => sum + (item.price * item.quantity), 0), paymentType: paymentType };
+            billHistory.unshift(bill);
+            await saveAllDataToFirestore();
+            billItems = []; document.getElementById('customerName').value = ''; displayBillItems(); updateTotal();
+            triggerHapticFeedback(100); showToast('✅ बिल सेव हो गया!', 'success');
+        }
+        function executePrintBill(paymentType) {
+            const customerName = document.getElementById('customerName').value.trim();
+            const bill = { customerName: customerName, items: billItems, total: billItems.reduce((sum, item) => sum + (item.price * item.quantity), 0), date: new Date().toISOString(), id: 'Current', paymentType: paymentType };
+            const billHtml = generateModernBillHTML(bill);
+            const printWindow = window.open('', '_blank');
+            if (printWindow) { printWindow.document.write(billHtml); printWindow.document.close(); printWindow.focus(); setTimeout(() => { try { printWindow.print(); } catch (e) { showToast('❌ प्रिंट पॉप-अप ब्लॉक हो गया', 'error'); } }, 250); } else { showToast('❌ कृपया पॉप-अप को अनुमति दें', 'error'); }
+        }
+        function generateModernBillHTML(bill) { const theme = { primary: '#007AFF', secondary: '#34C759', bg_end: '#F9FAFB', card: '#FFFFFF', text: '#111827', text_light: '#6B7280', border: '#E5E7EB' }; let itemsHtml = ''; bill.items.forEach((item, index) => { const totalUnits = item.quantity * (item.fillingQuantity || 1); const formattedTotalUnits = parseFloat(totalUnits.toFixed(2).replace(/\.00$/, '')); const unitLabel = unitTextMap[item.unit] || item.unit; const rowStyle = index % 2 === 0 ? `background-color: ${theme.bg_end};` : ''; itemsHtml += `<tr style="${rowStyle}"><td style="padding: 10px 12px; text-align: left; border-bottom: 1px solid ${theme.border};">${item.name}</td><td style="padding: 10px 12px; text-align: center; border-bottom: 1px solid ${theme.border};">${formattedTotalUnits} ${unitLabel}</td><td style="padding: 10px 12px; text-align: right; border-bottom: 1px solid ${theme.border};">₹${(item.price * item.quantity).toFixed(2)}</td></tr>`; }); let paymentStatusHtml = ''; if (bill.paymentType) { const statusText = bill.paymentType === 'credit' ? 'उधार (Credit)' : 'नगद (Cash)'; const statusColor = bill.paymentType === 'credit' ? '#EF4444' : '#22C55E'; paymentStatusHtml = `<div style="text-align: right;"><p style="font-size: 0.8rem; color:${theme.text_light}; font-weight: 600;">STATUS</p><p style="font-weight: 700; font-size: 1.1rem; color:${statusColor};">${statusText}</p></div>`; } return `<!DOCTYPE html><html lang="hi"><head><meta charset="UTF-8"><title>Bill - ${bill.id}</title><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');body{font-family:'Inter',sans-serif;background-color:#f3f4f6;color:${theme.text};}@media print{body{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}}</style></head><body style="padding: 1rem;"><div style="max-width: 42rem; margin: auto; background-color:${theme.card}; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 2rem; border: 1px solid ${theme.border};"><div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1rem; border-bottom: 1px solid ${theme.border};"><div style="text-align: left;"><h1 style="font-size: 1.5rem; font-weight: 700; color:${theme.primary};">${storeName}</h1><p style="color:${theme.text_light};">INVOICE</p></div><div style="text-align: right;"><p style="font-weight: 600;">बिल #${bill.id}</p><p style="font-size: 0.875rem; color:${theme.text_light};">${new Date(bill.date).toLocaleString('hi-IN')}</p></div></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;"><div style="text-align: left;"><p style="font-size: 0.8rem; color:${theme.text_light};">BILL TO</p><p style="font-weight: 600;">${bill.customerName || 'N/A'}</p></div>${paymentStatusHtml}</div><div style="width: 100%; overflow-x: auto;"><table style="width: 100%; font-size: 0.875rem; border-collapse: collapse;"><thead><tr style="background-color: ${theme.bg_end};"><th style="padding: 8px 12px; text-align: left; font-weight: 600; color:${theme.primary}; border-bottom: 2px solid ${theme.primary};">प्रोडक्ट</th><th style="padding: 8px 12px; text-align: center; font-weight: 600; color:${theme.primary}; border-bottom: 2px solid ${theme.primary};">मात्रा</th><th style="padding: 8px 12px; text-align: right; font-weight: 600; color:${theme.primary}; border-bottom: 2px solid ${theme.primary};">कुल</th></tr></thead><tbody>${itemsHtml}</tbody></table></div><div style="display: flex; justify-content: flex-end; padding-top: 1.5rem; margin-top: 1.5rem; border-top: 1px solid ${theme.border};"><div style="width: 100%; max-width: 16rem; text-align: right;"><div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="color:${theme.text_light};">Subtotal</span><span>₹${bill.total.toFixed(2)}</span></div><div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.125rem; color:${theme.secondary};"><span style="font-weight: 700;">कुल राशि</span><span>₹${bill.total.toFixed(2)}</span></div></div></div><div style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid ${theme.border};"><p style="font-size: 0.75rem; color:${theme.text_light};">Thank you for your visit!</p></div></div></body></html>`; }
+        function printOldBill(event, billId) { event.stopPropagation(); const bill = billHistory.find(b => b.id.toString() === billId.toString()); if (!bill) return; const billHtml = generateModernBillHTML(bill); const printWindow = window.open('', '_blank'); if (printWindow) { printWindow.document.write(billHtml); printWindow.document.close(); printWindow.focus(); setTimeout(() => { try { printWindow.print(); } catch (e) { showToast('❌ प्रिंट पॉप-अप ब्लॉक हो गया', 'error'); } }, 250); } else { showToast('❌ कृपया पॉप-अप को अनुमति दें', 'error'); } }
+        function printAllProducts() { toggleMenu(); if (Object.keys(products).length === 0) { showToast('❌ प्रिंट करने के लिए कोई प्रोडक्ट नहीं है!', 'error'); return; } const productsHtml = Object.values(products).map((p, index) => `<tr class="border-b"><td class="p-3">${index + 1}</td><td class="p-3 font-semibold">${p.name || ''}</td><td class="p-3">₹${p.price ? p.price.toFixed(2) : '0.00'} / ${p.fillingQuantity || 1} ${unitTextMap[p.unit] || p.unit}</td><td class="p-3 font-mono text-xs">${p.barcode || 'N/A'}</td><td class="p-3 text-xs">${p.details || ''}</td></tr>`).join(''); const printContent = `<!DOCTYPE html><html lang="hi"><head><meta charset="UTF-8"><title>${storeName} - सभी प्रोडक्ट्स</title><script src="https://cdn.tailwindcss.com"><\/script><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'); body { font-family: 'Inter', sans-serif; background-color: white !important; color: black !important; } @media print { body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } }</style></head><body><div class="container mx-auto p-8"><div class="text-center mb-8 p-4 rounded-lg"><h1 class="text-3xl font-bold text-blue-600">${storeName}</h1><p class="text-gray-500">सभी प्रोडक्ट्स की सूची</p><p class="text-xs mt-1 text-gray-500">${new Date().toLocaleString('hi-IN')}</p></div><div class="rounded-lg shadow-md overflow-hidden border"><table class="w-full text-sm"><thead class="bg-gray-100"><tr><th class="p-3 text-left">#</th><th class="p-3 text-left">नाम</th><th class="p-3 text-left">कीमत/यूनिट</th><th class="p-3 text-left">बारकोड</th><th class="p-3 text-left">विवरण</th></tr></thead><tbody>${productsHtml}</tbody></table></div><div class="text-center mt-6 text-sm text-gray-500">कुल प्रोडक्ट्स: ${Object.keys(products).length}</div></div></body></html>`; const printWindow = window.open('', '_blank'); printWindow.document.write(printContent); printWindow.document.close(); setTimeout(() => { try { printWindow.focus(); printWindow.print(); printWindow.close(); } catch (e) { showToast('❌ प्रिंट पॉप-अप ब्लॉक हो गया', 'error'); } }, 500); }
+        async function handleEditStoreName() { toggleMenu(); showPromptModal('स्टोर का नाम बदलें', 'कृपया अपने स्टोर का नया नाम दर्ज करें।', storeName, async (newName) => { if (newName && newName.trim()) { storeName = newName.trim(); await saveAllDataToFirestore(); showToast('✅ स्टोर का नाम अपडेट हो गया!', 'success'); } }); }
+        function closeEditModal() { toggleBodyScroll(false); document.getElementById('editModal').classList.add('hidden'); currentEditingProduct = null; }
+        function searchProducts(query) {
+            const resultsDiv = document.getElementById('searchResults');
+            const trimmedQuery = query.trim();
+            if (!trimmedQuery) { resultsDiv.classList.add('hidden'); return; }
+            const lowerCaseQuery = trimmedQuery.toLowerCase();
+            const hinglishQuery = transliterateHinglish(lowerCaseQuery);
+            const results = Object.values(products).filter(p => p.name.toLowerCase().includes(lowerCaseQuery) || (hinglishQuery && p.name.includes(hinglishQuery)) || (p.barcode && p.barcode.toLowerCase().includes(lowerCaseQuery)) || (p.manualId && p.manualId.toLowerCase().includes(lowerCaseQuery)) || p.id.toString().includes(lowerCaseQuery)).slice(0, 5);
+            if (results.length === 0) { resultsDiv.innerHTML = '<div class="text-center py-3 text-gray-500 text-sm">कोई प्रोडक्ट नहीं मिला</div>'; resultsDiv.classList.remove('hidden'); return; }
+            resultsDiv.innerHTML = results.map(p => ` <div class="p-2 rounded-lg border cursor-pointer hover:border-[var(--primary)] transition-all" onclick="addToBill('${p.id}', this)" style="background-color: color-mix(in srgb, var(--text) 3%, transparent); border-color: var(--border-color);"><div class="font-semibold text-sm product-name-text">${p.name}</div><div class="price-text font-bold text-sm">₹${p.price} <span class="text-xs meta-text"> / ${p.fillingQuantity || 1} ${unitTextMap[p.unit] || p.unit}</span></div></div>`).join('');
+            resultsDiv.classList.remove('hidden');
+        }
+        function handleDeleteHistoryItem(event, billId) { event.stopPropagation(); showConfirmModal('🗑️ बिल डिलीट करें?', 'क्या आप वाकई इस बिल को हिस्ट्री से डिलीट करना चाहते हैं?', async () => { const index = billHistory.findIndex(b => b.id.toString() === billId.toString()); if (index > -1) { billHistory.splice(index, 1); await saveAllDataToFirestore(); showToast('✅ बिल डिलीट हो गया!', 'success'); triggerHapticFeedback(); } }); }
+        async function renameCustomerInHistory(event, billId) {
+            event.stopPropagation();
+            const billIndex = billHistory.findIndex(b => b.id.toString() === billId.toString());
+            if (billIndex === -1) return;
+            const currentName = billHistory[billIndex].customerName;
+            showPromptModal( translations[currentLanguage].rename_customer_title, translations[currentLanguage].rename_customer_message, currentName, async (newName) => { if (newName && newName.trim()) { billHistory[billIndex].customerName = newName.trim(); await saveAllDataToFirestore(); showToast(translations[currentLanguage].customer_renamed_success, 'success'); } });
+        }
+        function loadBillFromHistory(event, billId) {
+            event.stopPropagation();
+            const bill = billHistory.find(b => b.id.toString() === billId.toString());
+            if (!bill) return;
+            showConfirmModal( translations[currentLanguage].confirm_load_bill_title, translations[currentLanguage].confirm_load_bill_message, () => { billItems = JSON.parse(JSON.stringify(bill.items)); document.getElementById('customerName').value = bill.customerName; showSection('shopping'); displayBillItems(); updateTotal(); showToast(translations[currentLanguage].bill_loaded_success, 'success'); }, 'bg-green-500');
+        }
+        function filterAndDisplayHistory() {
+            const searchTerm = document.getElementById('historySearchInput').value.toLowerCase();
+            const hinglishTerm = transliterateHinglish(searchTerm);
+            const searchDate = document.getElementById('historyDateInput').value;
+            let filtered = billHistory;
+            if (searchTerm) { filtered = filtered.filter(bill => bill.customerName.toLowerCase().includes(searchTerm) || (hinglishTerm && bill.customerName.includes(hinglishTerm)) || bill.items.some(item => item.name.toLowerCase().includes(searchTerm) || (hinglishTerm && item.name.includes(hinglishTerm)))); }
+            if (searchDate) { filtered = filtered.filter(bill => new Date(bill.date).toISOString().startsWith(searchDate)); }
+            displayBillHistory(filtered);
+        }
+        function displayBillHistory(billsToDisplay = billHistory) {
+            const historyDiv = document.getElementById('billHistory');
+            historyDiv.className = 'space-y-2';
+            if (billsToDisplay.length === 0) {
+                historyDiv.innerHTML = `<div class="text-center py-16 text-gray-400 flex flex-col items-center"><svg class="w-16 h-16 text-gray-300 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" /></svg><h3 class="font-bold text-md" data-lang-key="empty_state_history_title">कोई बिल हिस्ट्री नहीं है</h3><p class="text-sm" data-lang-key="empty_state_history_desc">सेव किए गए बिल यहाँ दिखाई देंगे।</p></div>`;
+                return;
+            }
+            const groupedBills = billsToDisplay.reduce((acc, bill) => {
+                const date = new Date(bill.date).toLocaleDateString('hi-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+                if (!acc[date]) { acc[date] = []; }
+                acc[date].push(bill);
+                return acc;
+            }, {});
+            let finalHtml = '';
+            for (const date in groupedBills) {
+                 finalHtml += `<div class="sticky top-0 z-10 py-2" style="background-color: var(--bg-start);"><h3 class="text-sm font-bold text-gray-500">${date}</h3></div>`;
+                 groupedBills[date].forEach(bill => {
+                    const isCredit = bill.paymentType === 'credit';
+                    const billDetailsHtml = bill.items.map(item => { const unitLabel = unitTextMap[item.unit] || item.unit; const totalUnits = item.quantity * item.fillingQuantity; const formattedTotalUnits = parseFloat(totalUnits.toFixed(2).replace(/\.00$/, '')); return `<div class="border-t first:border-t-0 py-2" style="border-color: var(--border-color);"><div class="flex justify-between font-semibold text-sm"><span class="product-name-text">${item.name}</span><span class="price-text">₹${(item.price * item.quantity).toFixed(2)}</span></div><div class="flex justify-between text-xs meta-text"><span>${item.quantity} × (₹${item.price}/${item.fillingQuantity} ${unitLabel})</span><span><span data-lang-key="text_total">कुल</span>: ${formattedTotalUnits} ${unitLabel}</span></div></div>`; }).join('');
+                  finalHtml += ` <div class="modern-card cursor-pointer fade-in p-3" style="${isCredit ? 'border-left: 4px solid #ef4444;' : ''}" onclick="toggleBillDetails('${bill.id}')"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-sm product-name-text">${bill.customerName || `बिल #${bill.id}`}</h4><p class="text-xs" style="color:var(--text-light)">${new Date(bill.date).toLocaleTimeString('hi-IN', {hour: '2-digit', minute: '2-digit'})}</p></div><div class="text-right"><p class="font-bold price-text text-md">₹${bill.total.toFixed(2)}</p>${isCredit ? '<p class="text-xs font-bold text-red-500">उधार</p>' : ''}</div></div><div id="billDetails_${bill.id}" class="hidden mt-2 pt-2 border-t" style="border-color: var(--border-color);"><div class="text-sm space-y-1 p-2 rounded-lg" style="background-color: color-mix(in srgb, var(--text) 3%, transparent);">${billDetailsHtml}<div class="mt-2 pt-2 border-t grid grid-cols-2 sm:grid-cols-4 gap-2" style="border-color: var(--border-color);"><button onclick="loadBillFromHistory(event, '${bill.id}')" class="bg-green-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold hover:bg-green-600 transition-colors"><span data-lang-key="btn_load_bill">बिल लोड करें</span></button><button onclick="renameCustomerInHistory(event, '${bill.id}')" class="bg-yellow-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold hover:bg-yellow-600 transition-colors"><span data-lang-key="btn_rename">नाम बदलें</span></button><button onclick="handleDeleteHistoryItem(event, '${bill.id}')" class="bg-red-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold hover:bg-red-600 transition-colors"><span data-lang-key="btn_delete">डिलीट</span></button><button onclick="printOldBill(event, '${bill.id}')" class="bg-blue-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold hover:bg-blue-600 transition-colors"><span data-lang-key="btn_download">प्रिंट/PDF</span></button></div></div></div></div>`;
+                 });
+            }
+            historyDiv.innerHTML = finalHtml;
+            updateDashboardStats();
+        }
+        function toggleBillDetails(billId) { document.getElementById(`billDetails_${billId}`).classList.toggle('hidden'); }
+        function exportData() { toggleMenu(); const data = { storeName, products, billHistory, notes, exportDate: new Date().toISOString() }; const dataStr = JSON.stringify(data, null, 2); const blob = new Blob([dataStr], {type: 'application/json'}); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `${storeName}_backup_${new Date().toISOString().split('T')[0]}.json`; link.click(); showToast('✅ डेटा एक्सपोर्ट हो गया!', 'success'); }
+      function importData(event) { 
+            const file = event.target.files[0]; 
+            if (!file) return; 
+            const reader = new FileReader(); 
+            reader.onload = function(e) { 
+                try { 
+                    const data = JSON.parse(e.target.result); 
+                    showConfirmModal('📥 डेटा इम्पोर्ट करें?', 'क्या आप वाकई डेटा इम्पोर्ट करना चाहते हैं? यह मौजूदा डेटा को बदल देगा।', async () => { 
+                        if (data.storeName) storeName = data.storeName; 
+                        if (data.products) products = data.products; 
+                        if (data.billHistory) billHistory = data.billHistory; 
+                        if (data.notes) notes = data.notes; 
+                        
+                        document.getElementById('storeName').textContent = storeName; 
+                        document.getElementById('mobileStoreName').textContent = storeName; 
+                        searchAndSortProducts(); 
+                        filterAndDisplayHistory(); 
+                        
+                        // नया डेटा तुरंत Firebase पर सेव करने के लिए:
+                        await saveAllDataToFirestore();
+                        
+                        showToast('✅ डेटा सफलतापूर्वक इम्पोर्ट और सिंक हो गया!', 'success'); 
+                    }, 'secondary-bg');
+                } catch (error) { 
+                    showToast('❌ गलत फाइल फॉर्मेट!', 'error'); 
+                } 
+            }; 
+            reader.readAsText(file); 
+            event.target.value = ''; 
+        }
+        function closeNotesModal() { toggleBodyScroll(false); document.getElementById('notesModal').classList.add('hidden'); }
+        function saveNotes() { notes = document.getElementById('notesText').value; localStorage.setItem('notes', notes); if(history.state.modal === 'notes') history.back(); else closeNotesModal(); showToast('📝 नोट्स सेव हो गए!', 'success'); }
+        function showNotesModal() { toggleBodyScroll(true); toggleMenu(); document.getElementById('notesText').value = notes; document.getElementById('notesModal').classList.remove('hidden'); history.pushState({ modal: 'notes' }, '', location.href); }
+        function handleBackButton(event) { if (isScanning) { stopScanning(currentScanningSection); return; } const openModal = document.querySelector('.fixed.inset-0.z-50:not(.hidden)'); if (openModal) { if(openModal.id === 'menuDropdown'){ toggleMenu(); return; } switch (openModal.id) { case 'addProductModal': closeAddModal(); break; case 'editModal': closeEditModal(); break; case 'notesModal': closeNotesModal(); break; default: openModal.classList.add('hidden'); toggleBodyScroll(false); break; } return; } if (event.state && event.state.section) { showSection(event.state.section, false); } else { showSection('home', false); } }
+        function fetchProductDetails(barcode) { 
+            if (!barcode.trim()) return; 
+            let product = Object.values(products).find(p => p.barcode === barcode || p.manualId === barcode) || productDatabase[barcode];
+            if (product) { 
+                showToast('📦 प्रोडक्ट डिटेल्स मिल गए!', 'success');
+                document.getElementById('productName').value = product.name; 
+                document.getElementById('productPrice').value = product.price; 
+                document.getElementById('productDetails').value = product.details || ''; 
+                document.getElementById('productFillingQuantity').value = product.fillingQuantity || 1; 
+                document.getElementById('productUnit').value = product.unit || 'piece'; 
+            }
+        }
+        function toggleLanguage() { currentLanguage = currentLanguage === 'hi' ? 'en' : 'hi'; setLanguage(currentLanguage); }
+          function setLanguage(lang) { currentLanguage = lang; localStorage.setItem('language', lang); document.documentElement.lang = lang; const langStrings = translations[lang]; document.querySelectorAll('[data-lang-key]').forEach(el => { const key = el.dataset.langKey; if (langStrings[key]) { if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') { if (el.placeholder) { el.placeholder = langStrings[key]; } } else { const targetElement = el.querySelector('span[data-lang-key]') || el; const textNode = Array.from(targetElement.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0); if (textNode) { textNode.textContent = langStrings[key]; } else { targetElement.textContent = langStrings[key]; } } } }); }
+        
+        function showCustomerSuggestions() {
+            const input = document.getElementById('customerName');
+            const suggestionsDiv = document.getElementById('customerNameSuggestions');
+            const value = input.value.toLowerCase();
+
+            if (!value) {
+                suggestionsDiv.classList.add('hidden');
+                return;
+            }
+
+            const uniqueNames = [...new Set(billHistory.map(bill => bill.customerName.trim()).filter(name => name))];
+            const filteredNames = uniqueNames.filter(name => name.toLowerCase().includes(value)).slice(0, 5);
+            
+            if (filteredNames.length > 0) {
+                suggestionsDiv.innerHTML = filteredNames.map(name => 
+                    `<div class="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700" onclick="selectCustomerName('${name}')">${name}</div>`
+                ).join('');
+                suggestionsDiv.classList.remove('hidden');
+            } else {
+                suggestionsDiv.classList.add('hidden');
+            }
+        }
+
+        function selectCustomerName(name) {
+            document.getElementById('customerName').value = name;
+            document.getElementById('customerNameSuggestions').classList.add('hidden');
+        }
+      
+    </script>
+  <script>
+var _0x368c91=_0x185e;function _0x5131(){var _0x42a5d0=['780206ozNnIq','855204WDShTD','ker','582TUYPov','1143xFkROP','10zNpKBx','6tcLAuC','35085413FwqwfW','8MkopRS','8247197XWccNm','3735345oOYYzF','service-wo','8901567jzKXIg','serviceWor'];_0x5131=function(){return _0x42a5d0;};return _0x5131();}(function(_0x1f0da5,_0x3fa8e9){var _0x19722d=_0x185e,_0x32b523=_0x1f0da5();while(!![]){try{var _0x138f27=parseInt(_0x19722d(0x1db))/(0xc8a+-0x1ab*-0xe+-0x23e3)+-parseInt(_0x19722d(0x1de))/(0x25f3+0x38b+0x4*-0xa5f)*(parseInt(_0x19722d(0x1df))/(0x21a7+-0x1*-0x1aa7+-0x3c4b))+parseInt(_0x19722d(0x1dc))/(-0x51a+-0x2110+0x262e)+parseInt(_0x19722d(0x1e5))/(-0x2f6*0xb+-0x67b+0x2712)+parseInt(_0x19722d(0x1e1))/(0x2484+-0x1d*0x4+-0x1*0x240a)*(parseInt(_0x19722d(0x1e4))/(-0x1c81*-0x1+-0x1701+-0x579))+parseInt(_0x19722d(0x1e3))/(0xeb1+0x2*0x385+-0x15b3)*(parseInt(_0x19722d(0x1e7))/(-0x25fe+0xd08+-0x18ff*-0x1))+parseInt(_0x19722d(0x1e0))/(0xc54+-0x7*0x49d+0x1401*0x1)*(-parseInt(_0x19722d(0x1e2))/(-0x111*0xe+-0x219f+-0x5*-0x9b8));if(_0x138f27===_0x3fa8e9)break;else _0x32b523['push'](_0x32b523['shift']());}catch(_0x5aef43){_0x32b523['push'](_0x32b523['shift']());}}}(_0x5131,0x111215*0x1+0x26efa+0x1*-0xa3a9f));function _0x185e(_0x499237,_0x3b7e09){_0x499237=_0x499237-(-0x3*0xce3+0x5*0x5cd+0x5c1*0x2);var _0x35d189=_0x5131();var _0x4e498e=_0x35d189[_0x499237];return _0x4e498e;}if(_0x368c91(0x1da)+_0x368c91(0x1dd)in navigator)navigator[_0x368c91(0x1da)+_0x368c91(0x1dd)]['register'](_0x368c91(0x1e6)+'rker.js');
+</script>
+</body>
+</html>
