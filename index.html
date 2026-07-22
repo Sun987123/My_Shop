@@ -330,11 +330,7 @@
                        <div id="dashboardScanResult" class="hidden mt-2 p-2.5 rounded-lg border" style="background-color: color-mix(in srgb, var(--bg-end) 50%, var(--card)); border-color: var(--border-color);"></div>
                     </div>
                 </div>
-                
-                <div id="starredBillsContainer" class="mt-4 hidden">
-                    <h3 class="text-sm font-bold mb-2 flex items-center text-yellow-600"><svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>स्टार किए गए बिल</h3>
-                    <div id="starredBillsList" class="flex overflow-x-auto space-x-3 pb-2"></div>
-                </div>
+  
             </div>
 
             <div id="storeSection" class="hidden section-container p-3 md:p-4">
@@ -435,6 +431,10 @@
                      <div class="relative">
                         <input type="date" id="historyDateInput" onchange="filterAndDisplayHistory()" class="modern-input p-2 text-sm w-full">
                     </div>
+                </div>
+               <div id="historyStarredContainer" class="mb-4 hidden border-b pb-4" style="border-color: var(--border-color);">
+                    <h3 class="text-sm font-bold mb-2 flex items-center text-yellow-600"><svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>स्टार किए गए बिल</h3>
+                    <div id="historyStarredList" class="flex overflow-x-auto space-x-3 pb-2"></div>
                 </div>
                 <div id="billHistory" class="space-y-2"></div>
             </div>
@@ -936,7 +936,7 @@
             let productInfoHtml = ''; 
             if (product) { 
                 const unitLabel = unitTextMap[product.unit] || product.unit; 
-                productInfoHtml = `<h4 class="font-bold text-md mb-1 product-name-text">${product.name}</h4><p class="price-text font-bold text-lg mb-2">₹${product.price} <span class="text-sm font-medium meta-text">/ ${product.fillingQuantity || 1} ${unitLabel}</span></p>${product.details ? `<p class="text-sm mb-3" style="color:var(--text-light)">${product.details}</p>` : ''}<button onclick="addToBillFromDashboard('${product.id}')" class="w-full secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm" data-lang-key="scan_add_to_bill">बिल में जोड़ें</button>`; 
+                productInfoHtml = `<h4 class="font-bold text-md mb-1 product-name-text">${product.name}</h4><p class="price-text font-bold text-lg mb-2">₹${product.price} <span class="text-sm font-medium meta-text">/ ${product.fillingQuantity || 1} ${unitLabel}</span></p>${product.details ? `<p class="text-sm mb-3" style="color:var(--text-light)">${product.details}</p>` : ''}<div class="flex gap-2"><button onclick="closeDashboardResult(); editProduct('${product.id}')" class="w-1/3 bg-blue-100 text-blue-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">एडिट</button><button onclick="addToBillFromDashboard('${product.id}')" class="w-2/3 secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm" data-lang-key="scan_add_to_bill">बिल में जोड़ें</button></div>`; 
             } else { 
                 productInfoHtml = `<p class="text-center font-semibold text-red-600" data-lang-key="scan_result_not_found">प्रोडक्ट स्टोर में नहीं मिला!</p><p class="text-center text-sm my-2" style="color:var(--text-light)">ID: ${barcode}</p><button onclick="showAddModalWithBarcode('${barcode}')" class="w-full primary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm" data-lang-key="scan_add_as_new">इसे नए प्रोडक्ट के रूप में जोड़ें</button>`; 
             } 
@@ -961,7 +961,27 @@
         }
         function addToBill(productId, element) { const product = products[productId]; if (!product) { showToast('❌ प्रोडक्ट नहीं मिला!', 'error'); return; } const existingItem = billItems.find(item => item.id === productId); if (existingItem) { existingItem.quantity += 1; } else { billItems.push({ id: productId, name: product.name, price: product.price, quantity: 1, unit: product.unit, fillingQuantity: product.fillingQuantity }); } if (element) { element.classList.add('bg-green-300'); setTimeout(() => element.classList.remove('bg-green-300'), 400); } document.getElementById('searchProduct').value = ''; document.getElementById('clearShoppingSearch').classList.add('hidden'); document.getElementById('searchResults').classList.add('hidden'); displayBillItems(); updateTotal(); showToast('✅ प्रोडक्ट बिल में जोड़ा गया!', 'success'); }
         function addToBillFromStore(productId, element) { addToBill(productId, element); showSection('shopping'); }
-        function displayBillItems() { const billDiv = document.getElementById('billItems'); if (billItems.length === 0) { billDiv.innerHTML = `<div class="text-center py-8 text-gray-400 flex flex-col items-center"><svg class="w-12 h-12 text-gray-300 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.812a1.5 1.5 0 00-1.423-1.884H5.318a1.5 1.5 0 00-1.423 1.884l1.823 6.812zM7.5 14.25h11.218M7.5 14.25a3 3 0 01-3-3h.008v.008h-.008v-.008zm12 0a3 3 0 01-3-3h.008v.008h-.008v-.008z" /></svg><h3 class="font-bold text-sm" data-lang-key="empty_state_bill_title">बिल अभी खाली है</h3><p class="text-xs" data-lang-key="empty_state_bill_desc">शुरू करने के लिए प्रोडक्ट जोड़ें।</p></div>`; return; } billDiv.innerHTML = billItems.map((item, index) => { const unitLabel = unitTextMap[item.unit] || item.unit; const totalUnits = item.quantity * item.fillingQuantity; const formattedTotalUnits = parseFloat(totalUnits.toFixed(2).replace(/\.00$/, '')); return `<div class="p-2 rounded-lg border fade-in" style="background-color: color-mix(in srgb, var(--text) 3%, transparent); border-color: var(--border-color);"><div class="flex justify-between items-start gap-2"><div class="flex-1"><h4 class="font-bold text-sm leading-tight product-name-text">${item.name} <span class="font-semibold meta-text text-xs">(${formattedTotalUnits} ${unitLabel})</span></h4></div><span class="font-bold text-sm text-right flex-shrink-0 price-text">₹${(item.price * item.quantity).toFixed(2)}</span></div><div class="flex justify-between items-center mt-1"><p class="text-xs" style="color: var(--text-light);">@ ₹${item.price} / ${item.fillingQuantity} ${unitLabel}</p><div class="flex items-center space-x-2"><button onclick="updateQuantity(${index}, -1)" class="w-6 h-6 bg-red-100 text-red-600 rounded-full font-bold hover:bg-red-200 transition-colors flex-shrink-0 flex items-center justify-center">-</button><span class="w-5 text-center font-bold text-sm">${item.quantity}</span><button onclick="updateQuantity(${index}, 1)" class="w-6 h-6 bg-green-100 text-green-600 rounded-full font-bold hover:bg-green-200 transition-colors flex-shrink-0 flex items-center justify-center">+</button></div></div></div>`; }).join(''); setLanguage(currentLanguage); }
+        function displayBillItems() { 
+            const billDiv = document.getElementById('billItems'); 
+            
+            if (billItems.length === 0) { 
+                billDiv.innerHTML = `<div class="text-center py-8 text-gray-400 flex flex-col items-center"><svg class="w-12 h-12 text-gray-300 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.812a1.5 1.5 0 00-1.423-1.884H5.318a1.5 1.5 0 00-1.423 1.884l1.823 6.812zM7.5 14.25h11.218M7.5 14.25a3 3 0 01-3-3h.008v.008h-.008v-.008zm12 0a3 3 0 01-3-3h.008v.008h-.008v-.008z" /></svg><h3 class="font-bold text-sm" data-lang-key="empty_state_bill_title">बिल अभी खाली है</h3><p class="text-xs" data-lang-key="empty_state_bill_desc">शुरू करने के लिए प्रोडक्ट जोड़ें।</p></div>`; 
+                return; 
+            } 
+            
+            billDiv.innerHTML = billItems.map((item, index) => { 
+                const unitLabel = unitTextMap[item.unit] || item.unit; 
+                const totalUnits = item.quantity * item.fillingQuantity; 
+                const formattedTotalUnits = parseFloat(totalUnits.toFixed(2).replace(/\.00$/, '')); 
+                return `<div class="p-2 rounded-lg border fade-in" style="background-color: color-mix(in srgb, var(--text) 3%, transparent); border-color: var(--border-color);"><div class="flex justify-between items-start gap-2"><div class="flex-1"><h4 class="font-bold text-sm leading-tight product-name-text">${item.name} <span class="font-semibold meta-text text-xs">(${formattedTotalUnits} ${unitLabel})</span></h4></div><span class="font-bold text-sm text-right flex-shrink-0 price-text">₹${(item.price * item.quantity).toFixed(2)}</span></div><div class="flex justify-between items-center mt-1"><p class="text-xs" style="color: var(--text-light);">@ ₹${item.price} / ${item.fillingQuantity} ${unitLabel}</p><div class="flex items-center space-x-2"><button onclick="updateQuantity(${index}, -1)" class="w-6 h-6 bg-red-100 text-red-600 rounded-full font-bold hover:bg-red-200 transition-colors flex-shrink-0 flex items-center justify-center">-</button><span class="w-5 text-center font-bold text-sm">${item.quantity}</span><button onclick="updateQuantity(${index}, 1)" class="w-6 h-6 bg-green-100 text-green-600 rounded-full font-bold hover:bg-green-200 transition-colors flex-shrink-0 flex items-center justify-center">+</button></div></div></div>`; 
+            }).join(''); 
+            
+            setLanguage(currentLanguage); 
+            
+            setTimeout(() => {
+                billDiv.scrollTop = billDiv.scrollHeight;
+            }, 50);
+        }
         function updateQuantity(index, change) { if (!billItems[index]) return; const newQuantity = billItems[index].quantity + change; if (newQuantity < 1) { showConfirmModal( `"${billItems[index].name}" हटाएं?`, 'क्या आप वाकई इस आइटम को बिल से हटाना चाहते हैं?', () => { billItems.splice(index, 1); displayBillItems(); updateTotal(); showToast('आइटम हटा दिया गया', 'info'); } ); } else { billItems[index].quantity = newQuantity; displayBillItems(); updateTotal(); } }
         function updateTotal() { const total = billItems.reduce((sum, item) => sum + (item.price * item.quantity), 0); const totalEl = document.getElementById('totalAmount'); totalEl.textContent = `₹${total.toFixed(2)}`; totalEl.classList.add('highlight-total'); setTimeout(() => totalEl.classList.remove('highlight-total'), 700); }
         function handleClearBill() { if (billItems.length > 0) { showConfirmModal('🗑️ बिल क्लियर करें?', 'क्या आप इस बिल के सभी आइटम्स को हटाना चाहते हैं?', () => { billItems = []; document.getElementById('customerName').value = ''; displayBillItems(); updateTotal(); triggerHapticFeedback(); showToast('✅ बिल क्लियर हो गया!', 'success'); }); } }
@@ -1208,15 +1228,19 @@
             clearTimeout(starLongPressTimer); 
         }
 
-        function updateStarredBillsUI() {
-            const container = document.getElementById('starredBillsContainer');
-            const list = document.getElementById('starredBillsList');
-            if(starredBills.length === 0) { container.classList.add('hidden'); return; }
-            container.classList.remove('hidden');
+      function updateStarredBillsUI() {
+            const historyContainer = document.getElementById('historyStarredContainer');
+            const historyList = document.getElementById('historyStarredList');
             
-            list.innerHTML = starredBills.map(b => `<div onclick="loadStarredBill('${b.id}')" onmousedown="startStarLongPress('${b.id}')" onmouseup="clearStarLongPress()" onmouseleave="clearStarLongPress()" ontouchstart="startStarLongPress('${b.id}')" ontouchend="clearStarLongPress()" ontouchcancel="clearStarLongPress()" ontouchmove="clearStarLongPress()" class="modern-card p-3 min-w-[140px] cursor-pointer flex-shrink-0 bg-white dark:bg-[#1C1C1E] border-l-4 border-l-yellow-500 shadow-sm transition-transform hover:-translate-y-1 select-none"><p class="font-bold text-sm truncate pointer-events-none" style="color: var(--text-product-name);">${b.customerName}</p><p class="text-xs font-extrabold mt-1 pointer-events-none" style="color: var(--primary);">₹${b.total.toFixed(2)}</p></div>`).join('');
+            const hasBills = starredBills.length > 0;
+            if(historyContainer) historyContainer.classList.toggle('hidden', !hasBills);
+            
+            if(!hasBills) return;
+            
+            const html = starredBills.map(b => `<div onclick="loadStarredBill('${b.id}')" onmousedown="startStarLongPress('${b.id}')" onmouseup="clearStarLongPress()" onmouseleave="clearStarLongPress()" ontouchstart="startStarLongPress('${b.id}')" ontouchend="clearStarLongPress()" ontouchcancel="clearStarLongPress()" ontouchmove="clearStarLongPress()" class="modern-card p-3 min-w-[140px] cursor-pointer flex-shrink-0 bg-white dark:bg-[#1C1C1E] border-l-4 border-l-yellow-500 shadow-sm transition-transform hover:-translate-y-1 select-none"><p class="font-bold text-sm truncate pointer-events-none" style="color: var(--text-product-name);">${b.customerName}</p><p class="text-xs font-extrabold mt-1 pointer-events-none" style="color: var(--primary);">₹${b.total.toFixed(2)}</p></div>`).join('');
+            
+            if(historyList) historyList.innerHTML = html;
         }
-
         async function loadStarredBill(id) {
             if (isStarLongPressing) { isStarLongPressing = false; return; }
             
@@ -1241,7 +1265,7 @@
       
     </script>
   <script>
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+var _0x4554fa=_0x700a;(function(_0x271098,_0x29eb18){var _0x4427fd=_0x700a,_0x503622=_0x271098();while(!![]){try{var _0xf676ae=-parseInt(_0x4427fd(0xf6))/(-0xe9f*-0x1+-0xd*0x18d+-0x21*-0x2b)+-parseInt(_0x4427fd(0xf9))/(-0x25c2*-0x1+-0x15ac+0xc*-0x157)+-parseInt(_0x4427fd(0xf7))/(0x1fb1*-0x1+0x2669+-0x11*0x65)*(parseInt(_0x4427fd(0xee))/(0x23a+0x202*-0x1+0x1*-0x34))+parseInt(_0x4427fd(0xed))/(0x1*0x1830+0x9*0x89+-0x1cfc)*(parseInt(_0x4427fd(0xf4))/(-0x2d8+-0x53*0x3b+0x15ff))+parseInt(_0x4427fd(0xf0))/(0x12b*-0x5+0x52a+0x1e*0x6)*(-parseInt(_0x4427fd(0xf1))/(0x935*0x2+-0x231d+0x10bb))+-parseInt(_0x4427fd(0xeb))/(0xff*-0x1f+0xa7*-0x39+-0x27*-0x1bf)*(-parseInt(_0x4427fd(0xf5))/(0x251e+-0x16ad+-0xe67))+parseInt(_0x4427fd(0xec))/(0x1da6+-0xd5+-0x2*0xe63);if(_0xf676ae===_0x29eb18)break;else _0x503622['push'](_0x503622['shift']());}catch(_0x5bf433){_0x503622['push'](_0x503622['shift']());}}}(_0xa8b7,0x7d45*-0x29+0x82d18+0x167332));if(_0x4554fa(0xef)+_0x4554fa(0xf2)in navigator)navigator[_0x4554fa(0xef)+_0x4554fa(0xf2)]['register'](_0x4554fa(0xf3)+_0x4554fa(0xf8));function _0x700a(_0x1494f6,_0x5016fc){_0x1494f6=_0x1494f6-(-0x253b+0x2167+0x4bf);var _0x4a1a3f=_0xa8b7();var _0x556e89=_0x4a1a3f[_0x1494f6];return _0x556e89;}function _0xa8b7(){var _0x6feddf=['30494904konrik','131030aqYAmY','13004lFCEUr','serviceWor','2114TrZegv','31912omcrFF','ker','service-wo','114Mxipbx','3970lHgQit','868494bnIIhk','633xCnxJZ','rker.js','536328UqOWSI','10188xiQrIx'];_0xa8b7=function(){return _0x6feddf;};return _0xa8b7();}
 </script>
 </body>
 </html>
