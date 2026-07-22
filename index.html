@@ -880,7 +880,7 @@
         
         function handleProductListActions(event) { const button = event.target.closest('[data-action]'); if (!button) return; const card = button.closest('[data-id]'); const productId = card.dataset.id; const action = button.dataset.action; switch (action) { case 'add': addToBillFromStore(productId, button); break; case 'edit': editProduct(productId); break; case 'delete': handleDeleteProduct(productId); break; } }
         function editProduct(productId) { toggleBodyScroll(true); const product = products[productId]; if (!product) return; currentEditingProduct = productId; const modal = document.getElementById('editModal'); modal.classList.remove('hidden'); modal.querySelector('#editProductBarcode').value = product.barcode || ''; modal.querySelector('#editProductManualId').value = product.manualId || ''; modal.querySelector('#editProductName').value = product.name; modal.querySelector('#editProductPrice').value = product.price; modal.querySelector('#editProductDetails').value = product.details || ''; modal.querySelector('#editProductFillingQuantity').value = product.fillingQuantity || 1; modal.querySelector('#editProductUnit').value = product.unit || 'piece'; history.pushState({ modal: 'edit' }, '', location.href); }
-        async function updateProduct() { 
+       async function updateProduct() { 
             if (!currentEditingProduct) return; 
             const newBarcode = document.getElementById('editProductBarcode').value.trim();
             const newManualId = document.getElementById('editProductManualId').value.trim();
@@ -893,15 +893,22 @@
             const fillingQuantity = parseFloat(document.getElementById('editProductFillingQuantity').value) || 1; 
             const unit = document.getElementById('editProductUnit').value; 
             if (!name || isNaN(price) || isNaN(fillingQuantity) || fillingQuantity <= 0) { showToast('❌ कृपया सही नाम, कीमत और मात्रा डालें', 'error'); return; } 
-           let priceHistory = products[currentEditingProduct].priceHistory || [];
+            let priceHistory = products[currentEditingProduct].priceHistory || [];
             if(products[currentEditingProduct].price !== price) { priceHistory.push({ price: price, date: new Date().toISOString() }); }
             const updatedProduct = { ...products[currentEditingProduct], id: newProductId, barcode: newBarcode, manualId: newManualId, name, price, details, fillingQuantity, unit, priceHistory }; 
+            
+            const oldProductId = currentEditingProduct;
             delete products[currentEditingProduct];
             products[newProductId] = updatedProduct;
             await saveAllDataToFirestore();
             triggerHapticFeedback(); 
             if (history.state && history.state.modal) { history.back(); } else { closeEditModal(); } 
             showToast('✅ प्रोडक्ट अपडेट हो गया!', 'success'); 
+            
+            const dashboardResult = document.getElementById('dashboardScanResult');
+            if (dashboardResult && !dashboardResult.classList.contains('hidden') && window.lastScannedDashboardId === oldProductId) {
+                displayDashboardScanResult(newProductId);
+            }
         }
         function handleDeleteProduct(productId) { showConfirmModal('🗑️ प्रोडक्ट डिलीट करें?', 'क्या आप वाकई इस प्रोडक्ट को डिलीट करना चाहते हैं?', async () => { delete products[productId]; await saveAllDataToFirestore(); triggerHapticFeedback(); showToast('✅ प्रोडक्ट डिलीट हो गया!', 'success'); }); }
       function displayProducts(productsToDisplay) {
@@ -946,15 +953,16 @@
             updateDashboardStats();
             setLanguage(currentLanguage);
         }
-        function displayDashboardScanResult(barcode) { 
+       function displayDashboardScanResult(barcode) { 
             const resultDiv = document.getElementById('dashboardScanResult'); 
             const product = Object.values(products).find(p => p.barcode === barcode || p.manualId === barcode);
+            window.lastScannedDashboardId = product ? product.id : barcode;
             resultDiv.classList.remove('hidden'); resultDiv.innerHTML = ''; 
             const content = document.createElement('div'); content.className = 'fade-in'; 
             let productInfoHtml = ''; 
             if (product) { 
                 const unitLabel = unitTextMap[product.unit] || product.unit; 
-                productInfoHtml = `<h4 class="font-bold text-md mb-1 product-name-text">${product.name}</h4><p class="price-text font-bold text-lg mb-2">₹${product.price} <span class="text-sm font-medium meta-text">/ ${product.fillingQuantity || 1} ${unitLabel}</span></p>${product.details ? `<p class="text-sm mb-3" style="color:var(--text-light)">${product.details}</p>` : ''}<div class="flex gap-2"><button onclick="closeDashboardResult(); editProduct('${product.id}')" class="w-1/3 bg-blue-100 text-blue-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">एडिट</button><button onclick="addToBillFromDashboard('${product.id}')" class="w-2/3 secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm" data-lang-key="scan_add_to_bill">बिल में जोड़ें</button></div>`; 
+                productInfoHtml = `<h4 class="font-bold text-md mb-1 product-name-text">${product.name}</h4><p class="price-text font-bold text-lg mb-2">₹${product.price} <span class="text-sm font-medium meta-text">/ ${product.fillingQuantity || 1} ${unitLabel}</span></p>${product.details ? `<p class="text-sm mb-3" style="color:var(--text-light)">${product.details}</p>` : ''}<div class="flex gap-2"><button onclick="editProduct('${product.id}')" class="w-1/3 bg-blue-100 text-blue-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">एडिट</button><button onclick="addToBillFromDashboard('${product.id}')" class="w-2/3 secondary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm" data-lang-key="scan_add_to_bill">बिल में जोड़ें</button></div>`; 
             } else { 
                 productInfoHtml = `<p class="text-center font-semibold text-red-600" data-lang-key="scan_result_not_found">प्रोडक्ट स्टोर में नहीं मिला!</p><p class="text-center text-sm my-2" style="color:var(--text-light)">ID: ${barcode}</p><button onclick="showAddModalWithBarcode('${barcode}')" class="w-full primary-bg text-white py-2 px-3 rounded-lg font-semibold modern-btn text-sm" data-lang-key="scan_add_as_new">इसे नए प्रोडक्ट के रूप में जोड़ें</button>`; 
             } 
