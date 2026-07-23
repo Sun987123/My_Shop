@@ -13,6 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   	<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -988,18 +989,20 @@
             }
         }
         function handleDeleteProduct(productId) { showConfirmModal('🗑️ प्रोडक्ट डिलीट करें?', 'क्या आप वाकई इस प्रोडक्ट को डिलीट करना चाहते हैं?', async () => { delete products[productId]; await saveAllDataToFirestore(); triggerHapticFeedback(); showToast('✅ प्रोडक्ट डिलीट हो गया!', 'success'); }); }
-    function displayProducts(productsToDisplay) {
+   function displayProducts(productsToDisplay) {
             const list = document.getElementById('productsList');
             list.innerHTML = '';
             list.style.gridTemplateColumns = '';
             const productArray = productsToDisplay || Object.values(products);
-           let activeBtn = document.getElementById('view-switcher').querySelector(`button[onclick="changeStoreView('${storeView}')"]`);
+
+            let activeBtn = document.getElementById('view-switcher').querySelector(`button[onclick="changeStoreView('${storeView}')"]`);
             if (!activeBtn) {
                 storeView = 'list';
                 localStorage.setItem('storeView', 'list');
                 activeBtn = document.getElementById('view-switcher').querySelector(`button[onclick="changeStoreView('list')"]`);
             }
             if (activeBtn) activeBtn.classList.add('active');
+
             if (storeView === 'grid') { 
                 list.className = 'grid gap-3 pb-24 md:pb-4'; 
                 list.style.gridTemplateColumns = 'repeat(auto-fit, minmax(170px, 1fr))'; 
@@ -1027,9 +1030,9 @@
                         const addBtn = `<button data-action="add" onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="bg-green-100 text-green-700 font-semibold p-2 rounded-lg hover:bg-green-200 transition-colors flex items-center justify-center space-x-1 text-xs w-full"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>`;
                         card.className = 'modern-card p-2.5 flex flex-col justify-between fade-in cursor-pointer select-none';
                         const codeVal = p.barcode || p.manualId || p.id;
-                        card.innerHTML = `<div class="flex-grow pointer-events-none"><div class="flex justify-between items-start gap-2 mb-2"><h4 class="font-bold text-sm leading-tight flex-1 product-name-text">${p.name}</h4></div><div class="w-full flex justify-center mb-2 bg-white rounded p-1 overflow-hidden border border-gray-100"><svg class="generated-barcode" data-val="${codeVal}" style="max-width: 100%; height: auto;"></svg></div><p class="price-text font-bold text-md mb-1">₹${p.price} <span class="text-xs font-medium meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p>${p.details ? `<p class="text-xs text-gray-500">${p.details}</p>` : ''}</div><div class="border-t pt-2 mt-2" style="border-color: color-mix(in srgb, var(--text) 8%, transparent); pointer-events:auto;">${addBtn}</div>`;
+                        card.innerHTML = `<div class="flex-grow pointer-events-none"><div class="flex justify-between items-start gap-2 mb-2"><h4 class="font-bold text-sm leading-tight flex-1 product-name-text">${p.name}</h4></div><div class="w-full flex justify-center mb-2 bg-white rounded p-1 overflow-hidden border border-gray-100 generated-code-container" data-val="${codeVal}"></div><p class="price-text font-bold text-md mb-1">₹${p.price} <span class="text-xs font-medium meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p>${p.details ? `<p class="text-xs text-gray-500">${p.details}</p>` : ''}</div><div class="border-t pt-2 mt-2" style="border-color: color-mix(in srgb, var(--text) 8%, transparent); pointer-events:auto;">${addBtn}</div>`;
                     } else {
-                        const addBtnRound = `<button data-action="add" onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="w-8 h-8 rounded-full primary-bg text-white flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0 shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>`;
+const addBtnRound = `<button data-action="add" onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center hover:bg-green-200 transition-colors flex-shrink-0 shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>`;
                         card.className = `modern-card p-1.5 px-3 flex items-center justify-between gap-3 fade-in cursor-pointer select-none rounded-full`;
                         card.innerHTML = `<div class="flex-1 overflow-hidden pointer-events-none flex items-center gap-3"><div class="flex-1 min-w-0"><h4 class="font-semibold product-name-text text-sm leading-tight truncate">${p.name}</h4><p class="price-text font-medium text-xs mt-0.5">₹${p.price} <span class="text-[10px] meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p></div></div><div class="flex items-center pointer-events-auto">${addBtnRound}</div>`;
                     }
@@ -1038,20 +1041,30 @@
 
                 if (storeView === 'grid') {
                     setTimeout(() => {
-                        document.querySelectorAll('.generated-barcode').forEach(svg => {
-                            try {
-                                JsBarcode(svg, svg.dataset.val, {
-                                    format: "CODE128",
-                                    width: 1.5,
-                                    height: 35,
-                                    displayValue: true,
-                                    fontSize: 12,
-                                    margin: 0,
-                                    background: "transparent",
-                                    lineColor: "#000"
-                                });
-                            } catch(e) {
-                                svg.outerHTML = `<div class="text-xs text-center text-gray-400 font-mono py-2">${svg.dataset.val}</div>`;
+                        document.querySelectorAll('.generated-code-container').forEach(container => {
+                            const val = container.dataset.val;
+                            const isNumeric = /^\d+$/.test(val);
+                            
+                            if (isNumeric && val.length <= 15) {
+                                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                                svg.style.maxWidth = "100%";
+                                svg.style.height = "auto";
+                                container.appendChild(svg);
+                                try {
+                                    JsBarcode(svg, val, { format: "CODE128", width: 1.5, height: 35, displayValue: true, fontSize: 12, margin: 0, background: "transparent", lineColor: "#000" });
+                                } catch(e) {
+                                    container.innerHTML = `<div class="text-xs text-center text-gray-400 font-mono py-2">${val}</div>`;
+                                }
+                            } else {
+                                const canvas = document.createElement("canvas");
+                                container.appendChild(canvas);
+                                try {
+                                    QRCode.toCanvas(canvas, val, { width: 65, margin: 0, color: { dark: '#000000', light: '#ffffff' } }, function (error) {
+                                        if (error) container.innerHTML = `<div class="text-xs text-center text-gray-400 font-mono py-2">${val}</div>`;
+                                    });
+                                } catch (e) {
+                                    container.innerHTML = `<div class="text-xs text-center text-gray-400 font-mono py-2">${val}</div>`;
+                                }
                             }
                         });
                     }, 50);
@@ -1170,7 +1183,29 @@
         }
         function generateModernBillHTML(bill) { const theme = { primary: '#007AFF', secondary: '#34C759', bg_end: '#F9FAFB', card: '#FFFFFF', text: '#111827', text_light: '#6B7280', border: '#E5E7EB' }; let itemsHtml = ''; bill.items.forEach((item, index) => { const totalUnits = item.quantity * (item.fillingQuantity || 1); const formattedTotalUnits = parseFloat(totalUnits.toFixed(2).replace(/\.00$/, '')); const unitLabel = unitTextMap[item.unit] || item.unit; const rowStyle = index % 2 === 0 ? `background-color: ${theme.bg_end};` : ''; itemsHtml += `<tr style="${rowStyle}"><td style="padding: 10px 12px; text-align: left; border-bottom: 1px solid ${theme.border};">${item.name}</td><td style="padding: 10px 12px; text-align: center; border-bottom: 1px solid ${theme.border};">${formattedTotalUnits} ${unitLabel}</td><td style="padding: 10px 12px; text-align: right; border-bottom: 1px solid ${theme.border};">₹${(item.price * item.quantity).toFixed(2)}</td></tr>`; }); let paymentStatusHtml = ''; if (bill.paymentType) { const statusText = bill.paymentType === 'credit' ? 'उधार (Credit)' : 'नगद (Cash)'; const statusColor = bill.paymentType === 'credit' ? '#EF4444' : '#22C55E'; paymentStatusHtml = `<div style="text-align: right;"><p style="font-size: 0.8rem; color:${theme.text_light}; font-weight: 600;">STATUS</p><p style="font-weight: 700; font-size: 1.1rem; color:${statusColor};">${statusText}</p></div>`; } return `<!DOCTYPE html><html lang="hi"><head><meta charset="UTF-8"><title>Bill - ${bill.id}</title><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');body{font-family:'Inter',sans-serif;background-color:#f3f4f6;color:${theme.text};}@media print{body{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}}</style></head><body style="padding: 1rem;"><div style="max-width: 42rem; margin: auto; background-color:${theme.card}; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 2rem; border: 1px solid ${theme.border};"><div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1rem; border-bottom: 1px solid ${theme.border};"><div style="text-align: left;"><h1 style="font-size: 1.5rem; font-weight: 700; color:${theme.primary};">${storeName}</h1><p style="color:${theme.text_light};">INVOICE</p></div><div style="text-align: right;"><p style="font-weight: 600;">बिल #${bill.id}</p><p style="font-size: 0.875rem; color:${theme.text_light};">${new Date(bill.date).toLocaleString('hi-IN')}</p></div></div><div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;"><div style="text-align: left;"><p style="font-size: 0.8rem; color:${theme.text_light};">BILL TO</p><p style="font-weight: 600;">${bill.customerName || 'N/A'}</p></div>${paymentStatusHtml}</div><div style="width: 100%; overflow-x: auto;"><table style="width: 100%; font-size: 0.875rem; border-collapse: collapse;"><thead><tr style="background-color: ${theme.bg_end};"><th style="padding: 8px 12px; text-align: left; font-weight: 600; color:${theme.primary}; border-bottom: 2px solid ${theme.primary};">प्रोडक्ट</th><th style="padding: 8px 12px; text-align: center; font-weight: 600; color:${theme.primary}; border-bottom: 2px solid ${theme.primary};">मात्रा</th><th style="padding: 8px 12px; text-align: right; font-weight: 600; color:${theme.primary}; border-bottom: 2px solid ${theme.primary};">कुल</th></tr></thead><tbody>${itemsHtml}</tbody></table></div><div style="display: flex; justify-content: flex-end; padding-top: 1.5rem; margin-top: 1.5rem; border-top: 1px solid ${theme.border};"><div style="width: 100%; max-width: 16rem; text-align: right;"><div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="color:${theme.text_light};">Subtotal</span><span>₹${bill.total.toFixed(2)}</span></div><div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.125rem; color:${theme.secondary};"><span style="font-weight: 700;">कुल राशि</span><span>₹${bill.total.toFixed(2)}</span></div></div></div><div style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid ${theme.border};"><p style="font-size: 0.75rem; color:${theme.text_light};">Thank you for your visit!</p></div></div></body></html>`; }
         function printOldBill(event, billId) { event.stopPropagation(); const bill = billHistory.find(b => b.id.toString() === billId.toString()); if (!bill) return; const billHtml = generateModernBillHTML(bill); const printWindow = window.open('', '_blank'); if (printWindow) { printWindow.document.write(billHtml); printWindow.document.close(); printWindow.focus(); setTimeout(() => { try { printWindow.print(); } catch (e) { showToast('❌ प्रिंट पॉप-अप ब्लॉक हो गया', 'error'); } }, 250); } else { showToast('❌ कृपया पॉप-अप को अनुमति दें', 'error'); } }
-        function printAllProducts() { toggleMenu(); if (Object.keys(products).length === 0) { showToast('❌ प्रिंट करने के लिए कोई प्रोडक्ट नहीं है!', 'error'); return; } const productsHtml = Object.values(products).map((p, index) => `<tr class="border-b"><td class="p-3">${index + 1}</td><td class="p-3 font-semibold">${p.name || ''}</td><td class="p-3">₹${p.price ? p.price.toFixed(2) : '0.00'} / ${p.fillingQuantity || 1} ${unitTextMap[p.unit] || p.unit}</td><td class="p-3 font-mono text-xs">${p.barcode || 'N/A'}</td><td class="p-3 text-xs">${p.details || ''}</td></tr>`).join(''); const printContent = `<!DOCTYPE html><html lang="hi"><head><meta charset="UTF-8"><title>${storeName} - सभी प्रोडक्ट्स</title><script src="https://cdn.tailwindcss.com"><\/script><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'); body { font-family: 'Inter', sans-serif; background-color: white !important; color: black !important; } @media print { body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } }</style></head><body><div class="container mx-auto p-8"><div class="text-center mb-8 p-4 rounded-lg"><h1 class="text-3xl font-bold text-blue-600">${storeName}</h1><p class="text-gray-500">सभी प्रोडक्ट्स की सूची</p><p class="text-xs mt-1 text-gray-500">${new Date().toLocaleString('hi-IN')}</p></div><div class="rounded-lg shadow-md overflow-hidden border"><table class="w-full text-sm"><thead class="bg-gray-100"><tr><th class="p-3 text-left">#</th><th class="p-3 text-left">नाम</th><th class="p-3 text-left">कीमत/यूनिट</th><th class="p-3 text-left">बारकोड</th><th class="p-3 text-left">विवरण</th></tr></thead><tbody>${productsHtml}</tbody></table></div><div class="text-center mt-6 text-sm text-gray-500">कुल प्रोडक्ट्स: ${Object.keys(products).length}</div></div></body></html>`; const printWindow = window.open('', '_blank'); printWindow.document.write(printContent); printWindow.document.close(); setTimeout(() => { try { printWindow.focus(); printWindow.print(); printWindow.close(); } catch (e) { showToast('❌ प्रिंट पॉप-अप ब्लॉक हो गया', 'error'); } }, 500); }
+      
+        function printAllProducts() {
+            toggleMenu();
+            if (Object.keys(products).length === 0) { showToast('❌ प्रिंट करने के लिए कोई प्रोडक्ट नहीं है!', 'error'); return; }
+
+            let cardsHtml = '';
+            Object.values(products).forEach(p => {
+                const codeVal = p.barcode || p.manualId || p.id;
+                const isNumeric = /^\d+$/.test(codeVal);
+                const codeHtml = (isNumeric && codeVal.length <= 15)
+                    ? `<svg class="barcode-item w-full" style="max-height:45px;" data-val="${codeVal}"></svg>`
+                    : `<canvas class="qrcode-item mx-auto" data-val="${codeVal}"></canvas>`;
+
+                cardsHtml += `<div class="border-2 border-gray-300 rounded-xl p-3 flex flex-col items-center text-center bg-white" style="break-inside: avoid; page-break-inside: avoid;"><h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">${storeName}</h3><h2 class="text-base font-extrabold text-gray-900 leading-tight mb-1">${p.name}</h2><p class="text-sm font-bold text-gray-800 mb-2">₹${p.price} <span class="text-[10px] font-medium text-gray-500">/ ${p.fillingQuantity || 1} ${unitTextMap[p.unit] || p.unit}</span></p><div class="w-full flex justify-center items-center overflow-hidden mb-1 min-h-[50px]">${codeHtml}</div><p class="text-[10px] font-mono text-gray-500 mt-1">${codeVal}</p></div>`;
+            });
+
+            const printContent = `<!DOCTYPE html><html lang="hi"><head><meta charset="UTF-8"><title>${storeName} - प्रोडक्ट लेबल्स</title><script src="https://cdn.tailwindcss.com"><\/script><script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"><\/script><script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"><\/script><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap'); body { font-family: 'Inter', sans-serif; background-color: #fff; color: #000; } @media print { body { background-color: #fff !important; } .no-print { display: none !important; } .print-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; } @page { margin: 0.3in; } }</style></head><body class="p-2"><div class="text-center mb-4 no-print"><h1 class="text-xl font-bold text-gray-800">लेबल तैयार हो रहे हैं...</h1><p class="text-sm text-gray-500">कृपया प्रिंट डायलॉग खुलने का इंतज़ार करें।</p></div><div class="print-grid grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">${cardsHtml}</div><script>window.onload = function() { document.querySelectorAll('.barcode-item').forEach(svg => { try { JsBarcode(svg, svg.dataset.val, { format: "CODE128", width: 1.5, height: 40, displayValue: false, margin: 0, lineColor: "#000" }); } catch(e) {} }); let qrPromises = []; document.querySelectorAll('.qrcode-item').forEach(canvas => { let p = new Promise(resolve => { QRCode.toCanvas(canvas, canvas.dataset.val, { width: 70, margin: 0, color: { dark: '#000000', light: '#ffffff' } }, function () { resolve(); }); }); qrPromises.push(p); }); Promise.all(qrPromises).then(() => { setTimeout(() => { window.print(); }, 500); }); };<\/script></body></html>`;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+        }
+      
         async function handleEditStoreName() { toggleMenu(); showPromptModal('स्टोर का नाम बदलें', 'कृपया अपने स्टोर का नया नाम दर्ज करें।', storeName, async (newName) => { if (newName && newName.trim()) { storeName = newName.trim(); await saveAllDataToFirestore(); showToast('✅ स्टोर का नाम अपडेट हो गया!', 'success'); } }); }
         function closeEditModal() { toggleBodyScroll(false); document.getElementById('editModal').classList.add('hidden'); currentEditingProduct = null; }
         function searchProducts(query) {
