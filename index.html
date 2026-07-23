@@ -894,10 +894,16 @@
             flashlightEnabled = false; 
             currentCameraTrack = null; 
         }
-        function handleScanResult(decodedText, decodedResult) {
+      function handleScanResult(decodedText, decodedResult) {
             triggerHapticFeedback(50);
             const section = currentScanningSection;
-            stopScanning(section);
+            
+            if (history.state && history.state.scanner) {
+                history.back();
+            } else {
+                stopScanning(section);
+            }
+
             if (section === 'store') {
                 if (window.storeScanTarget === 'manual') {
                     document.getElementById('productManualId').value = decodedText;
@@ -907,9 +913,8 @@
                 }
                 showToast('📱 बारकोड स्कैन हो गया!', 'success');
             } else {
-                if (history.state && history.state.scanner) { history.back(); }
                 const product = Object.values(products).find(p => p.barcode === decodedText || p.manualId === decodedText);
-              if (section === 'edit') {
+                if (section === 'edit') {
                     if (window.editScanTarget === 'barcode') { document.getElementById('editProductBarcode').value = decodedText; }
                     else if (window.editScanTarget === 'manual') { document.getElementById('editProductManualId').value = decodedText; }
                     showToast('📱 कोड स्कैन हो गया!', 'success');
