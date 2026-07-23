@@ -340,27 +340,33 @@
             </div>
 
             <div id="storeSection" class="hidden section-container p-3 md:p-4">
-                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
-                    <h2 class="text-xl font-bold flex-shrink-0"><span data-lang-key="store_title_emoji">📦</span> <span data-lang-key="store_title">स्टोर मैनेजमेंट</span></h2>
-                    <div class="flex items-center space-x-2 w-full sm:w-auto">
-                        <div class="relative flex-grow">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></div>
-                            <input type="text" id="storeSearchInput" oninput="debouncedSearch()" data-lang-key="placeholder_search_product" placeholder="प्रोडक्ट खोजें..." class="modern-input p-2 pl-9 pr-8 text-sm w-full" autocomplete="off">
-                            <button id="clearStoreSearch" class="absolute inset-y-0 right-0 pr-2 flex items-center cursor-pointer hidden"><svg class="w-4 h-4 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-                        </div>
+                
+                
+                <div class="flex items-center justify-between mb-4 card-bg rounded-full shadow-sm border p-1" style="border-color: var(--border-color);">
+                    <div class="relative flex-grow flex items-center pl-3">
+                        <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <input type="text" id="storeSearchInput" oninput="debouncedSearch()" data-lang-key="placeholder_search_product" placeholder="प्रोडक्ट खोजें..." class="w-full bg-transparent border-none outline-none text-sm px-2 py-2" style="color: var(--text);" autocomplete="off">
+                        <button id="clearStoreSearch" class="absolute right-2 text-gray-400 hover:text-gray-600 hidden"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                     </div>
-                </div>
-                <div class="flex items-center justify-between gap-2 mb-3">
-                     <div class="relative"><select id="sortOrderSelect" class="modern-input p-2 text-sm" onchange="searchAndSortProducts()"><option value="date-desc" data-lang-key="sort_newest">सबसे नया</option><option value="date-asc" data-lang-key="sort_oldest">सबसे पुराना</option><option value="name-asc" data-lang-key="sort_name_az">नाम (A-Z)</option><option value="name-desc" data-lang-key="sort_name_za">नाम (Z-A)</option><option value="price-desc" data-lang-key="sort_price_high">कीमत (महंगा)</option><option value="price-asc" data-lang-key="sort_price_low">कीमत (सस्ता)</option></select></div>
-                     <div class="flex items-center gap-2">
-                       
-                            <span data-lang-key="btn_edit_mode" class="hidden sm:inline">एडिट मोड</span>
-                        </button>
-                        <div id="view-switcher" class="p-0.5 rounded-lg flex items-center bg-gray-200 text-gray-500 text-xs">
-                            <button onclick="changeStoreView('grid')" class="view-btn active" title="Grid View"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg></button>
-                            <button onclick="changeStoreView('list')" class="view-btn" title="List View"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
-                            <button onclick="changeStoreView('compact')" class="view-btn" title="Compact List View"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg></button>
-                        </div>
+                    
+                    <div class="w-px h-6 mx-1" style="background-color: var(--border-color);"></div>
+                    
+                    <div class="relative flex-shrink-0">
+                        <select id="sortOrderSelect" class="bg-transparent border-none outline-none text-xs cursor-pointer px-2 py-2 appearance-none font-medium" style="color: var(--text-light);" onchange="searchAndSortProducts()">
+                            <option value="date-desc">नया</option>
+                            <option value="date-asc">पुराना</option>
+                            <option value="name-asc">A-Z</option>
+                            <option value="name-desc">Z-A</option>
+                            <option value="price-desc">महंगा</option>
+                            <option value="price-asc">सस्ता</option>
+                        </select>
+                    </div>
+                    
+                    <div class="w-px h-6 mx-1" style="background-color: var(--border-color);"></div>
+                    
+                    <div id="view-switcher" class="flex items-center gap-1 pr-1 flex-shrink-0">
+                        <button onclick="changeStoreView('grid')" class="view-btn active p-1.5 rounded-full"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg></button>
+                        <button onclick="changeStoreView('list')" class="view-btn p-1.5 rounded-full"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
                     </div>
                 </div>
                  <div id="productsList"></div>
@@ -487,8 +493,20 @@
                     </div>
                 </div>
                 <div class="space-y-3">
-                    <div><label for="productBarcode" data-lang-key="form_barcode" class="block text-xs font-medium mb-1">बारकोड (स्कैन किया हुआ)</label><div class="flex items-center gap-2"><input type="text" id="productBarcode" data-lang-key="placeholder_product_id" placeholder="प्रोडक्ट ID" class="w-full p-2 modern-input text-sm" onchange="fetchProductDetails(this.value)" autocomplete="off"><button onclick="startScanning('store')" id="storeScanBtn" class="primary-bg text-white p-2 rounded-lg font-semibold modern-btn text-sm flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8V6a2 2 0 0 1 2-2h2M3 16v2a2 2 0 0 0 2 2h2M21 8V6a2 2 0 0 0-2-2h-2M21 16v2a2 2 0 0 1-2 2h-2M4 12h16" /></svg></button></div></div>
-                    <div><label for="productManualId" class="block text-xs font-medium mb-1" data-lang-key="form_manual_id">मैन्युअल ID (आपकी अपनी ID)</label><input type="text" id="productManualId" data-lang-key="placeholder_manual_id" placeholder="स्कैन करें या खुद टाइप करें" class="w-full p-2 modern-input text-sm"></div>
+                    <div>
+                        <label for="productBarcode" data-lang-key="form_barcode" class="block text-xs font-medium mb-1">बारकोड (स्कैन किया हुआ)</label>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="productBarcode" data-lang-key="placeholder_product_id" placeholder="प्रोडक्ट ID" class="w-full p-2 modern-input text-sm" onchange="fetchProductDetails(this.value)" autocomplete="off">
+                            <button onclick="openStoreScanner('barcode')" id="storeScanBtn" class="primary-bg text-white p-2 rounded-lg font-semibold modern-btn text-sm flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8V6a2 2 0 0 1 2-2h2M3 16v2a2 2 0 0 0 2 2h2M21 8V6a2 2 0 0 0-2-2h-2M21 16v2a2 2 0 0 1-2 2h-2M4 12h16" /></svg></button>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="productManualId" class="block text-xs font-medium mb-1" data-lang-key="form_manual_id">मैन्युअल ID (आपकी अपनी ID)</label>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="productManualId" data-lang-key="placeholder_manual_id" placeholder="स्कैन करें या खुद टाइप करें" class="w-full p-2 modern-input text-sm">
+                            <button onclick="openStoreScanner('manual')" class="primary-bg text-white p-2 rounded-lg font-semibold modern-btn text-sm flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8V6a2 2 0 0 1 2-2h2M3 16v2a2 2 0 0 0 2 2h2M21 8V6a2 2 0 0 0-2-2h-2M21 16v2a2 2 0 0 1-2 2h-2M4 12h16" /></svg></button>
+                        </div>
+                    </div>
                     <div><label for="productName" data-lang-key="form_product_name" class="block text-xs font-medium mb-1">प्रोडक्ट का नाम</label><input type="text" id="productName" data-lang-key="placeholder_product_name" placeholder="जैसे, मैगी नूडल्स" class="w-full p-2 modern-input text-sm" required autocomplete="new-password"></div>
                     <div class="grid grid-cols-2 gap-3">
                         <div><label for="productFillingQuantity" data-lang-key="form_quantity" class="block text-xs font-medium mb-1">मात्रा</label><input type="number" id="productFillingQuantity" data-lang-key="placeholder_quantity" placeholder="जैसे, 100" class="w-full p-2 modern-input text-sm" value="1"></div>
@@ -517,8 +535,29 @@
         <div class="modern-card p-4 w-full max-w-sm slide-up">
             <h3 class="text-lg font-bold mb-4 text-main"><span data-lang-key="modal_edit_product_emoji">✏️</span> <span data-lang-key="modal_edit_product_title">प्रोडक्ट एडिट करें</span></h3>
             <div class="space-y-3">
-                <div><label for="editProductBarcode" data-lang-key="form_barcode" class="block text-xs font-medium mb-1">बारकोड (ID)</label><input type="text" id="editProductBarcode" class="w-full p-2 modern-input text-sm" autocomplete="off"></div>
-                <div><label for="editProductManualId" data-lang-key="form_manual_id" class="block text-xs font-medium mb-1">मैन्युअल ID</label><input type="text" id="editProductManualId" class="w-full p-2 modern-input text-sm"></div>
+              <div id="editScanner" class="hidden mb-3">
+                    <div class="scanner-container"><div id="editReader"></div></div>
+                    <div class="scanner-controls mt-2">
+                        <div class="flex items-center gap-2">
+                           <button onclick="toggleFlashlight('edit')" class="w-full bg-gray-200 text-gray-700 py-1.5 px-3 rounded-md font-semibold text-xs flex items-center justify-center gap-1.5">फ्लैश</button>
+                           <button onclick="stopScanning('edit')" class="w-full bg-red-500 text-white py-1.5 px-3 rounded-md font-semibold text-xs">स्कैन बंद करें</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="editProductBarcode" data-lang-key="form_barcode" class="block text-xs font-medium mb-1">बारकोड (ID)</label>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="editProductBarcode" class="w-full p-2 modern-input text-sm" autocomplete="off">
+                        <button onclick="openEditScanner('barcode')" class="primary-bg text-white p-2 rounded-lg font-semibold modern-btn text-sm flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8V6a2 2 0 0 1 2-2h2M3 16v2a2 2 0 0 0 2 2h2M21 8V6a2 2 0 0 0-2-2h-2M21 16v2a2 2 0 0 1-2 2h-2M4 12h16" /></svg></button>
+                    </div>
+                </div>
+                <div>
+                    <label for="editProductManualId" data-lang-key="form_manual_id" class="block text-xs font-medium mb-1">मैन्युअल ID</label>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="editProductManualId" class="w-full p-2 modern-input text-sm">
+                        <button onclick="openEditScanner('manual')" class="primary-bg text-white p-2 rounded-lg font-semibold modern-btn text-sm flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8V6a2 2 0 0 1 2-2h2M3 16v2a2 2 0 0 0 2 2h2M21 8V6a2 2 0 0 0-2-2h-2M21 16v2a2 2 0 0 1-2 2h-2M4 12h16" /></svg></button>
+                    </div>
+                </div>
                 <div><label for="editProductName" data-lang-key="form_product_name" class="block text-xs font-medium mb-1">प्रोडक्ट का नाम</label><input type="text" id="editProductName" class="w-full p-2 modern-input text-sm" autocomplete="new-password"></div>
                 <div class="grid grid-cols-2 gap-3">
                     <div><label for="editProductFillingQuantity" data-lang-key="form_quantity" class="block text-xs font-medium mb-1">मात्रा</label><input type="number" id="editProductFillingQuantity" class="w-full p-2 modern-input text-sm"></div>
@@ -582,7 +621,7 @@
             <h3 id="actionModalProductName" class="text-lg font-bold mb-4 text-main truncate"></h3>
             <div class="flex flex-col space-y-3">
                 <button onclick="triggerProductEdit()" class="bg-blue-100 text-blue-700 py-2.5 px-3 rounded-lg font-semibold modern-btn text-sm">एडिट करें</button>
-                <button onclick="triggerProductHistory()" class="bg-purple-100 text-purple-700 py-2.5 px-3 rounded-lg font-semibold modern-btn text-sm">भाव हिस्ट्री देखें</button>
+                <button onclick="triggerProductHistory()" class="bg-purple-100 text-purple-700 py-2.5 px-3 rounded-lg font-semibold modern-btn text-sm">History</button>
                 <button onclick="triggerProductDelete()" class="bg-red-100 text-red-700 py-2.5 px-3 rounded-lg font-semibold modern-btn text-sm">डिलीट करें</button>
                 <button onclick="closeProductActionModal()" class="bg-gray-200 text-gray-700 py-2.5 px-3 rounded-lg font-semibold modern-btn text-sm mt-2">कैंसल</button>
             </div>
@@ -590,7 +629,7 @@
     </div>
     <div id="priceHistoryModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-[70] flex items-center justify-center p-4 modal-backdrop" onclick="if(event.target === this) document.getElementById('priceHistoryModal').classList.add('hidden')">
         <div class="modern-card p-4 w-full max-w-sm slide-up">
-            <h3 class="text-lg font-bold mb-3 text-main">📈 भाव हिस्ट्री</h3>
+            <h3 class="text-lg font-bold mb-3 text-main">📈 History</h3>
             <div id="priceHistoryList" class="space-y-2 max-h-60 overflow-y-auto mb-3"></div>
             <button onclick="document.getElementById('priceHistoryModal').classList.add('hidden')" class="w-full bg-gray-200 text-gray-700 py-2 px-3 rounded-lg font-semibold modern-btn text-sm">बंद करें</button>
         </div>
@@ -813,6 +852,14 @@
         }
         function showToast(message, type = 'info') { const toast = document.createElement('div'); const bgColor = type === 'success' ? 'secondary-bg' : type === 'error' ? 'bg-red-500' : 'primary-bg'; toast.className = `fixed top-14 right-3 ${bgColor} text-white px-3 py-1.5 rounded-lg shadow-lg z-[101] fade-in text-sm font-medium`; toast.textContent = message; document.body.appendChild(toast); setTimeout(() => { toast.remove(); }, 2000); }
         function showSection(section, pushToHistory = true) { if (currentSection === section && !pushToHistory) return; ['home', 'store', 'shopping', 'history'].forEach(s => { document.getElementById(s + 'Section').classList.add('hidden'); document.getElementById(s + 'TabMobile').classList.remove('active'); document.getElementById(s + 'TabDesktop').classList.remove('active'); }); document.getElementById(section + 'Section').classList.remove('hidden'); document.getElementById(section + 'Section').classList.add('fade-in'); document.getElementById(section + 'TabMobile').classList.add('active'); document.getElementById(section + 'TabDesktop').classList.add('active'); document.getElementById('floatingAddBtn').classList.toggle('hidden', section !== 'store'); currentSection = section; if (pushToHistory) { history.pushState({ section: section }, '', `#${section}`); } if (section === 'store') { searchAndSortProducts(); } else if (isScanning) { stopScanning(currentScanningSection); } }
+      function openEditScanner(target) {
+            window.editScanTarget = target;
+            startScanning('edit');
+        }
+      function openStoreScanner(target) {
+            window.storeScanTarget = target;
+            startScanning('store');
+        }
         function startScanning(section) { 
             if (isScanning) return; 
             currentScanningSection = section; 
@@ -833,13 +880,22 @@
             const section = currentScanningSection;
             stopScanning(section);
             if (section === 'store') {
-                document.getElementById('productBarcode').value = decodedText;
-                document.getElementById('productManualId').value = decodedText;
-                fetchProductDetails(decodedText);
+                if (window.storeScanTarget === 'manual') {
+                    document.getElementById('productManualId').value = decodedText;
+                } else {
+                    document.getElementById('productBarcode').value = decodedText;
+                    fetchProductDetails(decodedText);
+                }
                 showToast('📱 बारकोड स्कैन हो गया!', 'success');
             } else {
                 if (history.state && history.state.scanner) { history.back(); }
                 const product = Object.values(products).find(p => p.barcode === decodedText || p.manualId === decodedText);
+              if (section === 'edit') {
+                    if (window.editScanTarget === 'barcode') { document.getElementById('editProductBarcode').value = decodedText; }
+                    else if (window.editScanTarget === 'manual') { document.getElementById('editProductManualId').value = decodedText; }
+                    showToast('📱 कोड स्कैन हो गया!', 'success');
+                    return;
+                }
                 if (section === 'shopping') {
                     if (product) { addToBill(product.id); } else { showToast(`❌ प्रोडक्ट '${decodedText}' स्टोर में नहीं है!`, 'error'); }
                 } else if (section === 'dashboard') {
@@ -899,10 +955,24 @@
             const fillingQuantity = parseFloat(document.getElementById('editProductFillingQuantity').value) || 1; 
             const unit = document.getElementById('editProductUnit').value; 
             if (!name || isNaN(price) || isNaN(fillingQuantity) || fillingQuantity <= 0) { showToast('❌ कृपया सही नाम, कीमत और मात्रा डालें', 'error'); return; } 
-            let priceHistory = products[currentEditingProduct].priceHistory || [];
-            if(products[currentEditingProduct].price !== price) { priceHistory.push({ price: price, date: new Date().toISOString() }); }
-            const updatedProduct = { ...products[currentEditingProduct], id: newProductId, barcode: newBarcode, manualId: newManualId, name, price, details, fillingQuantity, unit, priceHistory }; 
-            
+            let changes = [];
+            let oldP = products[currentEditingProduct];
+            if (oldP.name !== name) changes.push(`नाम: ${oldP.name} ➡️ ${name}`);
+            if (oldP.price !== price) changes.push(`भाव: ₹${oldP.price} ➡️ ₹${price}`);
+            if (oldP.fillingQuantity !== fillingQuantity) changes.push(`मात्रा: ${oldP.fillingQuantity} ➡️ ${fillingQuantity}`);
+            if (oldP.unit !== unit) changes.push(`यूनिट: ${unitTextMap[oldP.unit]||oldP.unit} ➡️ ${unitTextMap[unit]||unit}`);
+            if ((oldP.barcode||'') !== newBarcode) changes.push(`बारकोड: ${oldP.barcode||'N/A'} ➡️ ${newBarcode||'N/A'}`);
+            if ((oldP.manualId||'') !== newManualId) changes.push(`ID: ${oldP.manualId||'N/A'} ➡️ ${newManualId||'N/A'}`);
+
+            let productHistory = oldP.productHistory || []; 
+            if (!oldP.productHistory && oldP.priceHistory) {
+                 productHistory = oldP.priceHistory.map(ph => ({ date: ph.date, changes: [`भाव अपडेट: ₹${ph.price}`] }));
+            }
+            if (changes.length > 0) {
+                productHistory.push({ date: new Date().toISOString(), changes: changes });
+            }
+
+            const updatedProduct = { ...products[currentEditingProduct], id: newProductId, barcode: newBarcode, manualId: newManualId, name, price, details, fillingQuantity, unit, productHistory };
             const oldProductId = currentEditingProduct;
             delete products[currentEditingProduct];
             products[newProductId] = updatedProduct;
@@ -1226,14 +1296,22 @@
             editProduct(id); 
         }
         function triggerProductDelete() { const id = longPressedProductId; closeProductActionModal(); handleDeleteProduct(id); }
-        function triggerProductHistory() {
+      function triggerProductHistory() {
             const product = products[longPressedProductId];
             closeProductActionModal();
             const historyList = document.getElementById('priceHistoryList');
-            if(!product.priceHistory || product.priceHistory.length === 0) {
+            let historyData = product.productHistory || [];
+            
+            if(!historyData || historyData.length === 0) {
+                if (product.priceHistory && product.priceHistory.length > 0) {
+                     historyData = product.priceHistory.map(ph => ({ date: ph.date, changes: [`भाव अपडेट: ₹${ph.price}`] }));
+                }
+            }
+
+            if(historyData.length === 0) {
                 historyList.innerHTML = '<p class="text-center text-sm text-gray-500 py-4">कोई हिस्ट्री मौजूद नहीं है</p>';
             } else {
-                historyList.innerHTML = product.priceHistory.slice().reverse().map(h => `<div class="flex justify-between p-2 border-b text-sm" style="border-color: var(--border-color);"><span class="font-semibold price-text">₹${h.price}</span><span class="text-gray-500">${new Date(h.date).toLocaleDateString('hi-IN')}</span></div>`).join('');
+                historyList.innerHTML = historyData.slice().reverse().map(h => `<div class="py-3 border-b last:border-0" style="border-color: var(--border-color);"><div class="text-gray-500 text-xs mb-1.5">${new Date(h.date).toLocaleString('hi-IN')}</div><div class="space-y-1">${h.changes.map(c => `<div class="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-start gap-1.5"><span class="text-gray-300">▪</span> <span>${c}</span></div>`).join('')}</div></div>`).join('');
             }
             document.getElementById('priceHistoryModal').classList.remove('hidden');
         }
