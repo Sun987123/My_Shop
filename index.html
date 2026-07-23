@@ -993,8 +993,13 @@
             list.innerHTML = '';
             list.style.gridTemplateColumns = '';
             const productArray = productsToDisplay || Object.values(products);
-            document.getElementById('view-switcher').querySelector(`button[onclick="changeStoreView('${storeView}')"]`).classList.add('active');
-
+           let activeBtn = document.getElementById('view-switcher').querySelector(`button[onclick="changeStoreView('${storeView}')"]`);
+            if (!activeBtn) {
+                storeView = 'list';
+                localStorage.setItem('storeView', 'list');
+                activeBtn = document.getElementById('view-switcher').querySelector(`button[onclick="changeStoreView('list')"]`);
+            }
+            if (activeBtn) activeBtn.classList.add('active');
             if (storeView === 'grid') { 
                 list.className = 'grid gap-3 pb-24 md:pb-4'; 
                 list.style.gridTemplateColumns = 'repeat(auto-fit, minmax(170px, 1fr))'; 
