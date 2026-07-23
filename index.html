@@ -12,6 +12,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -987,15 +988,19 @@
             }
         }
         function handleDeleteProduct(productId) { showConfirmModal('🗑️ प्रोडक्ट डिलीट करें?', 'क्या आप वाकई इस प्रोडक्ट को डिलीट करना चाहते हैं?', async () => { delete products[productId]; await saveAllDataToFirestore(); triggerHapticFeedback(); showToast('✅ प्रोडक्ट डिलीट हो गया!', 'success'); }); }
-      function displayProducts(productsToDisplay) {
+    function displayProducts(productsToDisplay) {
             const list = document.getElementById('productsList');
             list.innerHTML = '';
             list.style.gridTemplateColumns = '';
             const productArray = productsToDisplay || Object.values(products);
             document.getElementById('view-switcher').querySelector(`button[onclick="changeStoreView('${storeView}')"]`).classList.add('active');
 
-           if (storeView === 'grid') { list.className = 'grid gap-3 pb-24 md:pb-4'; list.style.gridTemplateColumns = 'repeat(auto-fit, minmax(170px, 1fr))'; } 
-            else { list.className = 'space-y-2 pb-24 md:pb-4'; }
+            if (storeView === 'grid') { 
+                list.className = 'grid gap-3 pb-24 md:pb-4'; 
+                list.style.gridTemplateColumns = 'repeat(auto-fit, minmax(170px, 1fr))'; 
+            } else { 
+                list.className = 'space-y-2 pb-24 md:pb-4'; 
+            }
             
             if (productArray.length === 0) {
                 list.className = ''; list.style.gridTemplateColumns = '';
@@ -1013,18 +1018,39 @@
                     card.ontouchend = clearLongPress;
                     card.ontouchmove = clearLongPress;
 
-                    const addBtn = `<button data-action="add" onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="bg-green-100 text-green-700 font-semibold p-2 rounded-lg hover:bg-green-200 transition-colors flex items-center justify-center space-x-1 text-xs w-full sm:w-auto"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>`;
-                    
                     if (storeView === 'grid') {
+                        const addBtn = `<button data-action="add" onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="bg-green-100 text-green-700 font-semibold p-2 rounded-lg hover:bg-green-200 transition-colors flex items-center justify-center space-x-1 text-xs w-full"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>`;
                         card.className = 'modern-card p-2.5 flex flex-col justify-between fade-in cursor-pointer select-none';
-                        card.innerHTML = `<div class="flex-grow pointer-events-none"><div class="flex justify-between items-start gap-2 mb-1"><h4 class="font-bold text-sm leading-tight flex-1 product-name-text">${p.name}</h4><div class="barcode-badge">${p.manualId || p.id}</div></div><p class="price-text font-bold text-md mb-1">₹${p.price} <span class="text-xs font-medium meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p>${p.details ? `<p class="text-xs text-gray-500">${p.details}</p>` : ''}</div><div class="border-t pt-2 mt-2" style="border-color: color-mix(in srgb, var(--text) 8%, transparent); pointer-events:auto;">${addBtn}</div>`;
+                        const codeVal = p.barcode || p.manualId || p.id;
+                        card.innerHTML = `<div class="flex-grow pointer-events-none"><div class="flex justify-between items-start gap-2 mb-2"><h4 class="font-bold text-sm leading-tight flex-1 product-name-text">${p.name}</h4></div><div class="w-full flex justify-center mb-2 bg-white rounded p-1 overflow-hidden border border-gray-100"><svg class="generated-barcode" data-val="${codeVal}" style="max-width: 100%; height: auto;"></svg></div><p class="price-text font-bold text-md mb-1">₹${p.price} <span class="text-xs font-medium meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p>${p.details ? `<p class="text-xs text-gray-500">${p.details}</p>` : ''}</div><div class="border-t pt-2 mt-2" style="border-color: color-mix(in srgb, var(--text) 8%, transparent); pointer-events:auto;">${addBtn}</div>`;
                     } else {
-                        const isCompact = storeView === 'compact';
-                        card.className = `modern-card ${isCompact ? 'p-2' : 'p-2.5'} flex items-center justify-between gap-3 fade-in cursor-pointer select-none`;
-                        card.innerHTML = `<div class="flex-1 overflow-hidden pointer-events-none"><h4 class="font-bold product-name-text ${isCompact ? 'text-sm':'text-base'} leading-tight truncate">${p.name}</h4><p class="price-text font-semibold ${isCompact ? 'text-xs':'text-sm'}">₹${p.price} <span class="text-xs font-medium meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p></div><div class="flex items-center text-xs pointer-events-auto">${addBtn}</div>`;
+                        const addBtnRound = `<button data-action="add" onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="w-8 h-8 rounded-full primary-bg text-white flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0 shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>`;
+                        card.className = `modern-card p-1.5 px-3 flex items-center justify-between gap-3 fade-in cursor-pointer select-none rounded-full`;
+                        card.innerHTML = `<div class="flex-1 overflow-hidden pointer-events-none flex items-center gap-3"><div class="flex-1 min-w-0"><h4 class="font-semibold product-name-text text-sm leading-tight truncate">${p.name}</h4><p class="price-text font-medium text-xs mt-0.5">₹${p.price} <span class="text-[10px] meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p></div></div><div class="flex items-center pointer-events-auto">${addBtnRound}</div>`;
                     }
                     list.appendChild(card);
                 });
+
+                if (storeView === 'grid') {
+                    setTimeout(() => {
+                        document.querySelectorAll('.generated-barcode').forEach(svg => {
+                            try {
+                                JsBarcode(svg, svg.dataset.val, {
+                                    format: "CODE128",
+                                    width: 1.5,
+                                    height: 35,
+                                    displayValue: true,
+                                    fontSize: 12,
+                                    margin: 0,
+                                    background: "transparent",
+                                    lineColor: "#000"
+                                });
+                            } catch(e) {
+                                svg.outerHTML = `<div class="text-xs text-center text-gray-400 font-mono py-2">${svg.dataset.val}</div>`;
+                            }
+                        });
+                    }, 50);
+                }
             }
             updateDashboardStats();
             setLanguage(currentLanguage);
