@@ -204,6 +204,16 @@
             a::after { content: "" !important; }
             @page { margin: 0.75in; size: A4; }
         }
+      .skeleton {
+            background: linear-gradient(90deg, var(--card) 25%, color-mix(in srgb, var(--text) 5%, var(--card)) 50%, var(--card) 75%);
+            background-size: 200% 100%;
+            animation: skeletonLoading 1.5s infinite;
+            border-radius: 0.5rem;
+        }
+        @keyframes skeletonLoading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <div id="loader" class="hidden fixed inset-0 bg-white dark:bg-black z-[100] flex flex-col items-center justify-center transition-opacity duration-300">
@@ -769,6 +779,7 @@
         };
 
         document.addEventListener('DOMContentLoaded', function() { 
+          document.getElementById('productsList').innerHTML = Array(6).fill('<div class="modern-card p-4 skeleton h-16 w-full mb-2 border-none shadow-none"></div>').join('');
             const savedTheme = localStorage.getItem('theme');
             applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
 
@@ -894,7 +905,7 @@
             flashlightEnabled = false; 
             currentCameraTrack = null; 
         }
-      function handleScanResult(decodedText, decodedResult) {
+       function handleScanResult(decodedText, decodedResult) {
             triggerHapticFeedback(50);
             const section = currentScanningSection;
             
@@ -1036,6 +1047,8 @@
                 list.className = ''; list.style.gridTemplateColumns = '';
                 list.innerHTML = `<div class="text-center text-gray-500 col-span-full py-16 flex flex-col items-center"><svg class="w-16 h-16 text-gray-300 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg><h3 class="font-bold text-md">अभी कोई प्रोडक्ट नहीं है</h3><button onclick="showAddModal()" class="primary-bg text-white py-2 px-5 rounded-lg font-semibold modern-btn text-sm mt-4">नया प्रोडक्ट जोड़ें</button></div>`;
             } else {
+              const fragment = document.createDocumentFragment();
+                
                 productArray.forEach(p => {
                     const card = document.createElement('div');
                     card.dataset.id = p.id;
@@ -1054,12 +1067,14 @@
                         const codeVal = p.barcode || p.manualId || p.id;
                         card.innerHTML = `<div class="flex-grow pointer-events-none"><div class="flex justify-between items-start gap-2 mb-2"><h4 class="font-bold text-sm leading-tight flex-1 product-name-text">${p.name}</h4></div><div class="w-full flex justify-center mb-2 bg-white rounded p-1 overflow-hidden border border-gray-100 generated-code-container" data-val="${codeVal}"></div><p class="price-text font-bold text-md mb-1">₹${p.price} <span class="text-xs font-medium meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p>${p.details ? `<p class="text-xs text-gray-500">${p.details}</p>` : ''}</div><div class="border-t pt-2 mt-2" style="border-color: color-mix(in srgb, var(--text) 8%, transparent); pointer-events:auto;">${addBtn}</div>`;
                     } else {
-const addBtnRound = `<button data-action="add" onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center hover:bg-green-200 transition-colors flex-shrink-0 shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>`;
+                        const addBtnRound = `<button data-action="add" onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center hover:bg-green-200 transition-colors flex-shrink-0 shadow-sm"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></button>`;
                         card.className = `modern-card p-1.5 px-3 flex items-center justify-between gap-3 fade-in cursor-pointer select-none rounded-full`;
                         card.innerHTML = `<div class="flex-1 overflow-hidden pointer-events-none flex items-center gap-3"><div class="flex-1 min-w-0"><h4 class="font-semibold product-name-text text-sm leading-tight truncate">${p.name}</h4><p class="price-text font-medium text-xs mt-0.5">₹${p.price} <span class="text-[10px] meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p></div></div><div class="flex items-center pointer-events-auto">${addBtnRound}</div>`;
                     }
-                    list.appendChild(card);
+                    fragment.appendChild(card);
                 });
+                
+                list.appendChild(fragment);
 
                 if (storeView === 'grid') {
                     setTimeout(() => {
