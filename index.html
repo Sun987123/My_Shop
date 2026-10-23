@@ -442,8 +442,8 @@
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
         </div>
-        <p class="text-xs font-bold tracking-wide uppercase primary-text">Smart Store Manager Pro</p>
-        <p class="mt-1 text-xs text-slate-400">डेटा सिंक हो रहा है...</p>
+        <p class="text-xs font-bold tracking-wide uppercase primary-text" data-lang-key="app_brand_title">स्मार्ट व्यापार प्रबंधक</p>
+        <p class="mt-1 text-xs text-slate-400" data-lang-key="loading_sync_text">डेटा समन्वयित हो रहा है...</p>
     </div>
 
     <!-- Login / Cloud Sync Modal Screen -->
@@ -452,25 +452,25 @@
             <div class="w-12 h-12 rounded-2xl primary-bg text-white flex items-center justify-center mx-auto mb-3 shadow-md">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5A2.25 2.25 0 0011.25 11.25H4.5A2.25 2.25 0 002.25 13.5V21M3 3h12M3 7.5h12M3 12h12M3 16.5h12M17.25 3v18"/></svg>
             </div>
-            <h2 class="text-xl font-extrabold primary-text">स्मार्ट स्टोर मैनेजर Pro</h2>
-            <p class="text-xs mt-1 mb-5" style="color: var(--text-light);" data-lang-key="login_desc">क्लाउड बैकअप और रियल-टाइम सिंक के लिए लॉगिन करें</p>
+            <h2 class="text-xl font-extrabold primary-text" data-lang-key="app_brand_title">स्मार्ट व्यापार प्रबंधक</h2>
+            <p class="text-xs mt-1 mb-5" style="color: var(--text-light);" data-lang-key="login_desc">क्लाउड बैकअप और त्वरित समन्वयन के लिए प्रवेश करें</p>
             
             <div class="space-y-2.5 mb-4 text-left">
                 <div>
-                    <label class="text-[11px] font-semibold block mb-1">ईमेल आईडी (Email)</label>
+                    <label class="text-[11px] font-semibold block mb-1" data-lang-key="lbl_email">ईमेल पता</label>
                     <input type="email" id="userEmail" placeholder="store@example.com" class="w-full p-2.5 modern-input text-sm">
                 </div>
                 <div>
-                    <label class="text-[11px] font-semibold block mb-1">पासवर्ड (Password)</label>
+                    <label class="text-[11px] font-semibold block mb-1" data-lang-key="lbl_password">कूटशब्द (पासवर्ड)</label>
                     <input type="password" id="userPassword" placeholder="••••••••" class="w-full p-2.5 modern-input text-sm" onkeydown="if(event.key==='Enter') loginWithEmail()">
                 </div>
             </div>
 
             <div class="flex flex-col space-y-2">
-                <button id="loginSubmitBtn" onclick="loginWithEmail()" class="w-full primary-bg text-white py-2.5 rounded-lg font-semibold modern-btn text-sm shadow">लॉगिन करें (Login)</button>
+                <button id="loginSubmitBtn" onclick="loginWithEmail()" data-lang-key="btn_login" class="w-full primary-bg text-white py-2.5 rounded-lg font-semibold modern-btn text-sm shadow">प्रवेश करें</button>
                 <div class="grid grid-cols-2 gap-2 pt-1">
-                    <button onclick="signUpWithEmail()" class="w-full py-2 px-3 rounded-lg font-semibold text-xs border hover:opacity-80 transition" style="border-color: var(--border-color); color: var(--text);">नया खाता बनाएं</button>
-                    <button onclick="continueAsGuest()" class="w-full py-2 px-3 rounded-lg font-semibold text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition">ऑफ़लाइन चलाएं ⚡</button>
+                    <button onclick="signUpWithEmail()" data-lang-key="btn_signup" class="w-full py-2 px-3 rounded-lg font-semibold text-xs border hover:opacity-80 transition" style="border-color: var(--border-color); color: var(--text);">नया खाता बनाएं</button>
+                    <button onclick="continueAsGuest()" data-lang-key="btn_offline_mode" class="w-full py-2 px-3 rounded-lg font-semibold text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition">ऑफ़लाइन चलाएं ⚡</button>
                 </div>
             </div>
         </div>
@@ -579,71 +579,70 @@
             <div id="menuContent" class="card-bg w-full md:max-w-md rounded-t-2xl md:rounded-2xl shadow-2xl slide-up p-3 border" style="border-color: var(--border-color);">
                 <div class="w-10 h-1 bg-slate-300 dark:bg-slate-700 rounded-full mx-auto mb-2 md:hidden"></div>
                 <div class="flex items-center justify-between px-2 pb-2 mb-2 border-b" style="border-color: var(--border-color);">
-                    <h3 class="font-bold text-sm" data-lang-key="menu_settings">सेटिंग्स, बैकअप और प्रिंट टूल्स</h3>
+                    <h3 class="font-bold text-sm" data-lang-key="menu_settings">व्यवस्था एवं मुद्रण विकल्प</h3>
                     <button onclick="toggleMenu()" class="text-slate-400 hover:text-red-500 text-lg font-bold px-1">&times;</button>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
                     <button onclick="showStoreSettingsModal()" class="text-left px-3 py-2.5 rounded-xl flex items-center space-x-2.5 hover:opacity-80 elevated-bg">
                         <span class="text-base">🏪</span>
                         <div>
-                            <div class="font-bold" data-lang-key="menu_rename_store">स्टोर प्रोफ़ाइल व प्रिंट सेटिंग</div>
-                            <div class="text-[10px] meta-text">नाम, GSTIN, UPI ID, पता</div>
+                            <div class="font-bold" data-lang-key="menu_rename_store">दुकान विवरण व बिल सेटिंग</div>
+                            <div class="text-[10px] meta-text" data-lang-key="menu_rename_store_sub">नाम, जीएसटी, यूपीआई, पता</div>
                         </div>
                     </button>
                     <button onclick="showNotesModal()" class="text-left px-3 py-2.5 rounded-xl flex items-center space-x-2.5 hover:opacity-80 elevated-bg">
                         <span class="text-base">📝</span>
                         <div>
-                            <div class="font-bold" data-lang-key="menu_notes">स्टोर डायरी / नोट्स</div>
-                            <div class="text-[10px] meta-text">ऑर्डर और रिमाइंडर लिखें</div>
+                            <div class="font-bold" data-lang-key="menu_notes">दुकान डायरी / नोट्स</div>
+                            <div class="text-[10px] meta-text" data-lang-key="menu_notes_sub">आवश्यक सूची व स्मरण लिखें</div>
                         </div>
                     </button>
                     <button onclick="printAllProducts()" class="text-left px-3 py-2.5 rounded-xl flex items-center space-x-2.5 hover:opacity-80 elevated-bg">
                         <span class="text-base">🏷️</span>
                         <div>
-                            <div class="font-bold" data-lang-key="menu_print_products">बारकोड/QR लेबल प्रिंट</div>
-                            <div class="text-[10px] meta-text">सभी प्रोडक्ट्स के स्टीकर</div>
+                            <div class="font-bold" data-lang-key="menu_print_products">बारकोड स्टीकर मुद्रण</div>
+                            <div class="text-[10px] meta-text" data-lang-key="menu_print_products_sub">सभी वस्तुओं के बारकोड लेबल</div>
                         </div>
                     </button>
                     <button onclick="printPriceListSheet()" class="text-left px-3 py-2.5 rounded-xl flex items-center space-x-2.5 hover:opacity-80 elevated-bg">
                         <span class="text-base">📋</span>
                         <div>
-                            <div class="font-bold">रेट लिस्ट / स्टॉक रिपोर्ट प्रिंट</div>
-                            <div class="text-[10px] meta-text">A4 प्राइस और स्टॉक टेबल</div>
+                            <div class="font-bold" data-lang-key="menu_price_list">मूल्य सूची मुद्रण</div>
+                            <div class="text-[10px] meta-text" data-lang-key="menu_price_list_sub">सभी वस्तुओं की मूल्य तालिका</div>
                         </div>
                     </button>
                     <button onclick="toggleTheme()" class="text-left px-3 py-2.5 rounded-xl flex items-center space-x-2.5 hover:opacity-80 elevated-bg">
                         <span class="text-base">🌓</span>
                         <div>
-                            <div class="font-bold" data-lang-key="menu_theme">थीम बदलें (Light/Dark)</div>
-                            <div class="text-[10px] meta-text">आंखों के लिए आरामदायक मोड</div>
+                            <div class="font-bold" data-lang-key="menu_theme">रंग-रूप बदलें</div>
+                            <div class="text-[10px] meta-text" data-lang-key="menu_theme_sub">हल्का या गहरा मोड चुनें</div>
                         </div>
                     </button>
                     <button onclick="toggleLanguage()" class="text-left px-3 py-2.5 rounded-xl flex items-center space-x-2.5 hover:opacity-80 elevated-bg">
                         <span class="text-base">🌐</span>
                         <div>
-                            <div class="font-bold" data-lang-key="menu_change_language">भाषा / Language</div>
-                            <div class="text-[10px] meta-text">हिंदी ⇄ English</div>
+                            <div class="font-bold" data-lang-key="menu_change_language">भाषा बदलें</div>
+                            <div class="text-[10px] meta-text" data-lang-key="menu_change_language_sub">हिंदी ⇄ अंग्रेजी</div>
                         </div>
                     </button>
                     <button onclick="exportData()" class="text-left px-3 py-2.5 rounded-xl flex items-center space-x-2.5 hover:opacity-80 elevated-bg">
                         <span class="text-base">📤</span>
                         <div>
-                            <div class="font-bold" data-lang-key="menu_export">बैकअप डाउनलोड (.JSON)</div>
-                            <div class="text-[10px] meta-text">सुरक्षित ऑफ़लाइन फाइल</div>
+                            <div class="font-bold" data-lang-key="menu_export">बैकअप डाउनलोड करें</div>
+                            <div class="text-[10px] meta-text" data-lang-key="menu_export_sub">सुरक्षित ऑफ़लाइन फाइल</div>
                         </div>
                     </button>
                     <button onclick="document.getElementById('importFile').click()" class="text-left px-3 py-2.5 rounded-xl flex items-center space-x-2.5 hover:opacity-80 elevated-bg">
                         <span class="text-base">📥</span>
                         <div>
-                            <div class="font-bold" data-lang-key="menu_import">बैकअप रीस्टोर (Import)</div>
-                            <div class="text-[10px] meta-text">JSON फाइल से लोड करें</div>
+                            <div class="font-bold" data-lang-key="menu_import">बैकअप पुनः लोड करें</div>
+                            <div class="text-[10px] meta-text" data-lang-key="menu_import_sub">बैकअप फाइल से डेटा लाएं</div>
                         </div>
                     </button>
                 </div>
-                <div class="mt-2 pt-2 border-t flex items-center justify-between gap-2" style="border-color: var(--border-color);">
-                    <button onclick="loadSampleDemoData()" class="px-3 py-2 rounded-lg text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20">✨ डेमो प्रोडक्ट्स लोड करें</button>
-                    <button onclick="logoutUser()" class="px-3 py-2 rounded-lg text-xs font-semibold bg-red-500/10 text-red-600 hover:bg-red-500/20 flex items-center gap-1">
-                        <span>🚪</span> <span data-lang-key="menu_logout">लॉगआउट / अकाउंट</span>
+                <div class="mt-2 pt-2 border-t flex items-center justify-end" style="border-color: var(--border-color);">
+                    <button onclick="logoutUser()" class="w-full sm:w-auto px-4 py-2 rounded-lg text-xs font-semibold bg-red-500/10 text-red-600 hover:bg-red-500/20 flex items-center justify-center gap-1.5">
+                        <span>🚪</span> <span data-lang-key="menu_logout">खाता / लॉगआउट</span>
                     </button>
                 </div>
             </div>
@@ -675,7 +674,7 @@
                 <div id="statsContainer" class="hidden grid grid-cols-2 lg:grid-cols-4 gap-2 fade-in">
                     <div onclick="showSection('history')" class="modern-card p-2.5 cursor-pointer flex items-center justify-between">
                         <div>
-                            <p class="text-[10px] font-semibold meta-text uppercase">आज की बिक्री</p>
+                            <p class="text-[10px] font-semibold meta-text uppercase" data-lang-key="kpi_today_sales">आज की बिक्री</p>
                             <p id="todaySalesStat" class="text-base md:text-lg font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">₹0</p>
                             <p id="todayBillsCountStat" class="text-[10px] meta-text">0 बिल आज</p>
                         </div>
@@ -686,25 +685,25 @@
                         <div>
                             <p class="text-[10px] font-semibold meta-text uppercase" data-lang-key="dashboard_saved_bills">कुल बिक्री</p>
                             <p id="totalRevenueStat" class="text-base md:text-lg font-extrabold primary-text mt-0.5">₹0</p>
-                            <p class="text-[10px] meta-text"><span id="totalBillsStat">0</span> सेव बिल</p>
+                            <p class="text-[10px] meta-text"><span id="totalBillsStat">0</span> <span data-lang-key="kpi_saved_bills_lbl">सहेजे बिल</span></p>
                         </div>
                         <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm">🧾</div>
                     </div>
 
                     <div onclick="showSection('khata')" class="modern-card p-2.5 cursor-pointer flex items-center justify-between">
                         <div>
-                            <p class="text-[10px] font-semibold meta-text uppercase">मार्केट उधार</p>
+                            <p class="text-[10px] font-semibold meta-text uppercase" data-lang-key="kpi_market_credit">कुल बकाया उधार</p>
                             <p id="totalUdhaarStat" class="text-base md:text-lg font-extrabold text-rose-600 dark:text-rose-400 mt-0.5">₹0</p>
-                            <p id="udhaarCustomersCountStat" class="text-[10px] meta-text">0 ग्राहक बकाया</p>
+                            <p id="udhaarCustomersCountStat" class="text-[10px] meta-text">0 बकायादार</p>
                         </div>
                         <div class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-sm">📒</div>
                     </div>
 
                     <div onclick="showSection('store')" class="modern-card p-2.5 cursor-pointer flex items-center justify-between">
                         <div>
-                            <p class="text-[10px] font-semibold meta-text uppercase" data-lang-key="dashboard_total_products">कुल प्रोडक्ट्स</p>
+                            <p class="text-[10px] font-semibold meta-text uppercase" data-lang-key="dashboard_total_products">कुल वस्तुएं</p>
                             <p id="totalProductsStat" class="text-base md:text-lg font-extrabold mt-0.5">0</p>
-                            <p id="lowStockStatText" class="text-[10px] text-amber-600 dark:text-amber-400 font-semibold">स्टॉक सामान्य</p>
+                            <p id="lowStockStatText" class="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold" data-lang-key="kpi_store_active">भंडार में उपलब्ध</p>
                         </div>
                         <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm">📦</div>
                     </div>
@@ -715,7 +714,7 @@
                     <div class="flex items-center justify-between gap-2 mb-2">
                         <h3 class="text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full primary-bg"></span>
-                            <span data-lang-key="dashboard_scanner_title">त्वरित स्कैन और प्राइस चेकर</span>
+                            <span data-lang-key="dashboard_scanner_title">त्वरित स्कैन एवं मूल्य जांच</span>
                         </h3>
                         <button onclick="startScanning('dashboard')" id="dashboardScanBtn" class="px-2.5 py-1 rounded-lg primary-bg text-white text-[11px] font-bold modern-btn">
                             <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8V6a2 2 0 012-2h2M3 16v2a2 2 0 002 2h2M21 8V6a2 2 0 00-2-2h-2M21 16v2a2 2 0 01-2 2h-2M4 12h16" /></svg>
@@ -727,7 +726,7 @@
                     <div class="relative">
                         <div class="flex items-center modern-input px-2.5 py-1.5">
                             <svg class="w-3.5 h-3.5 text-slate-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                            <input type="text" id="dashSearchInput" placeholder="प्रोडक्ट का नाम, बारकोड या ID टाइप करें..." class="bg-transparent border-none outline-none text-xs w-full" oninput="handleDashSearch(this.value)" autocomplete="off">
+                            <input type="text" id="dashSearchInput" data-lang-key="placeholder_dash_search" placeholder="वस्तु का नाम, बारकोड या कोड लिखें..." class="bg-transparent border-none outline-none text-xs w-full" oninput="handleDashSearch(this.value)" autocomplete="off">
                             <button onclick="document.getElementById('dashSearchInput').value=''; document.getElementById('dashSearchSuggestions').classList.add('hidden');" class="text-slate-400 hover:text-slate-600 text-xs px-1">✕</button>
                         </div>
                         <div id="dashSearchSuggestions" class="hidden absolute left-0 right-0 z-20 mt-1 card-bg border rounded-xl shadow-xl max-h-52 overflow-y-auto text-xs" style="border-color: var(--border-color);"></div>
@@ -738,11 +737,11 @@
                         <div class="scanner-container"><div id="dashboardReader"></div></div>
                         <div class="scanner-controls mt-2">
                             <div id="dashboardZoomControl" class="hidden items-center gap-2 mb-2 px-2">
-                                <span class="text-[10px] meta-text">🔍 ज़ूम</span>
+                                <span class="text-[10px] meta-text" data-lang-key="scanner_zoom">🔍 ज़ूम</span>
                                 <input type="range" id="dashboardZoomSlider" oninput="applyZoom()" class="zoom-slider">
                             </div>
                             <div class="flex items-center gap-2">
-                                <button onclick="toggleFlashlight('dashboard')" class="flash-toggle-btn w-full py-1 px-2.5 rounded-lg font-semibold text-[11px] elevated-bg border" style="border-color: var(--border-color);"><span class="flash-icon">🔦</span> <span data-lang-key="scanner_flash">फ्लैश</span></button>
+                                <button onclick="toggleFlashlight('dashboard')" class="flash-toggle-btn w-full py-1 px-2.5 rounded-lg font-semibold text-[11px] elevated-bg border" style="border-color: var(--border-color);"><span class="flash-icon">🔦</span> <span data-lang-key="scanner_flash">टॉर्च</span></button>
                                 <button onclick="stopScanning('dashboard')" data-lang-key="scanner_stop" class="w-full bg-rose-500 text-white py-1 px-2.5 rounded-lg font-semibold text-[11px]">बंद करें</button>
                             </div>
                         </div>
@@ -759,38 +758,37 @@
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex items-center flex-grow card-bg rounded-xl shadow-xs border px-2.5 py-1" style="border-color: var(--border-color);">
                         <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <input type="text" id="storeSearchInput" oninput="debouncedSearch()" data-lang-key="placeholder_search_product" placeholder="प्रोडक्ट, बारकोड, रैक या कैटेगरी खोजें..." class="w-full bg-transparent border-none outline-none text-xs px-2 py-1.5" style="color: var(--text);" autocomplete="off">
+                        <input type="text" id="storeSearchInput" oninput="debouncedSearch()" data-lang-key="placeholder_search_product" placeholder="वस्तु का नाम, बारकोड या श्रेणी खोजें..." class="w-full bg-transparent border-none outline-none text-xs px-2 py-1.5" style="color: var(--text);" autocomplete="off">
                         <button id="clearStoreSearch" class="text-slate-400 hover:text-slate-600 hidden px-1">✕</button>
                         <div class="w-px h-5 mx-1.5" style="background-color: var(--border-color);"></div>
                         <select id="sortOrderSelect" class="bg-transparent border-none outline-none text-xs cursor-pointer py-1 font-semibold" style="color: var(--text-light);" onchange="searchAndSortProducts()">
-                            <option value="date-desc">नया पहले</option>
-                            <option value="name-asc">नाम A-Z</option>
-                            <option value="name-desc">नाम Z-A</option>
-                            <option value="price-desc">महंगा पहले</option>
-                            <option value="price-asc">सस्ता पहले</option>
-                            <option value="stock-asc">कम स्टॉक पहले</option>
+                            <option value="date-desc" data-lang-key="sort_newest">नवीनतम पहले</option>
+                            <option value="name-asc" data-lang-key="sort_name_asc">नाम (क से ज्ञ)</option>
+                            <option value="name-desc" data-lang-key="sort_name_desc">नाम (ज्ञ से क)</option>
+                            <option value="price-desc" data-lang-key="sort_price_desc">अधिक मूल्य पहले</option>
+                            <option value="price-asc" data-lang-key="sort_price_asc">कम मूल्य पहले</option>
                         </select>
                         <div class="w-px h-5 mx-1.5" style="background-color: var(--border-color);"></div>
                         <div id="view-switcher" class="flex items-center gap-0.5 flex-shrink-0">
-                            <button onclick="changeStoreView('list')" class="view-btn active" title="कॉम्पैक्ट लिस्ट">
+                            <button onclick="changeStoreView('list')" class="view-btn active" title="सूची दृश्य">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             </button>
-                            <button onclick="changeStoreView('grid')" class="view-btn" title="बारकोड व कार्ड ग्रिड">
+                            <button onclick="changeStoreView('grid')" class="view-btn" title="कार्ड दृश्य">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                             </button>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5">
-                        <button onclick="printAllProducts()" class="px-2.5 py-2 rounded-xl text-xs font-semibold elevated-bg border hover:opacity-80 flex items-center gap-1" style="border-color: var(--border-color);" title="बारकोड लेबल प्रिंट">
-                            <span>🏷️</span> <span class="hidden sm:inline">लेबल प्रिंट</span>
+                        <button onclick="printAllProducts()" class="px-2.5 py-2 rounded-xl text-xs font-semibold elevated-bg border hover:opacity-80 flex items-center gap-1" style="border-color: var(--border-color);" title="बारकोड स्टीकर मुद्रण">
+                            <span>🏷️</span> <span class="hidden sm:inline" data-lang-key="btn_label_print">स्टीकर मुद्रण</span>
                         </button>
                         <button onclick="showAddModal()" class="px-3 py-2 rounded-xl text-xs font-bold primary-bg text-white shadow-sm flex items-center gap-1">
-                            <span>➕</span> <span data-lang-key="dashboard_add_product">नया प्रोडक्ट</span>
+                            <span>➕</span> <span data-lang-key="dashboard_add_product">नई वस्तु</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Dynamic Category & Stock Filter Chips -->
+                <!-- Dynamic Category Filter Chips -->
                 <div id="storeCategoryFilterBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1"></div>
 
                 <!-- Products Container -->
@@ -805,11 +803,11 @@
                         <div class="pl-2.5 pr-1.5 flex items-center pointer-events-none">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                         </div>
-                        <input type="text" id="searchProduct" data-lang-key="placeholder_search_product" placeholder="आइटम खोजें या बारकोड स्कैन करें..." class="w-full py-1.5 bg-transparent border-none outline-none text-xs font-medium" style="color: var(--text);" oninput="searchProducts(this.value)" autocomplete="off">
+                        <input type="text" id="searchProduct" data-lang-key="placeholder_pos_search" placeholder="वस्तु खोजें या बारकोड स्कैन करें..." class="w-full py-1.5 bg-transparent border-none outline-none text-xs font-medium" style="color: var(--text);" oninput="searchProducts(this.value)" autocomplete="off">
                         <button id="clearShoppingSearch" class="px-1.5 text-slate-400 hover:text-slate-600 hidden text-xs">✕</button>
                         <div class="w-px h-4" style="background-color: var(--border-color);"></div>
-                        <button onclick="showManualAddModal()" id="manualAddBtn" title="खुला / मैन्युअल आइटम जोड़ें" class="px-2 py-1.5 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 transition text-[11px] font-bold flex items-center gap-0.5 flex-shrink-0 whitespace-nowrap">
-                            <span>➕</span> <span>खुला</span>
+                        <button onclick="showManualAddModal()" id="manualAddBtn" title="खुली वस्तु जोड़ें" class="px-2 py-1.5 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10 transition text-[11px] font-bold flex items-center gap-0.5 flex-shrink-0 whitespace-nowrap">
+                            <span>➕</span> <span data-lang-key="btn_loose_item">खुली वस्तु</span>
                         </button>
                         <div class="w-px h-4" style="background-color: var(--border-color);"></div>
                         <button onclick="startScanning('shopping')" id="shoppingScanBtn" title="बारकोड स्कैनर" class="px-2.5 py-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-500/10 transition flex-shrink-0">
@@ -826,8 +824,8 @@
                                 <input type="range" id="shoppingZoomSlider" oninput="applyZoom()" class="zoom-slider">
                             </div>
                             <div class="flex items-center gap-2">
-                                <button onclick="toggleFlashlight('shopping')" class="flash-toggle-btn w-full py-1 px-2.5 rounded-lg font-semibold text-[11px] elevated-bg"><span class="flash-icon">🔦</span> फ्लैश</button>
-                                <button onclick="stopScanning('shopping')" class="w-full bg-rose-500 text-white py-1 px-2.5 rounded-lg font-semibold text-[11px]">स्कैन बंद करें</button>
+                                <button onclick="toggleFlashlight('shopping')" class="flash-toggle-btn w-full py-1 px-2.5 rounded-lg font-semibold text-[11px] elevated-bg"><span class="flash-icon">🔦</span> <span data-lang-key="scanner_flash">टॉर्च</span></button>
+                                <button onclick="stopScanning('shopping')" data-lang-key="scanner_stop" class="w-full bg-rose-500 text-white py-1 px-2.5 rounded-lg font-semibold text-[11px]">बंद करें</button>
                             </div>
                         </div>
                     </div>
@@ -844,8 +842,11 @@
                             <h3 class="text-xs sm:text-sm font-extrabold flex items-center gap-1">
                                 <span>🛒</span>
                                 <span data-lang-key="billing_current_bill">वर्तमान बिल</span>
-                                <span id="billItemCountBadge" class="text-[10px] px-1.5 py-0.5 rounded-full primary-bg text-white font-bold">0 आइटम</span>
+                                <span id="billItemCountBadge" class="text-[10px] px-1.5 py-0.5 rounded-full primary-bg text-white font-bold">0 वस्तु</span>
                             </h3>
+                            <button onclick="starCurrentBill()" title="बिल तारांकित / होल्ड करें" class="px-1.5 py-0.5 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 text-[10px] font-bold flex items-center gap-0.5 transition">
+                                <span>⭐</span>
+                            </button>
                         </div>
                         <!-- Customer Name & Mobile Inputs -->
                         <div class="flex items-center gap-1.5 w-full sm:w-auto">
@@ -853,7 +854,7 @@
                                 <input type="text" id="customerName" data-lang-key="placeholder_customer_name" placeholder="👤 ग्राहक का नाम" class="w-full py-1 px-2 modern-input text-[11px] font-medium" autocomplete="off">
                                 <div id="customerNameSuggestions" class="hidden absolute left-0 right-0 z-20 mt-1 card-bg border rounded-xl shadow-lg max-h-40 overflow-y-auto text-xs" style="border-color: var(--border-color);"></div>
                             </div>
-                            <input type="tel" id="customerPhone" placeholder="📞 मोबाइल नं." class="w-28 sm:w-32 py-1 px-2 modern-input text-[11px] font-mono" maxlength="12" autocomplete="off">
+                            <input type="tel" id="customerPhone" data-lang-key="placeholder_customer_phone" placeholder="📞 दूरभाष संख्या" class="w-28 sm:w-32 py-1 px-2 modern-input text-[11px] font-mono" maxlength="12" autocomplete="off">
                         </div>
                     </div>
 
@@ -864,22 +865,22 @@
                     <div class="rounded-xl p-2 border space-y-1.5 elevated-bg" style="border-color: var(--border-color);">
                         <div class="grid grid-cols-3 gap-1.5 text-[11px]">
                             <div class="flex items-center justify-between px-1.5 py-1 rounded-lg card-bg border" style="border-color: var(--border-color);">
-                                <span class="meta-text text-[10px] whitespace-nowrap">छूट ₹:</span>
+                                <span class="meta-text text-[10px] whitespace-nowrap" data-lang-key="lbl_discount">छूट ₹:</span>
                                 <input type="number" id="billDiscountInput" value="" placeholder="0" min="0" oninput="updateTotal()" class="w-12 sm:w-16 text-right font-bold bg-transparent outline-none text-emerald-600 dark:text-emerald-400 text-[11px]">
                             </div>
                             <div class="flex items-center justify-between px-1.5 py-1 rounded-lg card-bg border" style="border-color: var(--border-color);">
-                                <span class="meta-text text-[10px] whitespace-nowrap">एक्स्ट्रा ₹:</span>
+                                <span class="meta-text text-[10px] whitespace-nowrap" data-lang-key="lbl_extra_charge">अतिरिक्त ₹:</span>
                                 <input type="number" id="billExtraChargeInput" value="" placeholder="0" oninput="updateTotal()" class="w-12 sm:w-16 text-right font-bold bg-transparent outline-none text-[11px]">
                             </div>
                             <div class="flex items-center justify-between px-1.5 py-1 rounded-lg card-bg border" style="border-color: var(--border-color);">
-                                <span class="meta-text text-[10px] whitespace-nowrap">राउंड-ऑफ:</span>
+                                <span class="meta-text text-[10px] whitespace-nowrap" data-lang-key="lbl_round_off">पूर्णांकन:</span>
                                 <input type="checkbox" id="billRoundOffToggle" onchange="updateTotal()" class="w-3.5 h-3.5 accent-blue-600 cursor-pointer">
                             </div>
                         </div>
 
                         <div class="flex flex-wrap items-center justify-between gap-1.5 pt-1.5 border-t" style="border-color: var(--border-color);">
                             <div class="text-[10px] meta-text space-x-1.5">
-                                <span>उप-योग: <strong id="subTotalAmount">₹0.00</strong></span>
+                                <span><span data-lang-key="lbl_subtotal">उप-योग:</span> <strong id="subTotalAmount">₹0.00</strong></span>
                                 <span id="mrpSavingsBadge" class="hidden text-emerald-600 dark:text-emerald-400 font-bold">• बचत: ₹0</span>
                             </div>
                             <div class="flex items-center gap-1.5">
@@ -891,17 +892,17 @@
 
                     <!-- Slim Compact POS Action Bar (Clear, Print, WhatsApp, Save) -->
                     <div class="grid grid-cols-4 gap-1.5 mt-2">
-                        <button onclick="handleClearBill()" title="बिल क्लियर करें" class="py-1.5 px-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold text-[11px] flex items-center justify-center gap-1 whitespace-nowrap transition">
-                            <span class="text-xs">🗑️</span> <span data-lang-key="btn_clear">क्लियर</span>
+                        <button onclick="handleClearBill()" class="py-1.5 px-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold text-[11px] flex items-center justify-center gap-1 whitespace-nowrap transition">
+                            <span class="text-xs">🗑️</span> <span data-lang-key="btn_clear">साफ़ करें</span>
                         </button>
-                        <button onclick="printBill()" title="प्रिंट या थर्मल रसीद" class="py-1.5 px-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-bold text-[11px] flex items-center justify-center gap-1 whitespace-nowrap transition">
-                            <span class="text-xs">🖨️</span> <span data-lang-key="btn_download">प्रिंट</span>
+                        <button onclick="printBill()" class="py-1.5 px-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-bold text-[11px] flex items-center justify-center gap-1 whitespace-nowrap transition">
+                            <span class="text-xs">🖨️</span> <span data-lang-key="btn_download">मुद्रण</span>
                         </button>
-                        <button onclick="shareWhatsappBill()" title="WhatsApp पर बिल भेजें" class="py-1.5 px-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-[11px] flex items-center justify-center gap-1 whitespace-nowrap transition">
-                            <span class="text-xs">💬</span> <span>WhatsApp</span>
+                        <button onclick="shareWhatsappBill()" class="py-1.5 px-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-[11px] flex items-center justify-center gap-1 whitespace-nowrap transition">
+                            <span class="text-xs">💬</span> <span data-lang-key="btn_whatsapp">व्हाट्सएप</span>
                         </button>
-                        <button onclick="saveBill()" title="बिल सेव करें" class="py-1.5 px-1.5 rounded-lg secondary-bg text-white shadow-xs font-extrabold text-[11px] flex items-center justify-center gap-1 whitespace-nowrap transition">
-                            <span class="text-xs">✅</span> <span data-lang-key="btn_save">सेव बिल</span>
+                        <button onclick="saveBill()" class="py-1.5 px-1.5 rounded-lg secondary-bg text-white shadow-xs font-extrabold text-[11px] flex items-center justify-center gap-1 whitespace-nowrap transition">
+                            <span class="text-xs">✅</span> <span data-lang-key="btn_save">बिल सहेजें</span>
                         </button>
                     </div>
                 </div>
@@ -912,13 +913,13 @@
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div>
                         <h2 class="text-base md:text-lg font-extrabold flex items-center gap-1.5">
-                            <span>📒</span> <span data-lang-key="tab_khata">ग्राहक उधार खाता बुक (Khata Ledger)</span>
+                            <span>📒</span> <span data-lang-key="khata_heading">ग्राहक उधार बहीखाता</span>
                         </h2>
-                        <p class="text-xs meta-text">सभी उधार बिलों का ग्राहक-वार हिसाब, वसूली और WhatsApp तगादा</p>
+                        <p class="text-xs meta-text" data-lang-key="khata_subheading">सभी उधार बिलों का ग्राहक-वार हिसाब, वसूली और तगादा</p>
                     </div>
                     <div class="flex items-center gap-2">
                         <button onclick="printKhataSummaryReport()" class="px-3 py-1.5 rounded-xl text-xs font-semibold elevated-bg border hover:opacity-80 flex items-center gap-1" style="border-color: var(--border-color);">
-                            <span>🖨️</span> <span>उधार लिस्ट प्रिंट</span>
+                            <span>🖨️</span> <span data-lang-key="btn_print_khata">उधार सूची मुद्रण</span>
                         </button>
                     </div>
                 </div>
@@ -926,15 +927,15 @@
                 <!-- Khata Summary Banner -->
                 <div class="grid grid-cols-3 gap-2.5">
                     <div class="modern-card p-3 border-l-4 border-l-rose-500">
-                        <p class="text-[11px] meta-text font-semibold">कुल बकाया उधार</p>
+                        <p class="text-[11px] meta-text font-semibold" data-lang-key="khata_total_pending">कुल बकाया उधार</p>
                         <p id="khataTotalPending" class="text-lg font-extrabold text-rose-600 dark:text-rose-400">₹0.00</p>
                     </div>
                     <div class="modern-card p-3 border-l-4 border-l-emerald-500">
-                        <p class="text-[11px] meta-text font-semibold">कुल वसूल / जमा</p>
+                        <p class="text-[11px] meta-text font-semibold" data-lang-key="khata_total_recovered">कुल प्राप्त राशि</p>
                         <p id="khataTotalRecovered" class="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">₹0.00</p>
                     </div>
                     <div class="modern-card p-3 border-l-4 border-l-blue-500">
-                        <p class="text-[11px] meta-text font-semibold">बकायादार ग्राहक</p>
+                        <p class="text-[11px] meta-text font-semibold" data-lang-key="khata_active_customers">बकायादार ग्राहक</p>
                         <p id="khataActiveCustomers" class="text-lg font-extrabold primary-text">0</p>
                     </div>
                 </div>
@@ -942,7 +943,7 @@
                 <!-- Khata Search -->
                 <div class="flex items-center card-bg border rounded-xl px-3 py-2 shadow-xs" style="border-color: var(--border-color);">
                     <svg class="w-4 h-4 text-slate-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    <input type="text" id="khataSearchInput" oninput="renderKhataSection()" placeholder="ग्राहक का नाम या मोबाइल नंबर खोजें..." class="w-full bg-transparent outline-none text-xs">
+                    <input type="text" id="khataSearchInput" oninput="renderKhataSection()" data-lang-key="placeholder_khata_search" placeholder="ग्राहक का नाम या दूरभाष संख्या खोजें..." class="w-full bg-transparent outline-none text-xs">
                 </div>
 
                 <div id="khataCustomersList" class="space-y-2 pb-16"></div>
@@ -954,28 +955,36 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <div class="flex items-center flex-grow card-bg border rounded-xl overflow-hidden shadow-xs px-3 py-1.5" style="border-color: var(--border-color);">
                         <svg class="w-4 h-4 text-slate-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <input type="text" id="historySearchInput" oninput="filterAndDisplayHistory()" data-lang-key="placeholder_search_history" placeholder="ग्राहक, बिल # या आइटम से खोजें..." class="w-full bg-transparent border-none outline-none text-xs" style="color: var(--text);" autocomplete="off">
+                        <input type="text" id="historySearchInput" oninput="filterAndDisplayHistory()" data-lang-key="placeholder_search_history" placeholder="ग्राहक, बिल संख्या या वस्तु खोजें..." class="w-full bg-transparent border-none outline-none text-xs" style="color: var(--text);" autocomplete="off">
                         <button id="clearHistorySearch" class="text-slate-400 hover:text-slate-600 hidden px-1 text-xs">✕</button>
                         <div class="w-px h-5 mx-2" style="background-color: var(--border-color);"></div>
                         <input type="date" id="historyDateInput" onchange="filterAndDisplayHistory()" class="bg-transparent border-none outline-none text-xs cursor-pointer" style="color: var(--text);">
                     </div>
                     <button onclick="printDailySalesReport()" class="px-3 py-2 rounded-xl text-xs font-semibold elevated-bg border hover:opacity-80 flex items-center gap-1" style="border-color: var(--border-color);">
-                        <span>🖨️</span> <span>सेल्स रिपोर्ट प्रिंट</span>
+                        <span>🖨️</span> <span data-lang-key="btn_sales_report">बिक्री प्रतिवेदन</span>
                     </button>
                 </div>
 
                 <!-- Payment Status Filter Chips -->
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                     <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-                        <button onclick="setHistoryPaymentFilter('all')" id="histFilter_all" class="chip-btn active">सभी बिल</button>
-                        <button onclick="setHistoryPaymentFilter('cash')" id="histFilter_cash" class="chip-btn">💵 नगद (Cash)</button>
-                        <button onclick="setHistoryPaymentFilter('upi')" id="histFilter_upi" class="chip-btn">📱 ऑनलाइन (UPI)</button>
-                        <button onclick="setHistoryPaymentFilter('credit')" id="histFilter_credit" class="chip-btn">🔴 उधार (Credit)</button>
+                        <button onclick="setHistoryPaymentFilter('all')" id="histFilter_all" class="chip-btn active" data-lang-key="hist_all">सभी बिल</button>
+                        <button onclick="setHistoryPaymentFilter('cash')" id="histFilter_cash" class="chip-btn" data-lang-key="hist_cash">💵 नकद</button>
+                        <button onclick="setHistoryPaymentFilter('upi')" id="histFilter_upi" class="chip-btn" data-lang-key="hist_upi">📱 ऑनलाइन</button>
+                        <button onclick="setHistoryPaymentFilter('credit')" id="histFilter_credit" class="chip-btn" data-lang-key="hist_credit">🔴 उधार</button>
                     </div>
                     <div id="historyFilteredSummary" class="text-xs font-bold meta-text"></div>
                 </div>
 
-
+                <!-- Starred / Held Bills Tray Restored in History -->
+                <div id="historyStarredContainer" class="hidden modern-card p-2.5 border-l-4 border-l-amber-500">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <h3 class="text-xs font-extrabold flex items-center text-amber-600 dark:text-amber-400 gap-1">
+                            <span>⭐</span> <span data-lang-key="starred_tray_title">तारांकित / होल्ड बिल (खोलने हेतु स्पर्श करें, हटाने हेतु दबाए रखें)</span>
+                        </h3>
+                    </div>
+                    <div id="historyStarredList" class="flex overflow-x-auto space-x-2 pb-1 no-scrollbar"></div>
+                </div>
 
                 <!-- Grouped Bill History List -->
                 <div id="billHistory" class="space-y-2 pb-16"></div>
@@ -1017,12 +1026,12 @@
 
     <!-- MODALS -->
 
-    <!-- 1. Add Product Modal -->
+    <!-- 1. Add Product Modal (Clean: Barcode + Camera, Short ID + Camera, Name, Category, Price, Qty, Unit, Details) -->
     <div id="addProductModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-2 no-print" onclick="if(event.target === this) closeAddModal()">
         <div class="modern-card p-4 w-full max-w-md slide-up flex flex-col max-h-[90vh]">
             <div class="flex items-center justify-between mb-3 pb-2 border-b" style="border-color: var(--border-color);">
                 <h3 class="text-base font-extrabold flex items-center gap-1.5">
-                    <span>✨</span> <span data-lang-key="modal_add_product_title">नया प्रोडक्ट जोड़ें</span>
+                    <span>✨</span> <span data-lang-key="modal_add_product_title">नई वस्तु जोड़ें</span>
                 </h3>
                 <button onclick="closeAddModal()" class="text-slate-400 hover:text-red-500 text-xl font-bold">&times;</button>
             </div>
@@ -1032,108 +1041,81 @@
                     <div class="scanner-controls mt-2">
                         <div id="storeZoomControl" class="hidden items-center gap-2 mb-2 px-2"><input type="range" id="storeZoomSlider" oninput="applyZoom()" class="zoom-slider"></div>
                         <div class="flex items-center gap-2">
-                            <button onclick="toggleFlashlight('store')" class="flash-toggle-btn w-full py-1.5 px-3 rounded-lg font-semibold elevated-bg"><span class="flash-icon">🔦</span> फ्लैश</button>
-                            <button onclick="stopScanning('store')" class="w-full bg-rose-500 text-white py-1.5 px-3 rounded-lg font-semibold">स्कैन बंद करें</button>
+                            <button onclick="toggleFlashlight('store')" class="flash-toggle-btn w-full py-1.5 px-3 rounded-lg font-semibold elevated-bg"><span class="flash-icon">🔦</span> <span data-lang-key="scanner_flash">टॉर्च</span></button>
+                            <button onclick="stopScanning('store')" data-lang-key="scanner_stop" class="w-full bg-rose-500 text-white py-1.5 px-3 rounded-lg font-semibold">बंद करें</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_barcode">बारकोड नंबर</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_barcode">बारकोड संख्या</label>
                         <div class="flex items-center gap-1">
-                            <input type="text" id="productBarcode" placeholder="स्कैन या टाइप" class="w-full p-2 modern-input text-xs font-mono" onchange="fetchProductDetails(this.value)" autocomplete="off">
-                            <button onclick="openStoreScanner('barcode')" id="storeScanBtn" class="primary-bg text-white p-2 rounded-lg flex-shrink-0" title="स्कैन करें">📷</button>
+                            <input type="text" id="productBarcode" data-lang-key="placeholder_barcode" placeholder="स्कैन या लिखें" class="w-full p-2 modern-input text-xs font-mono" onchange="fetchProductDetails(this.value)" autocomplete="off">
+                            <button onclick="openStoreScanner('barcode')" id="storeScanBtn" class="primary-bg text-white p-2 rounded-lg flex-shrink-0" title="कैमरा स्कैन">📷</button>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_manual_id">शॉर्ट कोड / ID</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_manual_id">संक्षिप्त कोड</label>
                         <div class="flex items-center gap-1">
-                            <input type="text" id="productManualId" placeholder="जैसे: 101, A1" class="w-full p-2 modern-input text-xs font-mono">
-                            <button onclick="generateAutoCode('add')" class="px-2 py-2 rounded-lg elevated-bg border text-[10px] font-bold flex-shrink-0" style="border-color: var(--border-color);" title="ऑटो ID बनाएं">ऑटो</button>
+                            <input type="text" id="productManualId" data-lang-key="placeholder_manual_id" placeholder="जैसे: 101, A1" class="w-full p-2 modern-input text-xs font-mono" autocomplete="off">
+                            <button onclick="openStoreScanner('manual')" id="storeManualScanBtn" class="primary-bg text-white p-2 rounded-lg flex-shrink-0" title="कैमरा स्कैन">📷</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2">
                     <div class="col-span-2">
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_product_name">प्रोडक्ट का नाम *</label>
-                        <input type="text" id="productName" placeholder="जैसे, मैगी नूडल्स / चीनी" class="w-full p-2 modern-input text-xs font-semibold" required autocomplete="off">
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_product_name">वस्तु का नाम *</label>
+                        <input type="text" id="productName" data-lang-key="placeholder_product_name" placeholder="जैसे: मैगी नूडल्स / चीनी" class="w-full p-2 modern-input text-xs font-semibold" required autocomplete="off">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1">कैटेगरी</label>
-                        <input type="text" id="productCategory" list="categoryOptionsList" placeholder="किराना" class="w-full p-2 modern-input text-xs" value="किराना">
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_category">श्रेणी</label>
+                        <input type="text" id="productCategory" list="categoryOptionsList" data-lang-key="placeholder_category" placeholder="किराना" class="w-full p-2 modern-input text-xs" value="किराना">
                         <datalist id="categoryOptionsList">
-                            <option value="किराना (Kirana)">
-                            <option value="स्नैक्स (Snacks)">
-                            <option value="डेयरी (Dairy)">
-                            <option value="पेय (Beverages)">
-                            <option value="पर्सनल केयर">
-                            <option value="घरेलू (Household)">
-                            <option value="मसाले (Spices)">
-                            <option value="अन्य (General)">
+                            <option value="किराना">
+                            <option value="नाश्ता एवं नमकीन">
+                            <option value="डेयरी एवं दुग्ध">
+                            <option value="पेय पदार्थ">
+                            <option value="घरेलू सामग्री">
+                            <option value="मसाले">
+                            <option value="सामान्य">
                         </datalist>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_price">बिक्री रेट (₹) *</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_price">विक्रय मूल्य (₹) *</label>
                         <input type="number" step="any" id="productPrice" placeholder="₹ 0" class="w-full p-2 modern-input text-xs font-bold price-text" required>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1">MRP (₹)</label>
-                        <input type="number" step="any" id="productMrp" placeholder="ऑप्शनल" class="w-full p-2 modern-input text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1">खरीद रेट (Cost ₹)</label>
-                        <input type="number" step="any" id="productCostPrice" placeholder="गुप्त खरीद" class="w-full p-2 modern-input text-xs">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_quantity">पैकिंग मात्रा</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_quantity">मात्रा</label>
                         <input type="number" step="any" id="productFillingQuantity" class="w-full p-2 modern-input text-xs" value="1">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_unit">यूनिट</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_unit">इकाई</label>
                         <select id="productUnit" class="w-full p-2 modern-input text-xs">
-                            <option value="piece" data-lang-key="unit_piece">नग (piece)</option>
-                            <option value="packet" data-lang-key="unit_packet">पैकेट (packet)</option>
-                            <option value="kg" data-lang-key="unit_kg">कि.ग्रा. (kg)</option>
-                            <option value="gram" data-lang-key="unit_gram">ग्राम (gram)</option>
-                            <option value="litre" data-lang-key="unit_litre">लीटर (litre)</option>
-                            <option value="ml" data-lang-key="unit_ml">मि.ली. (ml)</option>
-                            <option value="dozen" data-lang-key="unit_dozen">दर्जन (dozen)</option>
-                            <option value="box" data-lang-key="unit_box">बॉक्स (box)</option>
+                            <option value="piece" data-lang-key="unit_piece">नग</option>
+                            <option value="packet" data-lang-key="unit_packet">पैकेट</option>
+                            <option value="kg" data-lang-key="unit_kg">किलोग्राम</option>
+                            <option value="gram" data-lang-key="unit_gram">ग्राम</option>
+                            <option value="litre" data-lang-key="unit_litre">लीटर</option>
+                            <option value="ml" data-lang-key="unit_ml">मिलीलीटर</option>
+                            <option value="dozen" data-lang-key="unit_dozen">दर्जन</option>
+                            <option value="box" data-lang-key="unit_box">डिब्बा</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-2">
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1">मौजूदा स्टॉक</label>
-                        <input type="number" step="any" id="productStock" placeholder="जैसे: 50" class="w-full p-2 modern-input text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1">लो-स्टॉक अलर्ट</label>
-                        <input type="number" step="any" id="productMinStock" placeholder="जैसे: 5" value="5" class="w-full p-2 modern-input text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1">रैक / लोकेशन</label>
-                        <input type="text" id="productRack" placeholder="जैसे: R-2" class="w-full p-2 modern-input text-xs">
-                    </div>
-                </div>
-
                 <div>
-                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_details">विवरण / नोट</label>
-                    <input type="text" id="productDetails" placeholder="जैसे: ताज़ा स्टॉक, होलसेल रेट उपलब्ध" class="w-full p-2 modern-input text-xs">
+                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_details">विवरण / टिप्पणी</label>
+                    <input type="text" id="productDetails" data-lang-key="placeholder_details" placeholder="वैकल्पिक विवरण लिखें..." class="w-full p-2 modern-input text-xs">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-2.5 mt-4 pt-2 border-t" style="border-color: var(--border-color);">
                 <button onclick="closeAddModal()" data-lang-key="btn_close" class="py-2 px-3 rounded-xl font-semibold text-xs elevated-bg">बंद करें</button>
-                <button onclick="addProduct()" data-lang-key="btn_add" class="secondary-bg text-white py-2 px-3 rounded-xl font-bold text-xs shadow">सेव करें</button>
+                <button onclick="addProduct()" data-lang-key="btn_add" class="secondary-bg text-white py-2 px-3 rounded-xl font-bold text-xs shadow">सहेजें</button>
             </div>
         </div>
     </div>
@@ -1143,7 +1125,7 @@
         <div class="modern-card p-4 w-full max-w-md slide-up flex flex-col max-h-[90vh]">
             <div class="flex items-center justify-between mb-3 pb-2 border-b" style="border-color: var(--border-color);">
                 <h3 class="text-base font-extrabold flex items-center gap-1.5">
-                    <span>✏️</span> <span data-lang-key="modal_edit_product_title">प्रोडक्ट एडिट करें</span>
+                    <span>✏️</span> <span data-lang-key="modal_edit_product_title">वस्तु संपादित करें</span>
                 </h3>
                 <button onclick="closeEditModal()" class="text-slate-400 hover:text-red-500 text-xl font-bold">&times;</button>
             </div>
@@ -1153,22 +1135,22 @@
                     <div class="scanner-controls mt-2">
                         <div id="editZoomControl" class="hidden items-center gap-2 mb-2 px-2"><input type="range" id="editZoomSlider" oninput="applyZoom()" class="zoom-slider"></div>
                         <div class="flex items-center gap-2">
-                            <button onclick="toggleFlashlight('edit')" class="flash-toggle-btn w-full py-1.5 px-3 rounded-lg font-semibold elevated-bg"><span class="flash-icon">🔦</span> फ्लैश</button>
-                            <button onclick="stopScanning('edit')" class="w-full bg-rose-500 text-white py-1.5 px-3 rounded-lg font-semibold">बंद करें</button>
+                            <button onclick="toggleFlashlight('edit')" class="flash-toggle-btn w-full py-1.5 px-3 rounded-lg font-semibold elevated-bg"><span class="flash-icon">🔦</span> <span data-lang-key="scanner_flash">टॉर्च</span></button>
+                            <button onclick="stopScanning('edit')" data-lang-key="scanner_stop" class="w-full bg-rose-500 text-white py-1.5 px-3 rounded-lg font-semibold">बंद करें</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_barcode">बारकोड</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_barcode">बारकोड संख्या</label>
                         <div class="flex items-center gap-1">
                             <input type="text" id="editProductBarcode" class="w-full p-2 modern-input text-xs font-mono">
                             <button onclick="openEditScanner('barcode')" class="primary-bg text-white p-2 rounded-lg flex-shrink-0">📷</button>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_manual_id">मैन्युअल ID</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_manual_id">संक्षिप्त कोड</label>
                         <div class="flex items-center gap-1">
                             <input type="text" id="editProductManualId" class="w-full p-2 modern-input text-xs font-mono">
                             <button onclick="openEditScanner('manual')" class="primary-bg text-white p-2 rounded-lg flex-shrink-0">📷</button>
@@ -1178,73 +1160,47 @@
 
                 <div class="grid grid-cols-3 gap-2">
                     <div class="col-span-2">
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_product_name">प्रोडक्ट का नाम *</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_product_name">वस्तु का नाम *</label>
                         <input type="text" id="editProductName" class="w-full p-2 modern-input text-xs font-semibold">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1">कैटेगरी</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_category">श्रेणी</label>
                         <input type="text" id="editProductCategory" list="categoryOptionsList" class="w-full p-2 modern-input text-xs">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_price">बिक्री रेट (₹) *</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_price">विक्रय मूल्य (₹) *</label>
                         <input type="number" step="any" id="editProductPrice" class="w-full p-2 modern-input text-xs font-bold price-text">
                     </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1">MRP (₹)</label>
-                        <input type="number" step="any" id="editProductMrp" class="w-full p-2 modern-input text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1">खरीद रेट (Cost ₹)</label>
-                        <input type="number" step="any" id="editProductCostPrice" class="w-full p-2 modern-input text-xs">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_quantity">मात्रा</label>
                         <input type="number" step="any" id="editProductFillingQuantity" class="w-full p-2 modern-input text-xs">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_unit">यूनिट</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_unit">इकाई</label>
                         <select id="editProductUnit" class="w-full p-2 modern-input text-xs">
-                            <option value="piece" data-lang-key="unit_piece">नग (piece)</option>
-                            <option value="packet" data-lang-key="unit_packet">पैकेट (packet)</option>
-                            <option value="kg" data-lang-key="unit_kg">कि.ग्रा. (kg)</option>
-                            <option value="gram" data-lang-key="unit_gram">ग्राम (gram)</option>
-                            <option value="litre" data-lang-key="unit_litre">लीटर (litre)</option>
-                            <option value="ml" data-lang-key="unit_ml">मि.ली. (ml)</option>
-                            <option value="dozen" data-lang-key="unit_dozen">दर्जन (dozen)</option>
-                            <option value="box" data-lang-key="unit_box">बॉक्स (box)</option>
+                            <option value="piece" data-lang-key="unit_piece">नग</option>
+                            <option value="packet" data-lang-key="unit_packet">पैकेट</option>
+                            <option value="kg" data-lang-key="unit_kg">किलोग्राम</option>
+                            <option value="gram" data-lang-key="unit_gram">ग्राम</option>
+                            <option value="litre" data-lang-key="unit_litre">लीटर</option>
+                            <option value="ml" data-lang-key="unit_ml">मिलीलीटर</option>
+                            <option value="dozen" data-lang-key="unit_dozen">दर्जन</option>
+                            <option value="box" data-lang-key="unit_box">डिब्बा</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-2">
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1">स्टॉक संख्या</label>
-                        <input type="number" step="any" id="editProductStock" class="w-full p-2 modern-input text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1">लो-स्टॉक अलर्ट</label>
-                        <input type="number" step="any" id="editProductMinStock" class="w-full p-2 modern-input text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold mb-1">रैक / लोकेशन</label>
-                        <input type="text" id="editProductRack" class="w-full p-2 modern-input text-xs">
-                    </div>
-                </div>
-
                 <div>
-                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_details">विवरण</label>
+                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_details">विवरण / टिप्पणी</label>
                     <input type="text" id="editProductDetails" class="w-full p-2 modern-input text-xs">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-2.5 mt-4 pt-2 border-t" style="border-color: var(--border-color);">
-                <button onclick="closeEditModal()" data-lang-key="btn_cancel" class="py-2 px-3 rounded-xl font-semibold text-xs elevated-bg">कैंसल</button>
-                <button onclick="updateProduct()" data-lang-key="btn_update" class="secondary-bg text-white py-2 px-3 rounded-xl font-bold text-xs shadow">अपडेट करें</button>
+                <button onclick="closeEditModal()" data-lang-key="btn_cancel" class="py-2 px-3 rounded-xl font-semibold text-xs elevated-bg">रद्द करें</button>
+                <button onclick="updateProduct()" data-lang-key="btn_update" class="secondary-bg text-white py-2 px-3 rounded-xl font-bold text-xs shadow">अद्यतन करें</button>
             </div>
         </div>
     </div>
@@ -1253,50 +1209,50 @@
     <div id="storeSettingsModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-2 no-print" onclick="if(event.target === this) closeStoreSettingsModal()">
         <div class="modern-card p-4 w-full max-w-md slide-up flex flex-col max-h-[90vh]">
             <div class="flex items-center justify-between mb-3 pb-2 border-b" style="border-color: var(--border-color);">
-                <h3 class="text-base font-extrabold">🏪 स्टोर प्रोफ़ाइल और बिल सेटिंग्स</h3>
+                <h3 class="text-base font-extrabold" data-lang-key="store_settings_title">🏪 दुकान विवरण और बिल सेटिंग</h3>
                 <button onclick="closeStoreSettingsModal()" class="text-slate-400 hover:text-red-500 text-xl font-bold">&times;</button>
             </div>
             <div class="overflow-y-auto pr-1 space-y-2.5 text-xs">
                 <div>
-                    <label class="block text-[11px] font-semibold mb-1">स्टोर का नाम *</label>
-                    <input type="text" id="settingStoreName" placeholder="मेरा स्टोर" class="w-full p-2 modern-input text-xs font-bold">
+                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="lbl_store_name">दुकान का नाम *</label>
+                    <input type="text" id="settingStoreName" placeholder="मेरी दुकान" class="w-full p-2 modern-input text-xs font-bold">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1">मोबाइल नंबर (बिल पर दिखेगा)</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="lbl_store_phone">दूरभाष संख्या (बिल हेतु)</label>
                         <input type="tel" id="settingStorePhone" placeholder="9876543210" class="w-full p-2 modern-input text-xs font-mono">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1">GSTIN / रजिस्ट्रेशन नं.</label>
-                        <input type="text" id="settingStoreGstin" placeholder="ऑप्शनल" class="w-full p-2 modern-input text-xs font-mono uppercase">
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="lbl_store_gstin">जीएसटी / पंजीकरण संख्या</label>
+                        <input type="text" id="settingStoreGstin" data-lang-key="placeholder_optional" placeholder="वैकल्पिक" class="w-full p-2 modern-input text-xs font-mono uppercase">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold mb-1">दुकान का पता (Address)</label>
-                    <input type="text" id="settingStoreAddress" placeholder="मेन मार्केट, कोटा, राजस्थान" class="w-full p-2 modern-input text-xs">
+                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="lbl_store_address">दुकान का पता</label>
+                    <input type="text" id="settingStoreAddress" placeholder="मुख्य बाज़ार, कोटा, राजस्थान" class="w-full p-2 modern-input text-xs">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1">UPI ID (बिल पर QR कोड के लिए)</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="lbl_store_upi">यूपीआई आईडी (QR भुगतान हेतु)</label>
                         <input type="text" id="settingStoreUpi" placeholder="merchant@upi" class="w-full p-2 modern-input text-xs font-mono">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1">डिफ़ॉल्ट प्रिंट साइज़</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="lbl_print_format">डिफ़ॉल्ट मुद्रण आकार</label>
                         <select id="settingPrintFormat" class="w-full p-2 modern-input text-xs font-semibold">
-                            <option value="thermal80">थर्मल रसीद (80mm / 3 inch)</option>
-                            <option value="thermal58">थर्मल रसीद (58mm / 2 inch)</option>
-                            <option value="a4">A4 फुल इनवॉइस (Standard)</option>
+                            <option value="thermal80" data-lang-key="opt_thermal80">थर्मल रसीद (80 मि.मी.)</option>
+                            <option value="thermal58" data-lang-key="opt_thermal58">थर्मल रसीद (58 मि.मी.)</option>
+                            <option value="a4" data-lang-key="opt_a4">पूर्ण पृष्ठ बिल (A4)</option>
                         </select>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold mb-1">बिल फुटर नोट / शर्तें (Terms)</label>
+                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="lbl_store_footer">बिल संदेश / नियम व शर्तें</label>
                     <input type="text" id="settingStoreFooter" placeholder="बिका हुआ माल वापस नहीं होगा। पधारने के लिए धन्यवाद!" class="w-full p-2 modern-input text-xs">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-2.5 mt-4 pt-2 border-t" style="border-color: var(--border-color);">
-                <button onclick="closeStoreSettingsModal()" class="py-2 px-3 rounded-xl font-semibold text-xs elevated-bg">बंद करें</button>
-                <button onclick="saveStoreSettings()" class="primary-bg text-white py-2 px-3 rounded-xl font-bold text-xs shadow">सेटिंग्स सेव करें</button>
+                <button onclick="closeStoreSettingsModal()" data-lang-key="btn_close" class="py-2 px-3 rounded-xl font-semibold text-xs elevated-bg">बंद करें</button>
+                <button onclick="saveStoreSettings()" data-lang-key="btn_add" class="primary-bg text-white py-2 px-3 rounded-xl font-bold text-xs shadow">सहेजें</button>
             </div>
         </div>
     </div>
@@ -1304,11 +1260,11 @@
     <!-- 4. Notes Modal -->
     <div id="notesModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-2 no-print" onclick="if(event.target === this) closeNotesModal()">
         <div class="modern-card p-4 w-full max-w-sm slide-up">
-            <h3 class="text-base font-extrabold mb-2" data-lang-key="notes_title">📝 स्टोर डायरी और नोट्स</h3>
-            <textarea id="notesText" data-lang-key="placeholder_notes" placeholder="यहाँ अपने ज़रूरी ऑर्डर या रिमाइंडर लिखें..." class="w-full p-2.5 modern-input h-40 resize-none mb-3 text-xs leading-relaxed"></textarea>
+            <h3 class="text-base font-extrabold mb-2" data-lang-key="notes_title">📝 दुकान डायरी और नोट्स</h3>
+            <textarea id="notesText" data-lang-key="placeholder_notes" placeholder="यहाँ अपने आवश्यक ऑर्डर या स्मरण लिखें..." class="w-full p-2.5 modern-input h-40 resize-none mb-3 text-xs leading-relaxed"></textarea>
             <div class="grid grid-cols-2 gap-2.5">
                 <button onclick="closeNotesModal()" data-lang-key="btn_close" class="py-2 px-3 rounded-xl font-semibold text-xs elevated-bg">बंद करें</button>
-                <button onclick="saveNotes()" data-lang-key="btn_save" class="secondary-bg text-white py-2 px-3 rounded-xl font-bold text-xs">सेव करें</button>
+                <button onclick="saveNotes()" data-lang-key="btn_add" class="secondary-bg text-white py-2 px-3 rounded-xl font-bold text-xs">सहेजें</button>
             </div>
         </div>
     </div>
@@ -1316,11 +1272,11 @@
     <!-- 5. Manual / Loose Item Add Modal -->
     <div id="manualAddModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-2 no-print" onclick="if(event.target === this) closeManualAddModal()">
         <div class="modern-card p-4 w-full max-w-sm slide-up">
-            <h3 class="text-base font-extrabold mb-3" data-lang-key="manual_add_title">⚡ खुला / मैन्युअल आइटम जोड़ें</h3>
+            <h3 class="text-base font-extrabold mb-3" data-lang-key="manual_add_title">⚡ खुली वस्तु जोड़ें</h3>
             <div class="space-y-2.5 text-xs">
                 <div>
-                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_product_name">आइटम का नाम</label>
-                    <input type="text" id="manualItemName" placeholder="जैसे: खुली चीनी / समोसा / पैकिंग" class="w-full p-2 modern-input text-xs font-semibold">
+                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_product_name">वस्तु का नाम</label>
+                    <input type="text" id="manualItemName" data-lang-key="placeholder_manual_item" placeholder="जैसे: खुली चीनी / समोसा" class="w-full p-2 modern-input text-xs font-semibold">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
@@ -1328,19 +1284,19 @@
                         <input type="number" step="any" id="manualItemQuantity" value="1" class="w-full p-2 modern-input text-xs">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_unit">यूनिट</label>
+                        <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_unit">इकाई</label>
                         <select id="manualItemUnit" class="w-full p-2 modern-input text-xs">
-                            <option value="piece">नग (Piece)</option>
-                            <option value="kg">कि.ग्रा. (Kg)</option>
-                            <option value="gram">ग्राम (Gram)</option>
-                            <option value="packet">पैकेट (Packet)</option>
-                            <option value="litre">लीटर (Litre)</option>
-                            <option value="box">बॉक्स (Box)</option>
+                            <option value="piece" data-lang-key="unit_piece">नग</option>
+                            <option value="kg" data-lang-key="unit_kg">किलोग्राम</option>
+                            <option value="gram" data-lang-key="unit_gram">ग्राम</option>
+                            <option value="packet" data-lang-key="unit_packet">पैकेट</option>
+                            <option value="litre" data-lang-key="unit_litre">लीटर</option>
+                            <option value="box" data-lang-key="unit_box">डिब्बा</option>
                         </select>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_total_price">कुल कीमत (₹)</label>
+                    <label class="block text-[11px] font-semibold mb-1" data-lang-key="form_total_price">कुल मूल्य (₹)</label>
                     <input type="number" step="any" id="manualItemPrice" placeholder="₹ 0" class="w-full p-2 modern-input text-sm font-bold price-text" onkeydown="if(event.key==='Enter') addManualItemToBill()">
                 </div>
             </div>
@@ -1357,11 +1313,11 @@
             <h3 id="actionModalProductName" class="text-sm font-extrabold mb-1 truncate"></h3>
             <p id="actionModalProductMeta" class="text-[11px] meta-text mb-3"></p>
             <div class="flex flex-col space-y-2 text-xs">
-                <button onclick="triggerProductEdit()" class="bg-blue-500/10 text-blue-600 dark:text-blue-400 py-2 px-3 rounded-xl font-bold modern-btn">✏️ प्रोडक्ट एडिट करें</button>
-                <button onclick="triggerSingleLabelPrint()" class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 py-2 px-3 rounded-xl font-bold modern-btn">🏷️ बारकोड स्टीकर प्रिंट करें</button>
-                <button onclick="triggerProductHistory()" class="bg-purple-500/10 text-purple-600 dark:text-purple-400 py-2 px-3 rounded-xl font-bold modern-btn">📈 रेट और बदलाव हिस्ट्री</button>
-                <button onclick="triggerProductDelete()" class="bg-rose-500/10 text-rose-600 py-2 px-3 rounded-xl font-bold modern-btn">🗑️ प्रोडक्ट डिलीट करें</button>
-                <button onclick="closeProductActionModal()" class="elevated-bg py-2 px-3 rounded-xl font-semibold mt-1">बंद करें</button>
+                <button onclick="triggerProductEdit()" class="bg-blue-500/10 text-blue-600 dark:text-blue-400 py-2 px-3 rounded-xl font-bold modern-btn">✏️ <span data-lang-key="act_edit_product">वस्तु संपादित करें</span></button>
+                <button onclick="triggerSingleLabelPrint()" class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 py-2 px-3 rounded-xl font-bold modern-btn">🏷️ <span data-lang-key="act_print_sticker">बारकोड स्टीकर मुद्रण</span></button>
+                <button onclick="triggerProductHistory()" class="bg-purple-500/10 text-purple-600 dark:text-purple-400 py-2 px-3 rounded-xl font-bold modern-btn">📈 <span data-lang-key="act_price_history">मूल्य एवं बदलाव इतिहास</span></button>
+                <button onclick="triggerProductDelete()" class="bg-rose-500/10 text-rose-600 py-2 px-3 rounded-xl font-bold modern-btn">🗑️ <span data-lang-key="act_delete_product">वस्तु हटाएं</span></button>
+                <button onclick="closeProductActionModal()" data-lang-key="btn_close" class="elevated-bg py-2 px-3 rounded-xl font-semibold mt-1">बंद करें</button>
             </div>
         </div>
     </div>
@@ -1369,9 +1325,9 @@
     <!-- 7. Product Price & Change History Modal -->
     <div id="priceHistoryModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-[70] flex items-center justify-center p-4 no-print" onclick="if(event.target === this) document.getElementById('priceHistoryModal').classList.add('hidden')">
         <div class="modern-card p-4 w-full max-w-sm slide-up">
-            <h3 class="text-sm font-extrabold mb-2">📈 प्रोडक्ट अपडेट हिस्ट्री</h3>
+            <h3 class="text-sm font-extrabold mb-2">📈 <span data-lang-key="act_price_history">मूल्य एवं बदलाव इतिहास</span></h3>
             <div id="priceHistoryList" class="space-y-2 max-h-60 overflow-y-auto mb-3 text-xs"></div>
-            <button onclick="document.getElementById('priceHistoryModal').classList.add('hidden')" class="w-full elevated-bg py-2 px-3 rounded-xl font-semibold text-xs">बंद करें</button>
+            <button onclick="document.getElementById('priceHistoryModal').classList.add('hidden')" data-lang-key="btn_close" class="w-full elevated-bg py-2 px-3 rounded-xl font-semibold text-xs">बंद करें</button>
         </div>
     </div>
 
@@ -1379,45 +1335,45 @@
     <div id="paymentTypeModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-50 flex items-center justify-center p-3 no-print" onclick="if(event.target === this) closePaymentTypeModal()">
         <div class="modern-card p-4 w-full max-w-sm slide-up">
             <div class="flex items-center justify-between pb-2 mb-3 border-b" style="border-color: var(--border-color);">
-                <h3 id="paymentTypeModalTitle" class="text-sm font-extrabold" data-lang-key="payment_modal_title">भुगतान और बिल सेटलमेंट</h3>
+                <h3 id="paymentTypeModalTitle" class="text-sm font-extrabold" data-lang-key="payment_modal_title">भुगतान एवं बिल निपटान</h3>
                 <span id="paymentModalTotalBadge" class="text-base font-extrabold price-text">₹0.00</span>
             </div>
 
             <!-- Cash Received / Change Calculator -->
             <div class="p-2.5 rounded-xl elevated-bg border mb-3 space-y-2 text-xs" style="border-color: var(--border-color);">
                 <div class="flex items-center justify-between">
-                    <span class="font-semibold meta-text">ग्राहक से प्राप्त राशि (₹):</span>
-                    <input type="number" step="any" id="cashReceivedInput" oninput="calculateChangeReturn()" placeholder="पूरा भुगतान" class="w-28 p-1.5 modern-input text-right font-bold">
+                    <span class="font-semibold meta-text" data-lang-key="lbl_cash_received">ग्राहक से प्राप्त राशि (₹):</span>
+                    <input type="number" step="any" id="cashReceivedInput" oninput="calculateChangeReturn()" data-lang-key="placeholder_full_pay" placeholder="पूर्ण भुगतान" class="w-28 p-1.5 modern-input text-right font-bold">
                 </div>
                 <div class="flex items-center justify-between text-[11px]">
-                    <span id="changeOrBalanceLabel" class="meta-text">वापस करने योग्य छुट्टा (Change):</span>
+                    <span id="changeOrBalanceLabel" class="meta-text" data-lang-key="lbl_change_return">वापस करने योग्य राशि:</span>
                     <span id="changeOrBalanceAmount" class="font-extrabold text-emerald-600 dark:text-emerald-400">₹0.00</span>
                 </div>
             </div>
 
             <!-- Dynamic UPI QR Preview inside Payment Modal -->
             <div id="paymentModalUpiBox" class="hidden mb-3 p-2.5 rounded-xl bg-white text-slate-900 border text-center">
-                <p class="text-[11px] font-bold text-slate-600 mb-1">स्कैन करके UPI पेमेंट करें</p>
+                <p class="text-[11px] font-bold text-slate-600 mb-1" data-lang-key="lbl_scan_upi">स्कैन करके ऑनलाइन भुगतान करें</p>
                 <canvas id="paymentModalQrCanvas" class="mx-auto"></canvas>
                 <p id="paymentModalUpiIdText" class="text-[10px] font-mono text-slate-500 mt-1"></p>
             </div>
 
-            <p class="text-[11px] font-semibold meta-text mb-2 text-center" data-lang-key="payment_modal_desc">पेमेंट मोड चुनकर बिल फाइनल करें:</p>
+            <p class="text-[11px] font-semibold meta-text mb-2 text-center" data-lang-key="payment_modal_desc">भुगतान माध्यम चुनकर बिल पूर्ण करें:</p>
             <div class="grid grid-cols-3 gap-2">
                 <button id="paymentTypeCashBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-2 rounded-xl font-bold modern-btn text-xs flex-col">
                     <span class="text-base">💵</span>
-                    <span data-lang-key="btn_cash">नगद (Cash)</span>
+                    <span data-lang-key="btn_cash">नकद</span>
                 </button>
                 <button id="paymentTypeUpiBtn" class="bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-2 rounded-xl font-bold modern-btn text-xs flex-col">
                     <span class="text-base">📱</span>
-                    <span>UPI / Online</span>
+                    <span data-lang-key="btn_upi">ऑनलाइन</span>
                 </button>
                 <button id="paymentTypeCreditBtn" class="bg-rose-600 hover:bg-rose-700 text-white py-2.5 px-2 rounded-xl font-bold modern-btn text-xs flex-col">
                     <span class="text-base">📒</span>
-                    <span data-lang-key="btn_credit">उधार (Khata)</span>
+                    <span data-lang-key="btn_credit">उधार खाता</span>
                 </button>
             </div>
-            <button id="paymentTypeCancelBtn" data-lang-key="btn_cancel" class="w-full mt-2.5 elevated-bg py-2 px-3 rounded-xl font-semibold text-xs">वापस जाएं</button>
+            <button id="paymentTypeCancelBtn" data-lang-key="btn_cancel" class="w-full mt-2.5 elevated-bg py-2 px-3 rounded-xl font-semibold text-xs">रद्द करें</button>
         </div>
     </div>
 
@@ -1432,18 +1388,18 @@
             <div class="p-3 border-b flex flex-wrap items-center justify-between gap-2 elevated-bg" style="border-color: var(--border-color);">
                 <div class="flex items-center gap-2">
                     <span class="text-base">🖨️</span>
-                    <h3 id="printStudioTitle" class="text-sm font-extrabold">प्रिंट प्रीव्यू स्टूडियो</h3>
+                    <h3 id="printStudioTitle" class="text-sm font-extrabold" data-lang-key="print_studio_title">मुद्रण पूर्वावलोकन</h3>
                 </div>
                 <div id="printFormatButtonsGroup" class="flex items-center gap-1">
-                    <button onclick="switchBillPrintFormat('thermal80')" id="fmtBtn_thermal80" class="px-2.5 py-1 rounded-lg text-xs font-bold primary-bg text-white">80mm थर्मल</button>
-                    <button onclick="switchBillPrintFormat('thermal58')" id="fmtBtn_thermal58" class="px-2.5 py-1 rounded-lg text-xs font-semibold elevated-bg border" style="border-color: var(--border-color);">58mm थर्मल</button>
-                    <button onclick="switchBillPrintFormat('a4')" id="fmtBtn_a4" class="px-2.5 py-1 rounded-lg text-xs font-semibold elevated-bg border" style="border-color: var(--border-color);">A4 फुल बिल</button>
+                    <button onclick="switchBillPrintFormat('thermal80')" id="fmtBtn_thermal80" class="px-2.5 py-1 rounded-lg text-xs font-bold primary-bg text-white" data-lang-key="fmt_80mm">80 मि.मी. रसीद</button>
+                    <button onclick="switchBillPrintFormat('thermal58')" id="fmtBtn_thermal58" class="px-2.5 py-1 rounded-lg text-xs font-semibold elevated-bg border" style="border-color: var(--border-color);" data-lang-key="fmt_58mm">58 मि.मी. रसीद</button>
+                    <button onclick="switchBillPrintFormat('a4')" id="fmtBtn_a4" class="px-2.5 py-1 rounded-lg text-xs font-semibold elevated-bg border" style="border-color: var(--border-color);" data-lang-key="fmt_a4">A4 पूर्ण बिल</button>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <button onclick="triggerBrowserPrint()" class="px-3 py-1.5 rounded-xl secondary-bg text-white font-bold text-xs shadow flex items-center gap-1">
-                        <span>🖨️</span> <span>अभी प्रिंट करें</span>
+                        <span>🖨️</span> <span data-lang-key="btn_print_now">मुद्रित करें</span>
                     </button>
-                    <button onclick="closePrintStudio()" class="px-2.5 py-1.5 rounded-xl elevated-bg font-bold text-xs">✕ बंद</button>
+                    <button onclick="closePrintStudio()" class="px-2.5 py-1.5 rounded-xl elevated-bg font-bold text-xs">✕ <span data-lang-key="btn_close">बंद करें</span></button>
                 </div>
             </div>
             <!-- Scrollable Print Canvas -->
@@ -1509,79 +1465,352 @@
 
         const unitTextMap = {
             'piece': 'नग', 'packet': 'पैकेट', 'gram': 'ग्राम', 'kg': 'कि.ग्रा.',
-            'litre': 'लीटर', 'ml': 'मि.ली.', 'dozen': 'दर्जन', 'box': 'बॉक्स'
+            'litre': 'लीटर', 'ml': 'मि.ली.', 'dozen': 'दर्जन', 'box': 'डिब्बा'
         };
+        const unitTextMapEn = {
+            'piece': 'pc', 'packet': 'pkt', 'gram': 'g', 'kg': 'kg',
+            'litre': 'L', 'ml': 'ml', 'dozen': 'doz', 'box': 'box'
+        };
+        function getUnitLabel(unit) {
+            if (currentLanguage === 'en') return unitTextMapEn[unit] || unit;
+            return unitTextMap[unit] || unit;
+        }
 
         const productDatabase = {
-            '8901058851458': { name: 'मैगी 2-मिनट नूडल्स (Maggi)', price: 14, mrp: 15, costPrice: 12.2, category: 'स्नैक्स (Snacks)', details: '70g मसाला पैक', fillingQuantity: 1, unit: 'packet', stock: 45, minStock: 10, rack: 'A-1' },
-            '8901030895573': { name: 'लेज मैजिक मसाला चिप्स (Lays)', price: 20, mrp: 20, costPrice: 17, category: 'स्नैक्स (Snacks)', details: '50g पैकेट', fillingQuantity: 1, unit: 'packet', stock: 30, minStock: 8, rack: 'A-2' },
-            '8901491101837': { name: 'टाटा नमक (Tata Salt 1Kg)', price: 26, mrp: 28, costPrice: 22.5, category: 'किराना (Kirana)', details: 'आयोडीन युक्त नमक', fillingQuantity: 1, unit: 'kg', stock: 60, minStock: 12, rack: 'B-1' },
-            '8901262010023': { name: 'अमूल ताज़ा दूध (Amul Gold)', price: 33, mrp: 34, costPrice: 31, category: 'डेयरी (Dairy)', details: '500ml फुल क्रीम', fillingQuantity: 500, unit: 'ml', stock: 18, minStock: 5, rack: 'Fridge-1' },
-            '8901063012523': { name: 'पारले-जी बिस्किट (Parle-G)', price: 10, mrp: 10, costPrice: 8.8, category: 'स्नैक्स (Snacks)', details: '100g पैक', fillingQuantity: 1, unit: 'packet', stock: 4, minStock: 10, rack: 'A-3' },
-            '8901725121143': { name: 'आशीर्वाद आटा (Aashirvaad 5Kg)', price: 235, mrp: 255, costPrice: 215, category: 'किराना (Kirana)', details: '100% शुद्ध गेहूं आटा', fillingQuantity: 5, unit: 'kg', stock: 12, minStock: 4, rack: 'C-1' }
+            '8901058851458': { name: 'मैगी नूडल्स', price: 14, category: 'नाश्ता एवं नमकीन', details: '70 ग्राम पैक', fillingQuantity: 1, unit: 'packet' },
+            '8901030895573': { name: 'आलू चिप्स मसाला', price: 20, category: 'नाश्ता एवं नमकीन', details: '50 ग्राम पैकेट', fillingQuantity: 1, unit: 'packet' },
+            '8901491101837': { name: 'टाटा नमक', price: 26, category: 'किराना', details: 'आयोडीन युक्त नमक', fillingQuantity: 1, unit: 'kg' },
+            '8901262010023': { name: 'अमूल ताज़ा दूध', price: 33, category: 'डेयरी एवं दुग्ध', details: '500 मि.ली. पैक', fillingQuantity: 500, unit: 'ml' },
+            '8901063012523': { name: 'पारले-जी बिस्किट', price: 10, category: 'नाश्ता एवं नमकीन', details: '100 ग्राम पैक', fillingQuantity: 1, unit: 'packet' },
+            '8901725121143': { name: 'आशीर्वाद गेहूं आटा', price: 235, category: 'किराना', details: '5 कि.ग्रा. पैक', fillingQuantity: 5, unit: 'kg' }
         };
 
         const translations = {
             'hi': {
-                'tab_home': 'डैशबोर्ड', 'tab_store': 'स्टॉक', 'tab_shopping': 'बिलिंग', 'tab_khata': 'उधार खाता', 'tab_history': 'हिस्ट्री',
-                'short_theme': 'थीम', 'menu_rename_store': 'स्टोर प्रोफ़ाइल व प्रिंट सेटिंग', 'menu_change_language': 'भाषा बदलें / Language',
-                'menu_notes': 'स्टोर डायरी / नोट्स', 'menu_export': 'बैकअप डाउनलोड (.JSON)', 'menu_import': 'बैकअप रीस्टोर (Import)',
-                'menu_print_products': 'बारकोड/QR लेबल प्रिंट', 'menu_logout': 'लॉगआउट / अकाउंट', 'menu_theme': 'थीम बदलें (Light/Dark)',
-                'menu_settings': 'सेटिंग्स व प्रिंट टूल्स', 'dashboard_title': 'बिज़नेस डैशबोर्ड', 'dashboard_total_products': 'कुल प्रोडक्ट्स',
-                'dashboard_saved_bills': 'कुल बिक्री (कुल बिल)', 'dashboard_add_product': 'नया प्रोडक्ट', 'dashboard_create_bill': 'नया बिल (POS)',
-                'dashboard_scanner_title': 'त्वरित स्कैन और प्राइस चेकर', 'dashboard_scanner_btn': 'कैमरा स्कैन', 'scanner_flash': 'फ्लैश',
-                'scan_result_not_found': 'प्रोडक्ट स्टोर में नहीं मिला!', 'scan_add_as_new': 'इसे नए प्रोडक्ट के रूप में जोड़ें',
-                'scan_add_to_bill': 'बिल में जोड़ें', 'scan_result_title': 'प्रोडक्ट की जानकारी',
-                'placeholder_search_product': 'प्रोडक्ट, बारकोड या कैटेगरी खोजें...', 'billing_current_bill': 'वर्तमान बिल',
-                'placeholder_customer_name': '👤 ग्राहक का नाम', 'billing_total_amount': 'कुल देय राशि:',
-                'customer_name_required': '⚠️ कृपया ग्राहक का नाम दर्ज करें!', 'placeholder_search_history': 'ग्राहक, बिल # या आइटम से खोजें...',
-                'modal_add_product_title': 'नया प्रोडक्ट जोड़ें', 'scanner_stop': 'बंद करें', 'form_barcode': 'बारकोड नंबर',
-                'form_manual_id': 'शॉर्ट कोड / ID', 'form_product_name': 'प्रोडक्ट का नाम *', 'form_quantity': 'पैकिंग मात्रा',
-                'form_unit': 'यूनिट', 'unit_piece': 'नग (piece)', 'unit_packet': 'पैकेट (packet)', 'unit_gram': 'ग्राम (gram)',
-                'unit_kg': 'कि.ग्रा. (kg)', 'unit_litre': 'लीटर (litre)', 'unit_ml': 'मि.ली. (ml)', 'unit_dozen': 'दर्जन (dozen)',
-                'unit_box': 'बॉक्स (box)', 'form_price': 'बिक्री रेट (₹) *', 'form_details': 'विवरण / नोट',
-                'btn_close': 'बंद करें', 'btn_add': 'सेव करें', 'btn_clear': 'क्लियर', 'btn_download': 'प्रिंट', 'btn_save': 'सेव बिल',
-                'btn_cancel': 'कैंसल', 'btn_update': 'अपडेट करें', 'btn_confirm': 'कन्फर्म', 'modal_edit_product_title': 'प्रोडक्ट एडिट करें',
-                'notes_title': '📝 स्टोर डायरी और नोट्स', 'placeholder_notes': 'यहाँ अपने नोट्स लिखें...', 'text_total': 'कुल',
-                'confirm_load_bill_title': 'बिल पीओएस में लोड करें?', 'confirm_load_bill_message': 'यह वर्तमान बिल की जगह ले लेगा। क्या आप जारी रखना चाहते हैं?',
-                'rename_customer_title': 'ग्राहक का नाम बदलें', 'rename_customer_message': 'ग्राहक के लिए नया नाम दर्ज करें:',
-                'bill_loaded_success': '✅ बिल पीओएस में लोड हो गया!', 'customer_renamed_success': '✅ ग्राहक का नाम अपडेट हो गया!',
-                'login_desc': 'क्लाउड बैकअप और रियल-टाइम सिंक के लिए लॉगिन करें', 'manual_add_title': '⚡ खुला / मैन्युअल आइटम जोड़ें',
-                'form_total_price': 'कुल कीमत (₹)', 'btn_add_to_bill': 'बिल में जोड़ें', 'payment_modal_title': 'भुगतान और बिल सेटलमेंट',
-                'payment_modal_desc': 'पेमेंट मोड चुनकर बिल फाइनल करें:', 'btn_cash': 'नगद (Cash)', 'btn_credit': 'उधार (Khata)'
+                'app_brand_title': 'स्मार्ट व्यापार प्रबंधक',
+                'loading_sync_text': 'डेटा समन्वयित हो रहा है...',
+                'lbl_email': 'ईमेल पता',
+                'lbl_password': 'कूटशब्द (पासवर्ड)',
+                'btn_login': 'प्रवेश करें',
+                'btn_signup': 'नया खाता बनाएं',
+                'btn_offline_mode': 'ऑफ़लाइन चलाएं ⚡',
+                'tab_home': 'मुखपृष्ठ',
+                'tab_store': 'भंडार',
+                'tab_shopping': 'बिलिंग',
+                'tab_khata': 'उधार खाता',
+                'tab_history': 'इतिहास',
+                'short_theme': 'रंग-रूप',
+                'menu_rename_store': 'दुकान विवरण व बिल सेटिंग',
+                'menu_rename_store_sub': 'नाम, जीएसटी, यूपीआई, पता',
+                'menu_change_language': 'भाषा बदलें',
+                'menu_change_language_sub': 'हिंदी ⇄ अंग्रेजी',
+                'menu_notes': 'दुकान डायरी / नोट्स',
+                'menu_notes_sub': 'आवश्यक सूची व स्मरण लिखें',
+                'menu_export': 'बैकअप डाउनलोड करें',
+                'menu_export_sub': 'सुरक्षित ऑफ़लाइन फाइल',
+                'menu_import': 'बैकअप पुनः लोड करें',
+                'menu_import_sub': 'बैकअप फाइल से डेटा लाएं',
+                'menu_print_products': 'बारकोड स्टीकर मुद्रण',
+                'menu_print_products_sub': 'सभी वस्तुओं के बारकोड लेबल',
+                'menu_price_list': 'मूल्य सूची मुद्रण',
+                'menu_price_list_sub': 'सभी वस्तुओं की मूल्य तालिका',
+                'menu_logout': 'खाता / लॉगआउट',
+                'menu_theme': 'रंग-रूप बदलें',
+                'menu_theme_sub': 'हल्का या गहरा मोड चुनें',
+                'menu_settings': 'व्यवस्था एवं मुद्रण विकल्प',
+                'dashboard_title': 'व्यापार सारांश',
+                'kpi_today_sales': 'आज की बिक्री',
+                'dashboard_saved_bills': 'कुल बिक्री',
+                'kpi_saved_bills_lbl': 'सहेजे बिल',
+                'kpi_market_credit': 'कुल बकाया उधार',
+                'dashboard_total_products': 'कुल वस्तुएं',
+                'kpi_store_active': 'भंडार में उपलब्ध',
+                'dashboard_add_product': 'नई वस्तु',
+                'dashboard_create_bill': 'नया बिल',
+                'dashboard_scanner_title': 'त्वरित स्कैन एवं मूल्य जांच',
+                'dashboard_scanner_btn': 'कैमरा स्कैन',
+                'placeholder_dash_search': 'वस्तु का नाम, बारकोड या कोड लिखें...',
+                'scanner_zoom': '🔍 ज़ूम',
+                'scanner_flash': 'टॉर्च',
+                'scanner_stop': 'बंद करें',
+                'scan_result_not_found': 'वस्तु भंडार में नहीं मिली!',
+                'scan_add_as_new': '+ नई वस्तु के रूप में जोड़ें',
+                'scan_add_to_bill': '+ बिल में जोड़ें',
+                'scan_result_title': 'वस्तु विवरण',
+                'placeholder_search_product': 'वस्तु का नाम, बारकोड या श्रेणी खोजें...',
+                'sort_newest': 'नवीनतम पहले',
+                'sort_name_asc': 'नाम (क से ज्ञ)',
+                'sort_name_desc': 'नाम (ज्ञ से क)',
+                'sort_price_desc': 'अधिक मूल्य पहले',
+                'sort_price_asc': 'कम मूल्य पहले',
+                'btn_label_print': 'स्टीकर मुद्रण',
+                'placeholder_pos_search': 'वस्तु खोजें या बारकोड स्कैन करें...',
+                'btn_loose_item': 'खुली वस्तु',
+                'billing_current_bill': 'वर्तमान बिल',
+                'placeholder_customer_name': '👤 ग्राहक का नाम',
+                'placeholder_customer_phone': '📞 दूरभाष संख्या',
+                'lbl_discount': 'छूट ₹:',
+                'lbl_extra_charge': 'अतिरिक्त ₹:',
+                'lbl_round_off': 'पूर्णांकन:',
+                'lbl_subtotal': 'उप-योग:',
+                'billing_total_amount': 'कुल देय राशि:',
+                'customer_name_required': '⚠️ कृपया ग्राहक का नाम लिखें!',
+                'placeholder_search_history': 'ग्राहक, बिल संख्या या वस्तु खोजें...',
+                'btn_sales_report': 'बिक्री प्रतिवेदन',
+                'hist_all': 'सभी बिल',
+                'hist_cash': '💵 नकद',
+                'hist_upi': '📱 ऑनलाइन',
+                'hist_credit': '🔴 उधार',
+                'starred_tray_title': 'तारांकित / होल्ड बिल (खोलने हेतु स्पर्श करें, हटाने हेतु दबाए रखें)',
+                'khata_heading': 'ग्राहक उधार बहीखाता',
+                'khata_subheading': 'सभी उधार बिलों का ग्राहक-वार हिसाब, वसूली और तगादा',
+                'btn_print_khata': 'उधार सूची मुद्रण',
+                'khata_total_pending': 'कुल बकाया उधार',
+                'khata_total_recovered': 'कुल प्राप्त राशि',
+                'khata_active_customers': 'बकायादार ग्राहक',
+                'placeholder_khata_search': 'ग्राहक का नाम या दूरभाष संख्या खोजें...',
+                'modal_add_product_title': 'नई वस्तु जोड़ें',
+                'modal_edit_product_title': 'वस्तु संपादित करें',
+                'form_barcode': 'बारकोड संख्या',
+                'placeholder_barcode': 'स्कैन या लिखें',
+                'form_manual_id': 'संक्षिप्त कोड',
+                'placeholder_manual_id': 'जैसे: 101, A1',
+                'form_product_name': 'वस्तु का नाम *',
+                'placeholder_product_name': 'जैसे: मैगी नूडल्स / चीनी',
+                'form_category': 'श्रेणी',
+                'placeholder_category': 'किराना',
+                'form_quantity': 'मात्रा',
+                'form_unit': 'इकाई',
+                'unit_piece': 'नग',
+                'unit_packet': 'पैकेट',
+                'unit_gram': 'ग्राम',
+                'unit_kg': 'किलोग्राम',
+                'unit_litre': 'लीटर',
+                'unit_ml': 'मिलीलीटर',
+                'unit_dozen': 'दर्जन',
+                'unit_box': 'डिब्बा',
+                'form_price': 'विक्रय मूल्य (₹) *',
+                'form_details': 'विवरण / टिप्पणी',
+                'placeholder_details': 'वैकल्पिक विवरण लिखें...',
+                'btn_close': 'बंद करें',
+                'btn_add': 'सहेजें',
+                'btn_clear': 'साफ़ करें',
+                'btn_download': 'मुद्रण',
+                'btn_whatsapp': 'व्हाट्सएप',
+                'btn_save': 'बिल सहेजें',
+                'btn_cancel': 'रद्द करें',
+                'btn_update': 'अद्यतन करें',
+                'btn_confirm': 'पुष्टि करें',
+                'store_settings_title': '🏪 दुकान विवरण और बिल सेटिंग',
+                'lbl_store_name': 'दुकान का नाम *',
+                'lbl_store_phone': 'दूरभाष संख्या (बिल हेतु)',
+                'lbl_store_gstin': 'जीएसटी / पंजीकरण संख्या',
+                'placeholder_optional': 'वैकल्पिक',
+                'lbl_store_address': 'दुकान का पता',
+                'lbl_store_upi': 'यूपीआई आईडी (QR भुगतान हेतु)',
+                'lbl_print_format': 'डिफ़ॉल्ट मुद्रण आकार',
+                'opt_thermal80': 'थर्मल रसीद (80 मि.मी.)',
+                'opt_thermal58': 'थर्मल रसीद (58 मि.मी.)',
+                'opt_a4': 'पूर्ण पृष्ठ बिल (A4)',
+                'lbl_store_footer': 'बिल संदेश / नियम व शर्तें',
+                'notes_title': '📝 दुकान डायरी और नोट्स',
+                'placeholder_notes': 'यहाँ अपने आवश्यक ऑर्डर या स्मरण लिखें...',
+                'text_total': 'कुल',
+                'confirm_load_bill_title': 'बिल लोड करें?',
+                'confirm_load_bill_message': 'यह वर्तमान बिल का स्थान ले लेगा। क्या आप आगे बढ़ना चाहते हैं?',
+                'rename_customer_title': 'ग्राहक का नाम बदलें',
+                'rename_customer_message': 'ग्राहक के लिए नया नाम लिखें:',
+                'bill_loaded_success': '✅ बिल सफलतापूर्वक लोड हो गया!',
+                'customer_renamed_success': '✅ ग्राहक का नाम अद्यतन हो गया!',
+                'login_desc': 'क्लाउड बैकअप और त्वरित समन्वयन के लिए प्रवेश करें',
+                'manual_add_title': '⚡ खुली वस्तु जोड़ें',
+                'placeholder_manual_item': 'जैसे: खुली चीनी / समोसा',
+                'form_total_price': 'कुल मूल्य (₹)',
+                'btn_add_to_bill': 'बिल में जोड़ें',
+                'act_edit_product': 'वस्तु संपादित करें',
+                'act_print_sticker': 'बारकोड स्टीकर मुद्रण',
+                'act_price_history': 'मूल्य एवं बदलाव इतिहास',
+                'act_delete_product': 'वस्तु हटाएं',
+                'payment_modal_title': 'भुगतान एवं बिल निपटान',
+                'lbl_cash_received': 'ग्राहक से प्राप्त राशि (₹):',
+                'placeholder_full_pay': 'पूर्ण भुगतान',
+                'lbl_change_return': 'वापस करने योग्य राशि:',
+                'lbl_scan_upi': 'स्कैन करके ऑनलाइन भुगतान करें',
+                'payment_modal_desc': 'भुगतान माध्यम चुनकर बिल पूर्ण करें:',
+                'btn_cash': 'नकद',
+                'btn_upi': 'ऑनलाइन',
+                'btn_credit': 'उधार खाता',
+                'print_studio_title': 'मुद्रण पूर्वावलोकन',
+                'fmt_80mm': '80 मि.मी. रसीद',
+                'fmt_58mm': '58 मि.मी. रसीद',
+                'fmt_a4': 'A4 पूर्ण बिल',
+                'btn_print_now': 'मुद्रित करें'
             },
             'en': {
-                'tab_home': 'Dashboard', 'tab_store': 'Stock', 'tab_shopping': 'Billing', 'tab_khata': 'Khata', 'tab_history': 'History',
-                'short_theme': 'Theme', 'menu_rename_store': 'Store Profile & Print Setup', 'menu_change_language': 'भाषा बदलें / Language',
-                'menu_notes': 'Store Diary / Notes', 'menu_export': 'Export Backup (.JSON)', 'menu_import': 'Import Backup (.JSON)',
-                'menu_print_products': 'Print Barcode/QR Labels', 'menu_logout': 'Logout / Account', 'menu_theme': 'Toggle Theme (Light/Dark)',
-                'menu_settings': 'Settings & Print Tools', 'dashboard_title': 'Business Dashboard', 'dashboard_total_products': 'Total Products',
-                'dashboard_saved_bills': 'Total Sales (Bills)', 'dashboard_add_product': 'Add Product', 'dashboard_create_bill': 'New Bill (POS)',
-                'dashboard_scanner_title': 'Quick Scan & Price Checker', 'dashboard_scanner_btn': 'Camera Scan', 'scanner_flash': 'Flash',
-                'scan_result_not_found': 'Product not found in store!', 'scan_add_as_new': 'Add as New Product',
-                'scan_add_to_bill': 'Add to Bill', 'scan_result_title': 'Product Info',
-                'placeholder_search_product': 'Search product, barcode or category...', 'billing_current_bill': 'Current Cart',
-                'placeholder_customer_name': '👤 Customer Name', 'billing_total_amount': 'Grand Total:',
-                'customer_name_required': '⚠️ Please enter customer name!', 'placeholder_search_history': 'Search customer, bill # or item...',
-                'modal_add_product_title': 'Add New Product', 'scanner_stop': 'Stop Scan', 'form_barcode': 'Barcode No.',
-                'form_manual_id': 'Short Code / ID', 'form_product_name': 'Product Name *', 'form_quantity': 'Pack Qty',
-                'form_unit': 'Unit', 'unit_piece': 'Piece', 'unit_packet': 'Packet', 'unit_gram': 'Gram',
-                'unit_kg': 'Kg', 'unit_litre': 'Litre', 'unit_ml': 'ml', 'unit_dozen': 'Dozen',
-                'unit_box': 'Box', 'form_price': 'Selling Price (₹) *', 'form_details': 'Details / Note',
-                'btn_close': 'Close', 'btn_add': 'Save Product', 'btn_clear': 'Clear', 'btn_download': 'Print', 'btn_save': 'Save Bill',
-                'btn_cancel': 'Cancel', 'btn_update': 'Update Product', 'btn_confirm': 'Confirm', 'modal_edit_product_title': 'Edit Product',
-                'notes_title': '📝 Store Diary & Notes', 'placeholder_notes': 'Write your notes here...', 'text_total': 'Total',
-                'confirm_load_bill_title': 'Load Bill into POS?', 'confirm_load_bill_message': 'This will replace the current active bill. Continue?',
-                'rename_customer_title': 'Rename Customer', 'rename_customer_message': 'Enter new customer name:',
-                'bill_loaded_success': '✅ Bill loaded into POS!', 'customer_renamed_success': '✅ Customer name updated!',
-                'login_desc': 'Login for real-time cloud backup & sync', 'manual_add_title': '⚡ Add Loose / Custom Item',
-                'form_total_price': 'Total Price (₹)', 'btn_add_to_bill': 'Add to Bill', 'payment_modal_title': 'Payment & Settlement',
-                'payment_modal_desc': 'Select payment mode to finalize bill:', 'btn_cash': 'Cash', 'btn_credit': 'Credit (Khata)'
+                'app_brand_title': 'Smart Store Manager',
+                'loading_sync_text': 'Syncing data...',
+                'lbl_email': 'Email Address',
+                'lbl_password': 'Password',
+                'btn_login': 'Sign In',
+                'btn_signup': 'Create Account',
+                'btn_offline_mode': 'Use Offline ⚡',
+                'tab_home': 'Dashboard',
+                'tab_store': 'Inventory',
+                'tab_shopping': 'Billing',
+                'tab_khata': 'Credit Ledger',
+                'tab_history': 'History',
+                'short_theme': 'Theme',
+                'menu_rename_store': 'Store Profile & Bill Setup',
+                'menu_rename_store_sub': 'Name, GSTIN, UPI ID, Address',
+                'menu_change_language': 'Change Language',
+                'menu_change_language_sub': 'English ⇄ हिंदी',
+                'menu_notes': 'Store Diary / Notes',
+                'menu_notes_sub': 'Write orders and reminders',
+                'menu_export': 'Download Backup (.JSON)',
+                'menu_export_sub': 'Secure offline backup file',
+                'menu_import': 'Restore Backup (Import)',
+                'menu_import_sub': 'Load data from JSON file',
+                'menu_print_products': 'Print Barcode Stickers',
+                'menu_print_products_sub': 'Barcode labels for all items',
+                'menu_price_list': 'Print Price List',
+                'menu_price_list_sub': 'A4 price list table',
+                'menu_logout': 'Account / Logout',
+                'menu_theme': 'Switch Theme',
+                'menu_theme_sub': 'Light or Dark display mode',
+                'menu_settings': 'Settings & Print Tools',
+                'dashboard_title': 'Business Summary',
+                'kpi_today_sales': "Today's Sales",
+                'dashboard_saved_bills': 'Total Sales',
+                'kpi_saved_bills_lbl': 'saved bills',
+                'kpi_market_credit': 'Total Credit Due',
+                'dashboard_total_products': 'Total Items',
+                'kpi_store_active': 'Available in store',
+                'dashboard_add_product': 'New Item',
+                'dashboard_create_bill': 'New Bill',
+                'dashboard_scanner_title': 'Quick Scan & Price Check',
+                'dashboard_scanner_btn': 'Camera Scan',
+                'placeholder_dash_search': 'Type item name, barcode or code...',
+                'scanner_zoom': '🔍 Zoom',
+                'scanner_flash': 'Flash',
+                'scanner_stop': 'Close',
+                'scan_result_not_found': 'Item not found in inventory!',
+                'scan_add_as_new': '+ Add as New Item',
+                'scan_add_to_bill': '+ Add to Bill',
+                'scan_result_title': 'Item Details',
+                'placeholder_search_product': 'Search item name, barcode or category...',
+                'sort_newest': 'Newest First',
+                'sort_name_asc': 'Name (A to Z)',
+                'sort_name_desc': 'Name (Z to A)',
+                'sort_price_desc': 'Price: High to Low',
+                'sort_price_asc': 'Price: Low to High',
+                'btn_label_print': 'Print Labels',
+                'placeholder_pos_search': 'Search item or scan barcode...',
+                'btn_loose_item': 'Custom Item',
+                'billing_current_bill': 'Current Bill',
+                'placeholder_customer_name': '👤 Customer Name',
+                'placeholder_customer_phone': '📞 Phone No.',
+                'lbl_discount': 'Discount ₹:',
+                'lbl_extra_charge': 'Extra ₹:',
+                'lbl_round_off': 'Round-off:',
+                'lbl_subtotal': 'Subtotal:',
+                'billing_total_amount': 'Total Payable:',
+                'customer_name_required': '⚠️ Please enter customer name!',
+                'placeholder_search_history': 'Search customer, bill no. or item...',
+                'btn_sales_report': 'Sales Report',
+                'hist_all': 'All Bills',
+                'hist_cash': '💵 Cash',
+                'hist_upi': '📱 Online (UPI)',
+                'hist_credit': '🔴 Credit',
+                'starred_tray_title': 'Starred / Held Bills (Tap to load, hold to remove)',
+                'khata_heading': 'Customer Credit Ledger',
+                'khata_subheading': 'Customer-wise credit bills, payments and reminders',
+                'btn_print_khata': 'Print Credit List',
+                'khata_total_pending': 'Total Credit Due',
+                'khata_total_recovered': 'Total Recovered',
+                'khata_active_customers': 'Credit Customers',
+                'placeholder_khata_search': 'Search customer name or phone number...',
+                'modal_add_product_title': 'Add New Item',
+                'modal_edit_product_title': 'Edit Item',
+                'form_barcode': 'Barcode Number',
+                'placeholder_barcode': 'Scan or type',
+                'form_manual_id': 'Short Code',
+                'placeholder_manual_id': 'e.g., 101, A1',
+                'form_product_name': 'Item Name *',
+                'placeholder_product_name': 'e.g., Maggi Noodles / Sugar',
+                'form_category': 'Category',
+                'placeholder_category': 'Grocery',
+                'form_quantity': 'Quantity',
+                'form_unit': 'Unit',
+                'unit_piece': 'Piece',
+                'unit_packet': 'Packet',
+                'unit_gram': 'Gram',
+                'unit_kg': 'Kilogram',
+                'unit_litre': 'Litre',
+                'unit_ml': 'Millilitre',
+                'unit_dozen': 'Dozen',
+                'unit_box': 'Box',
+                'form_price': 'Selling Price (₹) *',
+                'form_details': 'Description / Note',
+                'placeholder_details': 'Optional notes...',
+                'btn_close': 'Close',
+                'btn_add': 'Save',
+                'btn_clear': 'Clear',
+                'btn_download': 'Print',
+                'btn_whatsapp': 'WhatsApp',
+                'btn_save': 'Save Bill',
+                'btn_cancel': 'Cancel',
+                'btn_update': 'Update',
+                'btn_confirm': 'Confirm',
+                'store_settings_title': '🏪 Store Profile & Bill Settings',
+                'lbl_store_name': 'Store Name *',
+                'lbl_store_phone': 'Phone Number (for Bill)',
+                'lbl_store_gstin': 'GSTIN / Registration No.',
+                'placeholder_optional': 'Optional',
+                'lbl_store_address': 'Store Address',
+                'lbl_store_upi': 'UPI ID (for QR Payment)',
+                'lbl_print_format': 'Default Print Size',
+                'opt_thermal80': 'Thermal Receipt (80mm)',
+                'opt_thermal58': 'Thermal Receipt (58mm)',
+                'opt_a4': 'Full Page Invoice (A4)',
+                'lbl_store_footer': 'Bill Footer Note / Terms',
+                'notes_title': '📝 Store Diary & Notes',
+                'placeholder_notes': 'Write your important orders or reminders here...',
+                'text_total': 'Total',
+                'confirm_load_bill_title': 'Load Bill into Billing?',
+                'confirm_load_bill_message': 'This will replace the current active bill. Continue?',
+                'rename_customer_title': 'Rename Customer',
+                'rename_customer_message': 'Enter new customer name:',
+                'bill_loaded_success': '✅ Bill loaded successfully!',
+                'customer_renamed_success': '✅ Customer name updated!',
+                'login_desc': 'Sign in for cloud backup and real-time sync',
+                'manual_add_title': '⚡ Add Custom / Loose Item',
+                'placeholder_manual_item': 'e.g., Loose Sugar / Snack',
+                'form_total_price': 'Total Price (₹)',
+                'btn_add_to_bill': 'Add to Bill',
+                'act_edit_product': 'Edit Item',
+                'act_print_sticker': 'Print Barcode Sticker',
+                'act_price_history': 'Price & Update History',
+                'act_delete_product': 'Delete Item',
+                'payment_modal_title': 'Payment & Settlement',
+                'lbl_cash_received': 'Cash Received (₹):',
+                'placeholder_full_pay': 'Exact amount',
+                'lbl_change_return': 'Change to Return:',
+                'lbl_scan_upi': 'Scan to Pay via UPI',
+                'payment_modal_desc': 'Select payment mode to complete bill:',
+                'btn_cash': 'Cash',
+                'btn_upi': 'Online (UPI)',
+                'btn_credit': 'Credit Ledger',
+                'print_studio_title': 'Print Preview',
+                'fmt_80mm': '80mm Receipt',
+                'fmt_58mm': '58mm Receipt',
+                'fmt_a4': 'A4 Full Invoice',
+                'btn_print_now': 'Print Now'
             }
         };
 
         // --- Sync Status Indicator ---
         window.setSyncStatusUI = function(status, text) {
+            const isEn = currentLanguage === 'en';
             const dotD = document.getElementById('syncDotDesktop');
             const txtD = document.getElementById('syncTextDesktop');
             const dotM = document.getElementById('syncDotMobile');
@@ -1593,11 +1822,14 @@
                 'error': 'bg-rose-500',
                 'offline': 'bg-slate-400'
             };
+            const labelMapHi = { 'synced': 'सक्रिय समन्वय', 'syncing': 'समन्वय जारी...', 'local': 'स्थानीय मोड', 'error': 'ऑफ़लाइन मोड', 'offline': 'लॉगआउट' };
+            const labelMapEn = { 'synced': 'Live Sync', 'syncing': 'Syncing...', 'local': 'Local Mode', 'error': 'Offline Mode', 'offline': 'Logged Out' };
+            const resolvedText = isEn ? (labelMapEn[status] || text) : (labelMapHi[status] || text);
             const cls = `w-2 h-2 rounded-full ${colorMap[status] || 'bg-emerald-500'}`;
             if (dotD) dotD.className = cls;
             if (dotM) dotM.className = cls;
-            if (txtD) txtD.textContent = text;
-            if (txtM) txtM.textContent = status === 'synced' ? 'लाइव सिंक' : (status === 'local' ? 'लोकल' : text);
+            if (txtD) txtD.textContent = resolvedText;
+            if (txtM) txtM.textContent = resolvedText;
         };
 
         // --- Save & Sync All Data (Local + Firebase RTDB) ---
@@ -1843,6 +2075,7 @@
         // --- Dashboard Analytics & Insights ---
 
         function updateDashboardStats() {
+            const isEn = currentLanguage === 'en';
             const productArr = Object.values(products);
             const totalProds = productArr.length;
             document.getElementById('totalProductsStat').textContent = totalProds;
@@ -1850,10 +2083,10 @@
             document.getElementById('totalBillsStat').textContent = billHistory.length;
 
             const todayStr = new Date().toISOString().split('T')[0];
-            document.getElementById('todayDateBadge').textContent = new Date().toLocaleDateString('hi-IN', { day: 'numeric', month: 'short' });
+            document.getElementById('todayDateBadge').textContent = new Date().toLocaleDateString(isEn ? 'en-IN' : 'hi-IN', { day: 'numeric', month: 'short' });
 
             let todaySales = 0, todayBillsCount = 0;
-            let totalRevenue = 0, cashTotal = 0, upiTotal = 0, creditTotal = 0;
+            let totalRevenue = 0, creditTotal = 0;
 
             billHistory.forEach(b => {
                 const amt = Number(b.total) || 0;
@@ -1863,21 +2096,19 @@
                     todayBillsCount++;
                 }
                 if (b.paymentType === 'credit') creditTotal += amt;
-                else if (b.paymentType === 'upi') upiTotal += amt;
-                else cashTotal += amt;
             });
 
             const totalRecovered = khataPayments.reduce((s, p) => s + (Number(p.amount) || 0), 0);
             const netPendingUdhaar = Math.max(0, creditTotal - totalRecovered);
 
             document.getElementById('todaySalesStat').textContent = `₹${todaySales.toLocaleString('en-IN', {maximumFractionDigits: 0})}`;
-            document.getElementById('todayBillsCountStat').textContent = `${todayBillsCount} बिल आज`;
+            document.getElementById('todayBillsCountStat').textContent = isEn ? `${todayBillsCount} bills today` : `${todayBillsCount} बिल आज`;
             document.getElementById('totalRevenueStat').textContent = `₹${totalRevenue.toLocaleString('en-IN', {maximumFractionDigits: 0})}`;
             document.getElementById('totalUdhaarStat').textContent = `₹${netPendingUdhaar.toLocaleString('en-IN', {maximumFractionDigits: 0})}`;
 
             const khataMap = getKhataCustomerMap();
             const activeDebtors = Object.values(khataMap).filter(c => c.pending > 0.5).length;
-            document.getElementById('udhaarCustomersCountStat').textContent = `${activeDebtors} ग्राहक बकाया`;
+            document.getElementById('udhaarCustomersCountStat').textContent = isEn ? `${activeDebtors} customers due` : `${activeDebtors} ग्राहक बकाया`;
 
             const khataBadgeD = document.getElementById('khataBadgeDesktop');
             if (khataBadgeD) {
@@ -1885,18 +2116,10 @@
                 khataBadgeD.classList.toggle('hidden', netPendingUdhaar <= 0);
             }
 
-
-
-            const lowStockItems = productArr.filter(p => p.stock !== undefined && p.stock !== '' && Number(p.stock) <= Number(p.minStock ?? 5));
             const lowStockEl = document.getElementById('lowStockStatText');
-            if (lowStockItems.length > 0) {
-                lowStockEl.textContent = `⚠️ ${lowStockItems.length} आइटम कम स्टॉक`;
-                lowStockEl.className = 'text-[10px] text-rose-500 font-bold mt-0.5';
-            } else {
-                lowStockEl.textContent = '✅ स्टॉक पर्याप्त है';
-                lowStockEl.className = 'text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5';
+            if (lowStockEl) {
+                lowStockEl.textContent = isEn ? 'Available in store' : 'भंडार में उपलब्ध';
             }
-
         }
 
         function quickRestockPrompt(productId) {
@@ -1940,7 +2163,7 @@
             storeMeta.footerNote = document.getElementById('settingStoreFooter').value.trim();
             closeStoreSettingsModal();
             await saveAllDataToFirestore();
-            showToast('✅ स्टोर प्रोफ़ाइल और प्रिंट सेटिंग्स सेव हो गईं!', 'success');
+            showToast(currentLanguage === 'en' ? '✅ Store profile and bill settings saved!' : '✅ दुकान विवरण और बिल सेटिंग सहेजी गईं!', 'success');
         }
         async function handleEditStoreName() {
             showStoreSettingsModal();
@@ -1977,16 +2200,11 @@
             document.getElementById('productBarcode').value = '';
             document.getElementById('productManualId').value = '';
             document.getElementById('productName').value = '';
-            document.getElementById('productCategory').value = 'किराना (Kirana)';
+            document.getElementById('productCategory').value = currentLanguage === 'en' ? 'Grocery' : 'किराना';
             document.getElementById('productPrice').value = '';
-            document.getElementById('productMrp').value = '';
-            document.getElementById('productCostPrice').value = '';
             document.getElementById('productDetails').value = '';
             document.getElementById('productFillingQuantity').value = '1';
             document.getElementById('productUnit').value = 'piece';
-            document.getElementById('productStock').value = '';
-            document.getElementById('productMinStock').value = '5';
-            document.getElementById('productRack').value = '';
         }
         function closeAddModal() {
             toggleBodyScroll(false);
@@ -1996,23 +2214,18 @@
         }
 
         async function addProduct() {
+            const isEn = currentLanguage === 'en';
             let barcode = document.getElementById('productBarcode').value.trim();
             let manualId = document.getElementById('productManualId').value.trim();
             const name = document.getElementById('productName').value.trim();
-            const category = document.getElementById('productCategory').value.trim() || 'किराना (Kirana)';
+            const category = document.getElementById('productCategory').value.trim() || (isEn ? 'Grocery' : 'किराना');
             const price = parseFloat(document.getElementById('productPrice').value);
-            const mrp = parseFloat(document.getElementById('productMrp').value) || price;
-            const costPrice = parseFloat(document.getElementById('productCostPrice').value) || 0;
             const details = document.getElementById('productDetails').value.trim();
             const fillingQuantity = parseFloat(document.getElementById('productFillingQuantity').value) || 1;
             const unit = document.getElementById('productUnit').value;
-            const stockRaw = document.getElementById('productStock').value.trim();
-            const stock = stockRaw !== '' ? parseFloat(stockRaw) : '';
-            const minStock = parseFloat(document.getElementById('productMinStock').value) || 5;
-            const rack = document.getElementById('productRack').value.trim();
 
             if (!name || isNaN(price) || price < 0 || isNaN(fillingQuantity) || fillingQuantity <= 0) {
-                showToast('❌ कृपया सही नाम और बिक्री रेट डालें', 'error');
+                showToast(isEn ? '❌ Please enter valid name and selling price' : '❌ कृपया सही नाम और विक्रय मूल्य लिखें', 'error');
                 return;
             }
             if (!manualId && !barcode) {
@@ -2022,19 +2235,19 @@
             }
             const productId = (manualId || barcode).replace(/[.#$/\[\]]/g, '_');
             if (products[productId]) {
-                showToast('❌ यह ID या बारकोड पहले से मौजूद है!', 'error');
+                showToast(isEn ? '❌ This code or barcode already exists!' : '❌ यह कोड या बारकोड पहले से मौजूद है!', 'error');
                 return;
             }
             products[productId] = {
-                id: productId, barcode, manualId, name, category, price, mrp, costPrice,
-                details, fillingQuantity, unit, stock, minStock, rack,
+                id: productId, barcode, manualId, name, category, price,
+                details, fillingQuantity, unit,
                 dateAdded: new Date().toISOString(),
-                productHistory: [{ date: new Date().toISOString(), changes: [`नया प्रोडक्ट जोड़ा: ₹${price}`] }]
+                productHistory: [{ date: new Date().toISOString(), changes: [isEn ? `Added item: ₹${price}` : `नई वस्तु जोड़ी: ₹${price}`] }]
             };
             closeAddModal();
             await saveAllDataToFirestore();
             triggerHapticFeedback();
-            showToast('✅ प्रोडक्ट सफलतापूर्वक जोड़ा गया!', 'success');
+            showToast(isEn ? '✅ Item saved successfully!' : '✅ वस्तु सफलतापूर्वक जोड़ी गई!', 'success');
         }
 
         function editProduct(productId) {
@@ -2047,16 +2260,11 @@
             document.getElementById('editProductBarcode').value = product.barcode || '';
             document.getElementById('editProductManualId').value = product.manualId || '';
             document.getElementById('editProductName').value = product.name || '';
-            document.getElementById('editProductCategory').value = product.category || 'किराना (Kirana)';
+            document.getElementById('editProductCategory').value = product.category || (currentLanguage === 'en' ? 'Grocery' : 'किराना');
             document.getElementById('editProductPrice').value = product.price ?? '';
-            document.getElementById('editProductMrp').value = product.mrp ?? '';
-            document.getElementById('editProductCostPrice').value = product.costPrice ?? '';
             document.getElementById('editProductDetails').value = product.details || '';
             document.getElementById('editProductFillingQuantity').value = product.fillingQuantity || 1;
             document.getElementById('editProductUnit').value = product.unit || 'piece';
-            document.getElementById('editProductStock').value = product.stock !== undefined ? product.stock : '';
-            document.getElementById('editProductMinStock').value = product.minStock ?? 5;
-            document.getElementById('editProductRack').value = product.rack || '';
         }
 
         function closeEditModal() {
@@ -2068,41 +2276,34 @@
 
         async function updateProduct() {
             if (!currentEditingProduct || !products[currentEditingProduct]) return;
+            const isEn = currentLanguage === 'en';
             const newBarcode = document.getElementById('editProductBarcode').value.trim();
             const newManualId = document.getElementById('editProductManualId').value.trim();
             const rawId = newManualId || newBarcode || currentEditingProduct;
             const newProductId = String(rawId).replace(/[.#$/\[\]]/g, '_');
 
             if (newProductId !== currentEditingProduct && products[newProductId]) {
-                showToast('❌ यह ID/बारकोड पहले से मौजूद है!', 'error');
+                showToast(isEn ? '❌ This code or barcode already exists!' : '❌ यह कोड या बारकोड पहले से मौजूद है!', 'error');
                 return;
             }
             const name = document.getElementById('editProductName').value.trim();
-            const category = document.getElementById('editProductCategory').value.trim() || 'किराना (Kirana)';
+            const category = document.getElementById('editProductCategory').value.trim() || (isEn ? 'Grocery' : 'किराना');
             const price = parseFloat(document.getElementById('editProductPrice').value);
-            const mrp = parseFloat(document.getElementById('editProductMrp').value) || price;
-            const costPrice = parseFloat(document.getElementById('editProductCostPrice').value) || 0;
             const details = document.getElementById('editProductDetails').value.trim();
             const fillingQuantity = parseFloat(document.getElementById('editProductFillingQuantity').value) || 1;
             const unit = document.getElementById('editProductUnit').value;
-            const stockRaw = document.getElementById('editProductStock').value.trim();
-            const stock = stockRaw !== '' ? parseFloat(stockRaw) : '';
-            const minStock = parseFloat(document.getElementById('editProductMinStock').value) || 5;
-            const rack = document.getElementById('editProductRack').value.trim();
 
             if (!name || isNaN(price) || price < 0 || isNaN(fillingQuantity) || fillingQuantity <= 0) {
-                showToast('❌ कृपया सही नाम, कीमत और मात्रा डालें', 'error');
+                showToast(isEn ? '❌ Please enter valid name, price and quantity' : '❌ कृपया सही नाम, मूल्य और मात्रा लिखें', 'error');
                 return;
             }
 
             const oldP = products[currentEditingProduct];
             const changes = [];
-            if (oldP.name !== name) changes.push(`नाम: ${oldP.name} ➡️ ${name}`);
-            if (oldP.price !== price) changes.push(`बिक्री रेट: ₹${oldP.price} ➡️ ₹${price}`);
-            if ((oldP.mrp || oldP.price) !== mrp) changes.push(`MRP: ₹${oldP.mrp || oldP.price} ➡️ ₹${mrp}`);
-            if (String(oldP.stock ?? '') !== String(stock)) changes.push(`स्टॉक: ${oldP.stock ?? 'N/A'} ➡️ ${stock === '' ? 'N/A' : stock}`);
+            if (oldP.name !== name) changes.push(`${isEn ? 'Name' : 'नाम'}: ${oldP.name} ➡️ ${name}`);
+            if (oldP.price !== price) changes.push(`${isEn ? 'Price' : 'मूल्य'}: ₹${oldP.price} ➡️ ₹${price}`);
             if (oldP.fillingQuantity !== fillingQuantity || oldP.unit !== unit) {
-                changes.push(`मात्रा: ${oldP.fillingQuantity} ${unitTextMap[oldP.unit]||oldP.unit} ➡️ ${fillingQuantity} ${unitTextMap[unit]||unit}`);
+                changes.push(`${isEn ? 'Qty' : 'मात्रा'}: ${oldP.fillingQuantity} ${getUnitLabel(oldP.unit)} ➡️ ${fillingQuantity} ${getUnitLabel(unit)}`);
             }
 
             let productHistory = Array.isArray(oldP.productHistory) ? [...oldP.productHistory] : [];
@@ -2113,7 +2314,7 @@
             const updatedProduct = {
                 ...oldP,
                 id: newProductId, barcode: newBarcode, manualId: newManualId, name, category,
-                price, mrp, costPrice, details, fillingQuantity, unit, stock, minStock, rack, productHistory
+                price, details, fillingQuantity, unit, productHistory
             };
             const oldId = currentEditingProduct;
             delete products[currentEditingProduct];
@@ -2121,7 +2322,7 @@
             closeEditModal();
             await saveAllDataToFirestore();
             triggerHapticFeedback();
-            showToast('✅ प्रोडक्ट अपडेट हो गया!', 'success');
+            showToast(isEn ? '✅ Item updated successfully!' : '✅ वस्तु सफलतापूर्वक अद्यतन हो गई!', 'success');
 
             const dashboardResult = document.getElementById('dashboardScanResult');
             if (dashboardResult && !dashboardResult.classList.contains('hidden') && window.lastScannedDashboardId === oldId) {
@@ -2132,11 +2333,11 @@
         function handleDeleteProduct(productId) {
             const p = products[productId];
             if (!p) return;
-            showConfirmModal(`🗑️ "${p.name}" डिलीट करें?`, 'क्या आप वाकई इस प्रोडक्ट को स्टोर से हटाना चाहते हैं?', async () => {
+            showConfirmModal(currentLanguage === 'en' ? `🗑️ Delete "${p.name}"?` : `🗑️ "${p.name}" हटाएं?`, currentLanguage === 'en' ? 'Are you sure you want to remove this item from inventory?' : 'क्या आप वाकई इस वस्तु को भंडार से हटाना चाहते हैं?', async () => {
                 delete products[productId];
                 await saveAllDataToFirestore();
                 triggerHapticFeedback();
-                showToast('✅ प्रोडक्ट डिलीट हो गया!', 'success');
+                showToast(currentLanguage === 'en' ? '✅ Item deleted!' : '✅ वस्तु हटा दी गई!', 'success');
             });
         }
 
@@ -2150,15 +2351,11 @@
             const bar = document.getElementById('storeCategoryFilterBar');
             if (!bar) return;
             const prodArr = Object.values(products);
-            const cats = ['ALL', 'LOW_STOCK', ...new Set(prodArr.map(p => (p.category || '').trim()).filter(Boolean))];
+            const cats = ['ALL', ...new Set(prodArr.map(p => (p.category || '').trim()).filter(Boolean))];
             bar.innerHTML = cats.map(c => {
                 const isActive = activeCategoryFilter === c;
                 let label = c;
-                if (c === 'ALL') label = `सभी (${prodArr.length})`;
-                else if (c === 'LOW_STOCK') {
-                    const lowCount = prodArr.filter(p => p.stock !== undefined && p.stock !== '' && Number(p.stock) <= Number(p.minStock ?? 5)).length;
-                    label = `⚠️ कम स्टॉक (${lowCount})`;
-                }
+                if (c === 'ALL') label = currentLanguage === 'en' ? `All (${prodArr.length})` : `सभी (${prodArr.length})`;
                 return `<button onclick="setCategoryFilter('${c.replace(/'/g, "\\'")}')" class="chip-btn ${isActive ? 'active' : ''}">${label}</button>`;
             }).join('');
         }
@@ -2221,6 +2418,7 @@
         }
 
         function displayProducts(productsToDisplay) {
+            const isEn = currentLanguage === 'en';
             const list = document.getElementById('productsList');
             if (!list) return;
             list.innerHTML = '';
@@ -2231,11 +2429,11 @@
                 list.innerHTML = `
                     <div class="modern-card text-center py-12 px-4 flex flex-col items-center">
                         <div class="text-4xl mb-2">📦</div>
-                        <h3 class="font-extrabold text-sm">कोई प्रोडक्ट नहीं मिला</h3>
-                        <p class="text-xs meta-text mt-1 mb-4">नया प्रोडक्ट जोड़ें या फ़िल्टर रीसेट करें</p>
+                        <h3 class="font-extrabold text-sm">${isEn ? 'No items found' : 'कोई वस्तु नहीं मिली'}</h3>
+                        <p class="text-xs meta-text mt-1 mb-4">${isEn ? 'Add a new item or clear search filters' : 'नई वस्तु जोड़ें या खोज फ़िल्टर साफ़ करें'}</p>
                         <div class="flex gap-2">
-                            <button onclick="setCategoryFilter('ALL'); document.getElementById('storeSearchInput').value=''; searchAndSortProducts();" class="px-3 py-1.5 rounded-xl text-xs font-semibold elevated-bg border" style="border-color: var(--border-color);">फ़िल्टर हटाएं</button>
-                            <button onclick="showAddModal()" class="primary-bg text-white py-1.5 px-4 rounded-xl font-bold text-xs shadow">➕ नया प्रोडक्ट जोड़ें</button>
+                            <button onclick="setCategoryFilter('ALL'); document.getElementById('storeSearchInput').value=''; searchAndSortProducts();" class="px-3 py-1.5 rounded-xl text-xs font-semibold elevated-bg border" style="border-color: var(--border-color);">${isEn ? 'Reset Filter' : 'फ़िल्टर हटाएं'}</button>
+                            <button onclick="showAddModal()" class="primary-bg text-white py-1.5 px-4 rounded-xl font-bold text-xs shadow">➕ ${isEn ? 'Add New Item' : 'नई वस्तु जोड़ें'}</button>
                         </div>
                     </div>`;
                 return;
@@ -2243,7 +2441,7 @@
 
             if (storeView === 'grid') {
                 list.className = 'grid gap-2.5 pb-20 md:pb-4';
-                list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(175px, 1fr))';
+                list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(170px, 1fr))';
             } else {
                 list.className = 'space-y-1.5 pb-20 md:pb-4';
             }
@@ -2253,11 +2451,8 @@
             productArray.forEach(p => {
                 const card = document.createElement('div');
                 card.dataset.id = p.id;
-                const unitLabel = unitTextMap[p.unit] || p.unit;
+                const unitLabel = getUnitLabel(p.unit);
                 const codeVal = p.barcode || p.manualId || p.id;
-                const hasStock = p.stock !== undefined && p.stock !== '';
-                const isLowStock = hasStock && Number(p.stock) <= Number(p.minStock ?? 5);
-                const margin = (p.costPrice && p.price > p.costPrice) ? Math.round(((p.price - p.costPrice) / p.price) * 100) : null;
 
                 card.onmousedown = () => startLongPress(p.id);
                 card.onmouseup = clearLongPress;
@@ -2271,23 +2466,19 @@
                     card.innerHTML = `
                         <div>
                             <div class="flex justify-between items-start gap-1 mb-1">
-                                <span class="text-[10px] px-1.5 py-0.5 rounded-md elevated-bg font-semibold meta-text truncate max-w-[100px]">${p.category || 'किराना'}</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded-md elevated-bg font-semibold meta-text truncate max-w-[100px]">${p.category || (isEn ? 'Grocery' : 'किराना')}</span>
                                 <button onclick="openProductMenu('${p.id}', event)" class="text-slate-400 hover:text-blue-500 px-1 font-bold text-sm">⋮</button>
                             </div>
                             <h4 class="font-bold text-xs leading-snug product-name-text mb-1.5 line-clamp-2">${p.name}</h4>
                             <div class="w-full flex justify-center mb-2 bg-white rounded-lg p-1 overflow-hidden border border-slate-100 generated-code-container" data-val="${codeVal}"></div>
                             <div class="flex items-baseline justify-between">
                                 <p class="price-text font-extrabold text-sm">₹${p.price} <span class="text-[10px] font-normal meta-text">/ ${p.fillingQuantity || 1} ${unitLabel}</span></p>
-                                ${p.mrp && p.mrp > p.price ? `<span class="text-[10px] line-through meta-text">₹${p.mrp}</span>` : ''}
-                            </div>
-                            <div class="flex items-center justify-between text-[10px] mt-1">
-                                ${hasStock ? `<span class="${isLowStock ? 'text-rose-500 font-bold' : 'text-emerald-600 dark:text-emerald-400 font-semibold'}">स्टॉक: ${p.stock}</span>` : `<span class="meta-text">ID: ${p.manualId || codeVal.slice(-5)}</span>`}
-                                ${p.rack ? `<span class="meta-text">रैक: ${p.rack}</span>` : (margin ? `<span class="text-emerald-600 font-semibold">${margin}% मार्जिन</span>` : '')}
+                                <span class="text-[10px] meta-text font-mono">#${p.manualId || codeVal.slice(-5)}</span>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-1.5 pt-2 mt-2 border-t" style="border-color: var(--border-color);">
-                            <button onclick="editProduct('${p.id}'); event.stopPropagation();" class="py-1.5 rounded-lg elevated-bg text-[11px] font-semibold hover:opacity-80">✏️ एडिट</button>
-                            <button onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="py-1.5 rounded-lg secondary-bg text-white text-[11px] font-bold shadow-xs">+ बिल</button>
+                            <button onclick="editProduct('${p.id}'); event.stopPropagation();" class="py-1.5 rounded-lg elevated-bg text-[11px] font-semibold hover:opacity-80">✏️ ${isEn ? 'Edit' : 'बदलें'}</button>
+                            <button onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="py-1.5 rounded-lg secondary-bg text-white text-[11px] font-bold shadow-xs">+ ${isEn ? 'Bill' : 'बिल'}</button>
                         </div>
                     `;
                 } else {
@@ -2295,22 +2486,18 @@
                     card.innerHTML = `
                         <div class="flex-1 min-w-0" onclick="openProductMenu('${p.id}', event)">
                             <div class="flex items-center gap-1.5">
-                                <h4 class="font-bold product-name-text text-xs sm:text-sm truncate">${p.name}</h4>
+                                <h4 class="font-bold product-name-text text-xs sm:text-sm leading-snug break-words">${p.name}</h4>
                                 ${p.manualId ? `<span class="barcode-badge">#${p.manualId}</span>` : ''}
-                                ${p.rack ? `<span class="text-[10px] px-1.5 py-0.2 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold">${p.rack}</span>` : ''}
                             </div>
                             <div class="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 mt-0.5 text-[11px]">
                                 <span class="price-text font-extrabold">₹${p.price} <span class="font-normal meta-text text-[10px]">/ ${p.fillingQuantity || 1} ${unitLabel}</span></span>
-                                ${p.mrp && p.mrp > p.price ? `<span class="text-[10px] line-through meta-text">MRP ₹${p.mrp}</span>` : ''}
-                                ${hasStock ? `<span class="text-[10px] ${isLowStock ? 'text-rose-500 font-bold' : 'text-emerald-600 dark:text-emerald-400 font-medium'}">• स्टॉक: ${p.stock}</span>` : ''}
-                                ${margin ? `<span class="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 hidden sm:inline">• मार्जिन ${margin}%</span>` : ''}
-                                ${p.details ? `<span class="text-[10px] meta-text truncate max-w-[160px]">• ${p.details}</span>` : ''}
+                                ${p.details ? `<span class="text-[10px] meta-text truncate max-w-[180px]">• ${p.details}</span>` : ''}
                             </div>
                         </div>
                         <div class="flex items-center gap-1.5 flex-shrink-0">
-                            <button onclick="openProductMenu('${p.id}', event)" class="w-7 h-7 rounded-lg elevated-bg flex items-center justify-center text-slate-400 hover:text-blue-500 font-bold text-sm" title="विकल्प">⋮</button>
+                            <button onclick="openProductMenu('${p.id}', event)" class="w-7 h-7 rounded-lg elevated-bg flex items-center justify-center text-slate-400 hover:text-blue-500 font-bold text-sm" title="${isEn ? 'Options' : 'विकल्प'}">⋮</button>
                             <button onclick="addToBillFromStore('${p.id}', this); event.stopPropagation();" class="px-2.5 h-7 rounded-lg bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center gap-1 hover:bg-emerald-500/25 transition">
-                                <span>+</span> <span class="hidden sm:inline">बिल</span>
+                                <span>+</span> <span class="hidden sm:inline">${isEn ? 'Bill' : 'बिल'}</span>
                             </button>
                         </div>
                     `;
@@ -2357,8 +2544,8 @@
             if (!p) return;
             longPressedProductId = productId;
             document.getElementById('actionModalProductName').textContent = p.name;
-            const unitLabel = unitTextMap[p.unit] || p.unit;
-            document.getElementById('actionModalProductMeta').textContent = `₹${p.price} / ${p.fillingQuantity || 1} ${unitLabel} • ID: ${p.manualId || p.barcode || p.id}`;
+            const unitLabel = getUnitLabel(p.unit);
+            document.getElementById('actionModalProductMeta').textContent = `₹${p.price} / ${p.fillingQuantity || 1} ${unitLabel} • ${currentLanguage === 'en' ? 'Code' : 'कोड'}: ${p.manualId || p.barcode || p.id}`;
             document.getElementById('productActionModal').classList.remove('hidden');
         }
 
@@ -2387,7 +2574,7 @@
                 historyData = product.priceHistory.map(ph => ({ date: ph.date, changes: [`भाव अपडेट: ₹${ph.price}`] }));
             }
             if (historyData.length === 0) {
-                historyList.innerHTML = '<p class="text-center text-xs meta-text py-4">कोई अपडेट हिस्ट्री मौजूद नहीं है</p>';
+                historyList.innerHTML = `<p class="text-center text-xs meta-text py-4">${currentLanguage === 'en' ? 'No update history available' : 'कोई बदलाव इतिहास उपलब्ध नहीं है'}</p>`;
             } else {
                 historyList.innerHTML = historyData.slice().reverse().map(h => `
                     <div class="py-2 border-b last:border-0" style="border-color: var(--border-color);">
@@ -2418,11 +2605,11 @@
                     .then(() => { setupCameraControls(section); })
                     .catch(err => {
                         stopScanning(section);
-                        showToast('⚠️ कैमरा उपलब्ध नहीं है। आप सीधे सर्च या कोड टाइप कर सकते हैं।', 'info');
+                        showToast(currentLanguage === 'en' ? '⚠️ Camera unavailable. You can type or search directly.' : '⚠️ कैमरा उपलब्ध नहीं है। आप सीधे खोज या कोड लिख सकते हैं।', 'info');
                     });
             } catch (e) {
                 stopScanning(section);
-                showToast('⚠️ कैमरा शुरू नहीं हो सका', 'error');
+                showToast(currentLanguage === 'en' ? '⚠️ Could not start camera' : '⚠️ कैमरा प्रारंभ नहीं हो सका', 'error');
             }
         }
 
@@ -2454,18 +2641,18 @@
                     document.getElementById('productBarcode').value = decodedText;
                     fetchProductDetails(decodedText);
                 }
-                showToast('📱 बारकोड स्कैन हो गया!', 'success');
+                showToast(currentLanguage === 'en' ? '📱 Code scanned successfully!' : '📱 कोड स्कैन हो गया!', 'success');
             } else if (section === 'edit') {
                 if (window.editScanTarget === 'barcode') document.getElementById('editProductBarcode').value = decodedText;
                 else document.getElementById('editProductManualId').value = decodedText;
-                showToast('📱 कोड स्कैन हो गया!', 'success');
+                showToast(currentLanguage === 'en' ? '📱 Code scanned successfully!' : '📱 कोड स्कैन हो गया!', 'success');
             } else if (section === 'shopping') {
                 const product = Object.values(products).find(p => p.barcode === decodedText || p.manualId === decodedText || p.id === decodedText);
                 if (product) addToBill(product.id);
-                else showToast(`❌ कोड '${decodedText}' स्टोर में नहीं मिला!`, 'error');
+                else showToast(currentLanguage === 'en' ? `❌ Code '${decodedText}' not found in inventory!` : `❌ कोड '${decodedText}' भंडार में नहीं मिला!`, 'error');
             } else if (section === 'dashboard') {
                 displayDashboardScanResult(decodedText);
-                showToast('📱 कोड स्कैन हो गया!', 'success');
+                showToast(currentLanguage === 'en' ? '📱 Code scanned successfully!' : '📱 कोड स्कैन हो गया!', 'success');
             }
         }
 
@@ -2498,7 +2685,7 @@
 
         function toggleFlashlight(section) {
             if (!currentCameraTrack || !currentCameraTrack.getCapabilities) {
-                showToast('❌ कैमरा फ्लैश उपलब्ध नहीं है', 'error');
+                showToast(currentLanguage === 'en' ? '❌ Camera flash unavailable' : '❌ कैमरा टॉर्च उपलब्ध नहीं है', 'error');
                 return;
             }
             const capabilities = currentCameraTrack.getCapabilities();
@@ -2506,7 +2693,7 @@
                 flashlightEnabled = !flashlightEnabled;
                 currentCameraTrack.applyConstraints({ advanced: [{ torch: flashlightEnabled }] }).catch(() => {});
             } else {
-                showToast('❌ इस डिवाइस पर फ्लैश सपोर्ट नहीं है', 'error');
+                showToast(currentLanguage === 'en' ? '❌ Flash not supported on this device' : '❌ इस उपकरण पर टॉर्च सुविधा उपलब्ध नहीं है', 'error');
             }
         }
 
@@ -2515,12 +2702,10 @@
             const clean = barcode.trim();
             const product = Object.values(products).find(p => p.barcode === clean || p.manualId === clean) || productDatabase[clean];
             if (product) {
-                showToast('📦 प्रोडक्ट विवरण ऑटो-फिल हो गया!', 'success');
+                showToast(currentLanguage === 'en' ? '📦 Item details auto-filled!' : '📦 वस्तु विवरण स्वतः भर गया!', 'success');
                 document.getElementById('productName').value = product.name || '';
                 document.getElementById('productPrice').value = product.price || '';
-                document.getElementById('productMrp').value = product.mrp || product.price || '';
-                document.getElementById('productCostPrice').value = product.costPrice || '';
-                document.getElementById('productCategory').value = product.category || 'किराना (Kirana)';
+                document.getElementById('productCategory').value = product.category || (currentLanguage === 'en' ? 'Grocery' : 'किराना');
                 document.getElementById('productDetails').value = product.details || '';
                 document.getElementById('productFillingQuantity').value = product.fillingQuantity || 1;
                 document.getElementById('productUnit').value = product.unit || 'piece';
@@ -2542,7 +2727,7 @@
             ).slice(0, 6);
 
             if (results.length === 0) {
-                resultsDiv.innerHTML = `<div class="p-2.5 text-center meta-text">कोई प्रोडक्ट नहीं मिला — <button onclick="showAddModalWithBarcode('${trimmedQuery}')" class="primary-text font-bold underline">+ नया जोड़ें</button></div>`;
+                resultsDiv.innerHTML = `<div class="p-2.5 text-center meta-text">${currentLanguage === 'en' ? 'No item found' : 'कोई वस्तु नहीं मिली'} — <button onclick="showAddModalWithBarcode('${trimmedQuery}')" class="primary-text font-bold underline">${currentLanguage === 'en' ? '+ Add New' : '+ नई जोड़ें'}</button></div>`;
             } else {
                 resultsDiv.innerHTML = results.map(p => `
                     <div class="p-2.5 cursor-pointer border-b last:border-0 hover:bg-blue-500/10 flex justify-between items-center" onclick="selectDashSearch('${p.id}')" style="border-color: var(--border-color);">
@@ -2564,41 +2749,39 @@
         }
 
         function displayDashboardScanResult(codeOrId) {
+            const isEn = currentLanguage === 'en';
             const resultDiv = document.getElementById('dashboardScanResult');
             const product = products[codeOrId] || Object.values(products).find(p => p.barcode === codeOrId || p.manualId === codeOrId);
             window.lastScannedDashboardId = product ? product.id : codeOrId;
             resultDiv.classList.remove('hidden');
             if (product) {
-                const unitLabel = unitTextMap[product.unit] || product.unit;
+                const unitLabel = getUnitLabel(product.unit);
                 resultDiv.innerHTML = `
                     <div class="flex justify-between items-start mb-1.5">
                         <div>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded card-bg font-semibold meta-text">${product.category || 'किराना'}</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded card-bg font-semibold meta-text">${product.category || (isEn ? 'Grocery' : 'किराना')}</span>
                             <h4 class="font-extrabold text-sm mt-1 product-name-text">${product.name}</h4>
                         </div>
                         <button onclick="closeDashboardResult()" class="text-slate-400 hover:text-rose-500 font-bold text-lg leading-none">&times;</button>
                     </div>
                     <div class="flex items-baseline gap-3 mb-2">
                         <p class="price-text font-extrabold text-base">₹${product.price} <span class="text-xs font-medium meta-text">/ ${product.fillingQuantity || 1} ${unitLabel}</span></p>
-                        ${product.mrp && product.mrp > product.price ? `<span class="text-xs line-through meta-text">MRP: ₹${product.mrp}</span>` : ''}
-                        ${product.stock !== undefined && product.stock !== '' ? `<span class="text-xs font-semibold text-emerald-600">स्टॉक: ${product.stock}</span>` : ''}
-                        ${product.rack ? `<span class="text-xs meta-text">रैक: ${product.rack}</span>` : ''}
                     </div>
                     ${product.details ? `<p class="text-xs meta-text mb-2.5">${product.details}</p>` : ''}
                     <div class="grid grid-cols-3 gap-2">
-                        <button onclick="editProduct('${product.id}')" class="py-1.5 px-2 rounded-lg card-bg border font-bold text-xs" style="border-color: var(--border-color);">✏️ एडिट</button>
-                        <button onclick="printSelectedProductLabels([products['${product.id}']])" class="py-1.5 px-2 rounded-lg card-bg border font-bold text-xs" style="border-color: var(--border-color);">🏷️ लेबल</button>
-                        <button onclick="addToBillFromDashboard('${product.id}')" class="secondary-bg text-white py-1.5 px-2 rounded-lg font-bold text-xs shadow">+ बिल में जोड़ें</button>
+                        <button onclick="editProduct('${product.id}')" class="py-1.5 px-2 rounded-lg card-bg border font-bold text-xs" style="border-color: var(--border-color);">✏️ ${isEn ? 'Edit' : 'बदलें'}</button>
+                        <button onclick="printSelectedProductLabels([products['${product.id}']])" class="py-1.5 px-2 rounded-lg card-bg border font-bold text-xs" style="border-color: var(--border-color);">🏷️ ${isEn ? 'Sticker' : 'स्टीकर'}</button>
+                        <button onclick="addToBillFromDashboard('${product.id}')" class="secondary-bg text-white py-1.5 px-2 rounded-lg font-bold text-xs shadow">+ ${isEn ? 'Add to Bill' : 'बिल में जोड़ें'}</button>
                     </div>
                 `;
             } else {
                 resultDiv.innerHTML = `
                     <div class="flex justify-between items-center mb-1">
-                        <span class="font-bold text-xs text-rose-500">प्रोडक्ट स्टोर में नहीं मिला!</span>
+                        <span class="font-bold text-xs text-rose-500">${isEn ? 'Item not found in inventory!' : 'वस्तु भंडार में नहीं मिली!'}</span>
                         <button onclick="closeDashboardResult()" class="text-slate-400 hover:text-rose-500 font-bold">&times;</button>
                     </div>
-                    <p class="text-xs meta-text mb-2">कोड: <span class="font-mono font-bold">${codeOrId}</span></p>
-                    <button onclick="showAddModalWithBarcode('${codeOrId}')" class="w-full primary-bg text-white py-1.5 px-3 rounded-lg font-bold text-xs">+ नए प्रोडक्ट के रूप में जोड़ें</button>
+                    <p class="text-xs meta-text mb-2">${isEn ? 'Code' : 'कोड'}: <span class="font-mono font-bold">${codeOrId}</span></p>
+                    <button onclick="showAddModalWithBarcode('${codeOrId}')" class="w-full primary-bg text-white py-1.5 px-3 rounded-lg font-bold text-xs">${isEn ? '+ Add as New Item' : '+ नई वस्तु के रूप में जोड़ें'}</button>
                 `;
             }
         }
@@ -2637,7 +2820,7 @@
             const fillingQuantity = parseFloat(document.getElementById('manualItemQuantity').value) || 1;
             const unit = document.getElementById('manualItemUnit').value;
             if (isNaN(totalPrice) || totalPrice <= 0 || fillingQuantity <= 0) {
-                showToast('❌ कृपया सही कीमत और मात्रा डालें', 'error');
+                showToast(currentLanguage === 'en' ? '❌ Please enter valid price and quantity' : '❌ कृपया सही मूल्य और मात्रा लिखें', 'error');
                 return;
             }
             const manualItem = {
@@ -2648,12 +2831,12 @@
             closeManualAddModal();
             displayBillItems();
             updateTotal();
-            showToast('✅ आइटम बिल में जोड़ा गया!', 'success');
+            showToast(currentLanguage === 'en' ? '✅ Item added to bill!' : '✅ वस्तु बिल में जोड़ी गई!', 'success');
         }
 
         function addToBill(productId, element) {
             const product = products[productId];
-            if (!product) { showToast('❌ प्रोडक्ट नहीं मिला!', 'error'); return; }
+            if (!product) { showToast(currentLanguage === 'en' ? '❌ Item not found!' : '❌ वस्तु नहीं मिली!', 'error'); return; }
             const existingItem = billItems.find(item => item.id === productId);
             if (existingItem) {
                 existingItem.quantity += 1;
@@ -2679,7 +2862,7 @@
             document.getElementById('searchResults')?.classList.add('hidden');
             displayBillItems();
             updateTotal();
-            showToast(`✅ ${product.name} बिल में जुड़ा`, 'success');
+            showToast(currentLanguage === 'en' ? `✅ ${product.name} added to bill` : `✅ ${product.name} बिल में जोड़ा गया`, 'success');
         }
 
         function addToBillFromStore(productId, element) {
@@ -2702,8 +2885,9 @@
             const billDiv = document.getElementById('billItems');
             const totalQty = billItems.reduce((s, i) => s + (Number(i.quantity) || 1), 0);
 
+            const isEn = currentLanguage === 'en';
             const countBadge = document.getElementById('billItemCountBadge');
-            if (countBadge) countBadge.textContent = `${billItems.length} आइटम (${totalQty})`;
+            if (countBadge) countBadge.textContent = isEn ? `${billItems.length} items (${totalQty})` : `${billItems.length} वस्तु (${totalQty})`;
 
             const deskBadge = document.getElementById('cartCountDesktop');
             const mobBadge = document.getElementById('cartCountMobile');
@@ -2716,14 +2900,14 @@
                 billDiv.innerHTML = `
                     <div class="text-center py-8 meta-text flex flex-col items-center">
                         <div class="text-3xl mb-1.5 opacity-60">🛒</div>
-                        <h3 class="font-bold text-xs">वर्तमान बिल खाली है</h3>
-                        <p class="text-[11px] mt-0.5">बाईं ओर से आइटम चुनें, सर्च करें या बारकोड स्कैन करें</p>
+                        <h3 class="font-bold text-xs">${isEn ? 'Current bill is empty' : 'वर्तमान बिल खाली है'}</h3>
+                        <p class="text-[11px] mt-0.5">${isEn ? 'Search an item above or scan barcode to add' : 'ऊपर से वस्तु खोजें या बारकोड स्कैन करके जोड़ें'}</p>
                     </div>`;
                 return;
             }
 
             billDiv.innerHTML = billItems.map((item, index) => {
-                const unitLabel = unitTextMap[item.unit] || item.unit;
+                const unitLabel = getUnitLabel(item.unit);
                 const totalUnits = (Number(item.quantity) || 1) * (Number(item.fillingQuantity) || 1);
                 const formattedTotalUnits = parseFloat(totalUnits.toFixed(2));
                 const lineTotal = (Number(item.price) || 0) * (Number(item.quantity) || 1);
@@ -2764,7 +2948,7 @@
         function promptEditLineItemQty(index) {
             const item = billItems[index];
             if (!item) return;
-            showPromptModal(`⚖️ मात्रा बदलें: ${item.name}`, `पैकेट/यूनिट की संख्या दर्ज करें (दशमलव जैसे 0.5 या 1.5 भी मान्य):`, item.quantity, (val) => {
+            showPromptModal(currentLanguage === 'en' ? `⚖️ Change Quantity: ${item.name}` : `⚖️ मात्रा बदलें: ${item.name}`, currentLanguage === 'en' ? 'Enter quantity (decimals like 0.5 or 1.5 are also valid):' : 'इकाई की संख्या लिखें (दशमलव जैसे 0.5 या 1.5 भी मान्य):', item.quantity, (val) => {
                 const q = parseFloat(val);
                 if (!isNaN(q) && q > 0) {
                     billItems[index].quantity = q;
@@ -2777,7 +2961,7 @@
         function promptEditLineItemRate(index) {
             const item = billItems[index];
             if (!item) return;
-            showPromptModal(`🏷️ रेट बदलें: ${item.name}`, `इस बिल के लिए नया प्रति-यूनिट रेट (₹) दर्ज करें:`, item.price, (val) => {
+            showPromptModal(currentLanguage === 'en' ? `🏷️ Change Price: ${item.name}` : `🏷️ मूल्य बदलें: ${item.name}`, currentLanguage === 'en' ? 'Enter new unit price (₹) for this bill:' : 'इस बिल के लिए नया प्रति-इकाई मूल्य (₹) लिखें:', item.price, (val) => {
                 const r = parseFloat(val);
                 if (!isNaN(r) && r >= 0) {
                     billItems[index].price = r;
@@ -2845,7 +3029,7 @@
 
         function handleClearBill() {
             if (billItems.length === 0) return;
-            showConfirmModal('🗑️ बिल क्लियर करें?', 'क्या आप वर्तमान बिल के सभी आइटम्स हटाना चाहते हैं?', () => {
+            showConfirmModal(currentLanguage === 'en' ? '🗑️ Clear Current Bill?' : '🗑️ वर्तमान बिल साफ़ करें?', currentLanguage === 'en' ? 'Do you want to remove all items from the current bill?' : 'क्या आप वर्तमान बिल की सभी वस्तुएं हटाना चाहते हैं?', () => {
                 billItems = [];
                 document.getElementById('customerName').value = '';
                 document.getElementById('customerPhone').value = '';
@@ -2854,7 +3038,7 @@
                 displayBillItems();
                 updateTotal();
                 triggerHapticFeedback();
-                showToast('✅ बिल क्लियर हो गया!', 'success');
+                showToast(currentLanguage === 'en' ? '✅ Bill cleared!' : '✅ बिल साफ़ हो गया!', 'success');
             });
         }
 
@@ -2873,7 +3057,7 @@
             ).slice(0, 8);
 
             if (results.length === 0) {
-                resultsDiv.innerHTML = `<div class="text-center py-2.5 meta-text text-xs">कोई प्रोडक्ट नहीं मिला — <button onclick="showManualAddModal()" class="primary-text font-bold underline">+ खुला आइटम जोड़ें</button></div>`;
+                resultsDiv.innerHTML = `<div class="text-center py-2.5 meta-text text-xs">${currentLanguage === 'en' ? 'No item found' : 'कोई वस्तु नहीं मिली'} — <button onclick="showManualAddModal()" class="primary-text font-bold underline">${currentLanguage === 'en' ? '+ Add Custom Item' : '+ खुली वस्तु जोड़ें'}</button></div>`;
                 resultsDiv.classList.remove('hidden');
                 return;
             }
@@ -2906,12 +3090,12 @@
 
         function showPaymentTypeModal(action) {
             if (billItems.length === 0) {
-                showToast('❌ बिल में कोई आइटम नहीं है!', 'error');
+                showToast(currentLanguage === 'en' ? '❌ No items in the bill!' : '❌ बिल में कोई वस्तु नहीं है!', 'error');
                 return;
             }
             const customerNameInput = document.getElementById('customerName');
             if (action === 'save' && !customerNameInput.value.trim()) {
-                customerNameInput.value = 'नगद ग्राहक (Walk-in)';
+                customerNameInput.value = currentLanguage === 'en' ? 'Walk-in Customer' : 'नकद ग्राहक';
             }
             currentBillAction = action;
             const calc = getBillCalculation();
@@ -2943,18 +3127,18 @@
             const label = document.getElementById('changeOrBalanceLabel');
             const amtEl = document.getElementById('changeOrBalanceAmount');
             if (isNaN(received) || received <= 0) {
-                label.textContent = 'वापस करने योग्य छुट्टा (Change):';
+                label.textContent = currentLanguage === 'en' ? 'Change to Return:' : 'वापस करने योग्य राशि:';
                 amtEl.textContent = '₹0.00';
                 amtEl.className = 'font-extrabold text-emerald-600 dark:text-emerald-400';
                 return;
             }
             const diff = received - calc.finalTotal;
             if (diff >= 0) {
-                label.textContent = 'ग्राहक को वापस दें (Change):';
+                label.textContent = currentLanguage === 'en' ? 'Return to Customer:' : 'ग्राहक को वापस दें:';
                 amtEl.textContent = `₹${diff.toFixed(2)}`;
                 amtEl.className = 'font-extrabold text-emerald-600 dark:text-emerald-400';
             } else {
-                label.textContent = 'बकाया राशि (Remaining Due):';
+                label.textContent = currentLanguage === 'en' ? 'Remaining Balance Due:' : 'शेष बकाया राशि:';
                 amtEl.textContent = `₹${Math.abs(diff).toFixed(2)}`;
                 amtEl.className = 'font-extrabold text-rose-500';
             }
@@ -2976,7 +3160,7 @@
         function saveBill() { showPaymentTypeModal('save'); }
         function printBill() {
             if (billItems.length === 0) {
-                showToast('❌ प्रिंट करने के लिए बिल में आइटम जोड़ें!', 'error');
+                showToast(currentLanguage === 'en' ? '❌ Add items to the bill to print!' : '❌ मुद्रण के लिए बिल में वस्तुएं जोड़ें!', 'error');
                 return;
             }
             showPaymentTypeModal('print');
@@ -2985,7 +3169,7 @@
         function buildCurrentBillObject(paymentType) {
             const calc = getBillCalculation();
             const now = new Date();
-            const customerName = document.getElementById('customerName').value.trim() || 'नगद ग्राहक';
+            const customerName = document.getElementById('customerName').value.trim() || (currentLanguage === 'en' ? 'Walk-in Customer' : 'नकद ग्राहक');
             const customerPhone = document.getElementById('customerPhone').value.trim() || '';
             return {
                 id: generateBillId(now),
@@ -3023,7 +3207,7 @@
             displayBillItems();
             updateTotal();
             triggerHapticFeedback(80);
-            showToast(`✅ बिल #${bill.id} सेव हो गया!`, 'success');
+            showToast(currentLanguage === 'en' ? `✅ Bill #${bill.id} saved!` : `✅ बिल #${bill.id} सहेजा गया!`, 'success');
         }
 
         function executePrintBill(paymentType) {
@@ -3089,12 +3273,13 @@
                 customers = customers.filter(c => c.name.toLowerCase().includes(q) || (hq && c.name.includes(hq)) || (c.phone && c.phone.includes(q)));
             }
 
+            const isEn = currentLanguage === 'en';
             if (customers.length === 0) {
                 listEl.innerHTML = `
                     <div class="modern-card p-10 text-center meta-text">
                         <div class="text-3xl mb-2">📒</div>
-                        <p class="font-bold text-sm">कोई उधार खाता नहीं मिला</p>
-                        <p class="text-xs mt-1">जब आप कोई बिल 'उधार (Khata)' में सेव करेंगे, तो वह अपने-आप यहाँ जुड़ जाएगा।</p>
+                        <p class="font-bold text-sm">${isEn ? 'No credit accounts found' : 'कोई उधार खाता नहीं मिला'}</p>
+                        <p class="text-xs mt-1">${isEn ? 'Bills saved under Credit Ledger will automatically appear here.' : 'जब आप कोई बिल उधार खाते में सहेजेंगे, तो वह स्वतः यहाँ जुड़ जाएगा।'}</p>
                     </div>`;
                 return;
             }
@@ -3110,22 +3295,22 @@
                                     ${c.phone ? `<span class="text-xs font-mono meta-text">(${c.phone})</span>` : ''}
                                 </h4>
                                 <p class="text-[11px] meta-text mt-0.5">
-                                    कुल उधार: ₹${c.totalCredit.toFixed(0)} • जमा: <span class="text-emerald-600 font-semibold">₹${c.totalPaid.toFixed(0)}</span> • (${c.bills.length} बिल)
+                                    ${isEn ? 'Total Credit' : 'कुल उधार'}: ₹${c.totalCredit.toFixed(0)} • ${isEn ? 'Paid' : 'जमा'}: <span class="text-emerald-600 font-semibold">₹${c.totalPaid.toFixed(0)}</span> • (${c.bills.length} ${isEn ? 'bills' : 'बिल'})
                                 </p>
                             </div>
                             <div class="text-right">
-                                <span class="text-xs meta-text block">बकाया राशि</span>
+                                <span class="text-xs meta-text block">${isEn ? 'Balance Due' : 'बकाया राशि'}</span>
                                 <span class="text-base font-extrabold ${isSettled ? 'text-emerald-600' : 'text-rose-600'}">
-                                    ${isSettled ? '✅ चुकता (₹0)' : `₹${c.pending.toFixed(2)}`}
+                                    ${isSettled ? (isEn ? '✅ Settled (₹0)' : '✅ चुकता (₹0)') : `₹${c.pending.toFixed(2)}`}
                                 </span>
                             </div>
                         </div>
                         <div class="flex flex-wrap items-center gap-1.5 mt-2.5 pt-2 border-t" style="border-color: var(--border-color);">
                             ${!isSettled ? `
-                                <button onclick="recordKhataRecovery('${c.name.replace(/'/g, "\\'")}', ${c.pending})" class="px-3 py-1.5 rounded-lg secondary-bg text-white font-bold text-xs shadow-xs">💸 वसूली / जमा दर्ज करें</button>
-                                <button onclick="sendKhataWhatsappReminder('${c.name.replace(/'/g, "\\'")}', '${c.phone || ''}', ${c.pending})" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs">💬 WhatsApp तगादा</button>
+                                <button onclick="recordKhataRecovery('${c.name.replace(/'/g, "\\'")}', ${c.pending})" class="px-3 py-1.5 rounded-lg secondary-bg text-white font-bold text-xs shadow-xs">💸 ${isEn ? 'Record Payment' : 'वसूली / जमा दर्ज करें'}</button>
+                                <button onclick="sendKhataWhatsappReminder('${c.name.replace(/'/g, "\\'")}', '${c.phone || ''}', ${c.pending})" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs">💬 ${isEn ? 'WhatsApp Reminder' : 'व्हाट्सएप तगादा'}</button>
                             ` : ''}
-                            <button onclick="printCustomerKhataStatement('${c.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 rounded-lg elevated-bg border font-semibold text-xs" style="border-color: var(--border-color);">🖨️ स्टेटमेंट प्रिंट</button>
+                            <button onclick="printCustomerKhataStatement('${c.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 rounded-lg elevated-bg border font-semibold text-xs" style="border-color: var(--border-color);">🖨️ ${isEn ? 'Print Statement' : 'विवरण मुद्रण'}</button>
                         </div>
                     </div>
                 `;
@@ -3133,10 +3318,10 @@
         }
 
         function recordKhataRecovery(customerName, pendingAmt) {
-            showPromptModal(`💸 उधार वसूली: ${customerName}`, `कुल बकाया ₹${pendingAmt.toFixed(2)} में से आज प्राप्त जमा राशि (₹) दर्ज करें:`, pendingAmt, async (val) => {
+            showPromptModal(currentLanguage === 'en' ? `💸 Record Payment: ${customerName}` : `💸 उधार वसूली: ${customerName}`, currentLanguage === 'en' ? `Out of ₹${pendingAmt.toFixed(2)} due, enter amount received today (₹):` : `कुल बकाया ₹${pendingAmt.toFixed(2)} में से आज प्राप्त जमा राशि (₹) लिखें:`, pendingAmt, async (val) => {
                 const amt = parseFloat(val);
                 if (isNaN(amt) || amt <= 0) {
-                    showToast('❌ कृपया सही राशि दर्ज करें', 'error');
+                    showToast(currentLanguage === 'en' ? '❌ Please enter a valid amount' : '❌ कृपया सही राशि लिखें', 'error');
                     return;
                 }
                 khataPayments.unshift({
@@ -3147,7 +3332,7 @@
                 });
                 await saveAllDataToFirestore();
                 renderKhataSection();
-                showToast(`✅ ₹${amt} वसूली सफलतापूर्वक दर्ज हो गई!`, 'success');
+                showToast(currentLanguage === 'en' ? `✅ ₹${amt} payment recorded!` : `✅ ₹${amt} वसूली सफलतापूर्वक दर्ज हो गई!`, 'success');
             }, 'number');
         }
 
@@ -3192,26 +3377,27 @@
 
             const sumAmt = filtered.reduce((s, b) => s + (Number(b.total) || 0), 0);
             const summaryEl = document.getElementById('historyFilteredSummary');
-            if (summaryEl) summaryEl.textContent = `${filtered.length} बिल • कुल: ₹${sumAmt.toLocaleString('en-IN', {maximumFractionDigits: 2})}`;
+            if (summaryEl) summaryEl.textContent = currentLanguage === 'en' ? `${filtered.length} bills • Total: ₹${sumAmt.toLocaleString('en-IN', {maximumFractionDigits: 2})}` : `${filtered.length} बिल • कुल: ₹${sumAmt.toLocaleString('en-IN', {maximumFractionDigits: 2})}`;
 
             displayBillHistory(filtered);
         }
 
         function displayBillHistory(billsToDisplay = billHistory) {
+            const isEn = currentLanguage === 'en';
             const historyDiv = document.getElementById('billHistory');
             if (!historyDiv) return;
             if (billsToDisplay.length === 0) {
                 historyDiv.innerHTML = `
                     <div class="modern-card text-center py-12 px-4 meta-text">
                         <div class="text-3xl mb-2">🧾</div>
-                        <h3 class="font-bold text-sm">कोई बिल हिस्ट्री नहीं मिली</h3>
-                        <p class="text-xs mt-1">सेव किए गए सभी बिल तारीख के अनुसार यहाँ दिखेंगे।</p>
+                        <h3 class="font-bold text-sm">${isEn ? 'No bill history found' : 'कोई पुराना बिल नहीं मिला'}</h3>
+                        <p class="text-xs mt-1">${isEn ? 'All saved bills will appear here sorted by date.' : 'सहेजे गए सभी बिल दिनांक के अनुसार यहाँ दिखेंगे।'}</p>
                     </div>`;
                 return;
             }
 
             const groupedBills = billsToDisplay.reduce((acc, bill) => {
-                const date = new Date(bill.date).toLocaleDateString('hi-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+                const date = new Date(bill.date).toLocaleDateString(isEn ? 'en-IN' : 'hi-IN', { year: 'numeric', month: 'short', day: 'numeric' });
                 if (!acc[date]) acc[date] = [];
                 acc[date].push(bill);
                 return acc;
@@ -3223,19 +3409,20 @@
                 finalHtml += `
                     <div class="flex items-center justify-between pt-2 pb-1 px-1">
                         <h3 class="text-xs font-extrabold meta-text uppercase">${date}</h3>
-                        <span class="text-xs font-bold primary-text">दिन का योग: ₹${dayTotal.toFixed(0)}</span>
+                        <span class="text-xs font-bold primary-text">${isEn ? 'Day Total' : 'दिन का योग'}: ₹${dayTotal.toFixed(0)}</span>
                     </div>`;
 
                 groupedBills[date].forEach(bill => {
                     const pType = bill.paymentType || 'cash';
+                    const isStarred = starredBills.some(s => String(s.id) === String(bill.id));
                     const badgeHtml = pType === 'credit'
-                        ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/15 text-rose-500">उधार</span>'
+                        ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/15 text-rose-500">${isEn ? 'Credit' : 'उधार'}</span>`
                         : (pType === 'upi'
-                            ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/15 text-blue-500">UPI</span>'
-                            : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-600">नगद</span>');
+                            ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/15 text-blue-500">${isEn ? 'Online' : 'ऑनलाइन'}</span>`
+                            : `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-600">${isEn ? 'Cash' : 'नकद'}</span>`);
 
                     const billDetailsHtml = (bill.items || []).map(item => {
-                        const unitLabel = unitTextMap[item.unit] || item.unit;
+                        const unitLabel = getUnitLabel(item.unit);
                         const totalUnits = (Number(item.quantity) || 1) * (Number(item.fillingQuantity) || 1);
                         const formattedTotalUnits = parseFloat(totalUnits.toFixed(2));
                         return `
@@ -3253,11 +3440,12 @@
                             <div class="flex justify-between items-center gap-2">
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-2">
-                                        <h4 class="font-bold text-xs sm:text-sm product-name-text truncate">${bill.customerName || `बिल #${bill.id}`}</h4>
+                                        <h4 class="font-bold text-xs sm:text-sm product-name-text truncate">${bill.customerName || (isEn ? `Bill #${bill.id}` : `बिल #${bill.id}`)}</h4>
                                         ${badgeHtml}
+                                        ${isStarred ? '<span class="text-xs text-amber-500">⭐</span>' : ''}
                                     </div>
                                     <p class="text-[11px] meta-text mt-0.5">
-                                        #${bill.id} • ${new Date(bill.date).toLocaleTimeString('hi-IN', {hour: '2-digit', minute: '2-digit'})} • ${(bill.items || []).length} आइटम्स
+                                        #${bill.id} • ${new Date(bill.date).toLocaleTimeString(isEn ? 'en-IN' : 'hi-IN', {hour: '2-digit', minute: '2-digit'})} • ${(bill.items || []).length} ${isEn ? 'items' : 'वस्तुएं'}
                                     </p>
                                 </div>
                                 <div class="text-right flex-shrink-0">
@@ -3268,13 +3456,14 @@
                                 <div class="p-2 rounded-xl elevated-bg mb-2.5">${billDetailsHtml}</div>
                                 <div class="flex flex-wrap items-center justify-between gap-1.5">
                                     <div class="flex flex-wrap gap-1.5">
-                                        <button onclick="loadBillFromHistory(event, '${bill.id}')" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs">🔄 पीओएस में लोड</button>
-                                        <button onclick="printOldBill(event, '${bill.id}')" class="px-2.5 py-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold text-xs">🖨️ प्रिंट / रसीद</button>
-                                        <button onclick="shareOldBill(event, '${bill.id}')" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 font-bold text-xs">💬 WhatsApp</button>
-                                        ${pType === 'credit' ? `<button onclick="toggleBillPaymentStatus(event, '${bill.id}')" class="px-2.5 py-1.5 rounded-lg bg-amber-500/15 text-amber-600 font-bold text-xs">✅ नगद में बदलें</button>` : ''}
+                                        <button onclick="loadBillFromHistory(event, '${bill.id}')" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs">🔄 ${isEn ? 'Load in Billing' : 'बिलिंग में खोलें'}</button>
+                                        <button onclick="starBillFromHistory(event, '${bill.id}')" class="px-2.5 py-1.5 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold text-xs">⭐ ${isStarred ? (isEn ? 'Unstar' : 'तारांकित हटाएं') : (isEn ? 'Hold / Star' : 'होल्ड / तारांकित')}</button>
+                                        <button onclick="printOldBill(event, '${bill.id}')" class="px-2.5 py-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold text-xs">🖨️ ${isEn ? 'Print' : 'मुद्रण'}</button>
+                                        <button onclick="shareOldBill(event, '${bill.id}')" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 font-bold text-xs">💬 ${isEn ? 'WhatsApp' : 'व्हाट्सएप'}</button>
+                                        ${pType === 'credit' ? `<button onclick="toggleBillPaymentStatus(event, '${bill.id}')" class="px-2.5 py-1.5 rounded-lg bg-amber-500/15 text-amber-600 font-bold text-xs">✅ ${isEn ? 'Mark Paid' : 'नकद में बदलें'}</button>` : ''}
                                     </div>
                                     <div class="flex gap-1.5">
-                                        <button onclick="renameCustomerInHistory(event, '${bill.id}')" class="px-2 py-1.5 rounded-lg elevated-bg text-xs font-semibold">✏️ नाम</button>
+                                        <button onclick="renameCustomerInHistory(event, '${bill.id}')" class="px-2 py-1.5 rounded-lg elevated-bg text-xs font-semibold">✏️ ${isEn ? 'Name' : 'नाम'}</button>
                                         <button onclick="handleDeleteHistoryItem(event, '${bill.id}')" class="px-2 py-1.5 rounded-lg bg-rose-500/10 text-rose-500 text-xs font-bold">🗑️</button>
                                     </div>
                                 </div>
@@ -3296,17 +3485,17 @@
             if (!bill) return;
             bill.paymentType = 'cash';
             await saveAllDataToFirestore();
-            showToast(`✅ बिल #${bill.id} अब नगद (Paid) मार्क हो गया!`, 'success');
+            showToast(currentLanguage === 'en' ? `✅ Bill #${bill.id} marked as Paid (Cash)!` : `✅ बिल #${bill.id} अब नकद (चुकता) चिह्नित हो गया!`, 'success');
         }
 
         function handleDeleteHistoryItem(event, billId) {
             event.stopPropagation();
-            showConfirmModal('🗑️ बिल डिलीट करें?', 'क्या आप वाकई इस बिल को हिस्ट्री से हटाना चाहते हैं?', async () => {
+            showConfirmModal(currentLanguage === 'en' ? '🗑️ Delete Bill?' : '🗑️ बिल हटाएं?', currentLanguage === 'en' ? 'Are you sure you want to delete this bill from history?' : 'क्या आप वाकई इस बिल को इतिहास से हटाना चाहते हैं?', async () => {
                 const index = billHistory.findIndex(b => String(b.id) === String(billId));
                 if (index > -1) {
                     billHistory.splice(index, 1);
                     await saveAllDataToFirestore();
-                    showToast('✅ बिल डिलीट हो गया!', 'success');
+                    showToast(currentLanguage === 'en' ? '✅ Bill deleted!' : '✅ बिल हटा दिया गया!', 'success');
                 }
             });
         }
@@ -3344,8 +3533,8 @@
 
         // --- Starred / Held Bills ---
         async function starCurrentBill() {
-            if (billItems.length === 0) { showToast('❌ बिल में कोई आइटम नहीं है!', 'error'); return; }
-            const customerName = document.getElementById('customerName').value.trim() || `होल्ड बिल #${starredBills.length + 1}`;
+            if (billItems.length === 0) { showToast(currentLanguage === 'en' ? '❌ No items in the bill!' : '❌ बिल में कोई वस्तु नहीं है!', 'error'); return; }
+            const customerName = document.getElementById('customerName').value.trim() || (currentLanguage === 'en' ? `Held Bill #${starredBills.length + 1}` : `होल्ड बिल #${starredBills.length + 1}`);
             const calc = getBillCalculation();
             const starredBill = {
                 id: String(Date.now()),
@@ -3358,7 +3547,7 @@
             starredBills.unshift(starredBill);
             await saveAllDataToFirestore();
             updateStarredBillsUI();
-            showToast('⭐ बिल होल्ड/स्टार कर दिया गया!', 'success');
+            showToast(currentLanguage === 'en' ? '⭐ Bill added to Starred / Hold list!' : '⭐ बिल तारांकित / होल्ड सूची में जोड़ा गया!', 'success');
         }
 
         let starLongPressTimer;
@@ -3368,17 +3557,58 @@
             starLongPressTimer = setTimeout(() => {
                 isStarLongPressing = true;
                 triggerHapticFeedback(80);
-                showConfirmModal('⭐ होल्ड बिल हटाएं?', 'क्या आप इस बिल को होल्ड लिस्ट से हटाना चाहते हैं?', async () => {
+                showConfirmModal(currentLanguage === 'en' ? '⭐ Remove Starred Bill?' : '⭐ तारांकित बिल हटाएं?', currentLanguage === 'en' ? 'Do you want to remove this bill from the starred list?' : 'क्या आप इस बिल को तारांकित सूची से हटाना चाहते हैं?', async () => {
                     starredBills = starredBills.filter(b => b.id !== id);
                     await saveAllDataToFirestore();
                     updateStarredBillsUI();
-                    showToast('होल्ड बिल हटा दिया गया', 'success');
+                    showToast(currentLanguage === 'en' ? 'Starred bill removed' : 'तारांकित बिल हटा दिया गया', 'success');
                 });
             }, 550);
         }
         function clearStarLongPress() { clearTimeout(starLongPressTimer); }
 
-        function updateStarredBillsUI() {}
+        async function starBillFromHistory(event, billId) {
+            if (event) event.stopPropagation();
+            const bill = billHistory.find(b => String(b.id) === String(billId));
+            if (!bill) return;
+            const isEn = currentLanguage === 'en';
+            if (starredBills.some(s => String(s.id) === String(bill.id))) {
+                starredBills = starredBills.filter(s => String(s.id) !== String(bill.id));
+                await saveAllDataToFirestore();
+                updateStarredBillsUI();
+                showToast(isEn ? 'Removed from Starred Bills' : 'तारांकित सूची से हटाया गया', 'info');
+                return;
+            }
+            starredBills.unshift({
+                id: String(bill.id),
+                customerName: bill.customerName || (isEn ? `Bill #${bill.id}` : `बिल #${bill.id}`),
+                customerPhone: bill.customerPhone || '',
+                items: JSON.parse(JSON.stringify(bill.items || [])),
+                total: Number(bill.total) || 0,
+                date: bill.date || new Date().toISOString()
+            });
+            await saveAllDataToFirestore();
+            updateStarredBillsUI();
+            showToast(isEn ? '⭐ Bill added to Starred / Hold list!' : '⭐ बिल तारांकित / होल्ड सूची में जोड़ा गया!', 'success');
+        }
+
+        function updateStarredBillsUI() {
+            const historyContainer = document.getElementById('historyStarredContainer');
+            const historyList = document.getElementById('historyStarredList');
+            const hasBills = starredBills.length > 0;
+            if (historyContainer) historyContainer.classList.toggle('hidden', !hasBills);
+            if (!hasBills || !historyList) return;
+
+            historyList.innerHTML = starredBills.map(b => `
+                <div onclick="loadStarredBill('${b.id}')" onmousedown="startStarLongPress('${b.id}')" onmouseup="clearStarLongPress()" onmouseleave="clearStarLongPress()" ontouchstart="startStarLongPress('${b.id}')" ontouchend="clearStarLongPress()" class="modern-card px-2.5 py-1.5 min-w-[135px] cursor-pointer flex-shrink-0 border-l-4 border-l-amber-500 select-none flex items-center justify-between gap-2">
+                    <div class="truncate">
+                        <p class="font-bold text-xs truncate">${b.customerName}</p>
+                        <p class="text-[11px] font-extrabold price-text">₹${(Number(b.total)||0).toFixed(0)}</p>
+                    </div>
+                    <span class="text-xs text-amber-500">⭐</span>
+                </div>
+            `).join('');
+        }
 
         async function loadStarredBill(id) {
             if (isStarLongPressing) { isStarLongPressing = false; return; }
@@ -3396,7 +3626,7 @@
             showSection('shopping');
             displayBillItems();
             updateTotal();
-            showToast('✅ होल्ड बिल लोड हो गया!', 'success');
+            showToast(currentLanguage === 'en' ? '✅ Starred bill loaded!' : '✅ तारांकित बिल खुल गया!', 'success');
         }
 
         // --- WhatsApp Bill Sharing ---
@@ -3427,7 +3657,7 @@
         }
 
         function shareWhatsappBill() {
-            if (billItems.length === 0) { showToast('❌ बिल में कोई आइटम नहीं है!', 'error'); return; }
+            if (billItems.length === 0) { showToast(currentLanguage === 'en' ? '❌ No items in the bill!' : '❌ बिल में कोई वस्तु नहीं है!', 'error'); return; }
             const bill = buildCurrentBillObject('cash');
             const text = formatWhatsappInvoiceText(bill);
             const cleanPhone = (bill.customerPhone || '').replace(/\D/g, '');
@@ -3900,7 +4130,7 @@
             link.href = URL.createObjectURL(blob);
             link.download = `${storeName}_Backup_${new Date().toISOString().split('T')[0]}.json`;
             link.click();
-            showToast('✅ बैकअप फाइल डाउनलोड हो गई!', 'success');
+            showToast(currentLanguage === 'en' ? '✅ Backup file downloaded!' : '✅ बैकअप फाइल डाउनलोड हो गई!', 'success');
         }
 
         function importData(event) {
@@ -3910,7 +4140,7 @@
             reader.onload = function(e) {
                 try {
                     const data = JSON.parse(e.target.result);
-                    showConfirmModal('📥 डेटा रीस्टोर (Import) करें?', 'क्या आप इस फाइल से डेटा लोड करना चाहते हैं? यह वर्तमान डेटा को अपडेट कर देगा।', async () => {
+                    showConfirmModal(currentLanguage === 'en' ? '📥 Restore Data Backup?' : '📥 डेटा पुनः स्थापित करें?', currentLanguage === 'en' ? 'Do you want to restore data from this file? It will update current records.' : 'क्या आप इस फाइल से डेटा लोड करना चाहते हैं? यह वर्तमान डेटा को अद्यतन कर देगा।', async () => {
                         if (data.storeName) storeName = data.storeName;
                         if (data.storeMeta) storeMeta = { ...storeMeta, ...data.storeMeta };
                         if (data.products) products = data.products;
@@ -3920,10 +4150,10 @@
                         if (data.khataPayments) khataPayments = data.khataPayments;
 
                         await saveAllDataToFirestore();
-                        showToast('✅ डेटा सफलतापूर्वक इम्पोर्ट और सिंक हो गया!', 'success');
+                        showToast(currentLanguage === 'en' ? '✅ Data restored and synced successfully!' : '✅ डेटा सफलतापूर्वक पुनः स्थापित हो गया!', 'success');
                     }, 'secondary-bg');
                 } catch (error) {
-                    showToast('❌ अमान्य JSON बैकअप फाइल!', 'error');
+                    showToast(currentLanguage === 'en' ? '❌ Invalid JSON backup file!' : '❌ अमान्य बैकअप फाइल!', 'error');
                 }
             };
             reader.readAsText(file);
@@ -3935,7 +4165,7 @@
             notes = document.getElementById('notesText').value;
             closeNotesModal();
             await saveAllDataToFirestore();
-            showToast('📝 डायरी नोट्स सेव हो गए!', 'success');
+            showToast(currentLanguage === 'en' ? '📝 Diary notes saved!' : '📝 डायरी नोट्स सहेजे गए!', 'success');
         }
         function showNotesModal() {
             const menu = document.getElementById('menuDropdown');
@@ -3984,7 +4214,7 @@
             document.getElementById('storeName').textContent = storeName;
             document.getElementById('mobileStoreName').textContent = storeName;
             const sub = document.getElementById('storeSubHeader');
-            if (sub) sub.textContent = storeMeta.phone ? `📞 ${storeMeta.phone}` : 'POS & Inventory Pro';
+            if (sub) sub.textContent = storeMeta.phone ? `📞 ${storeMeta.phone}` : (currentLanguage === 'en' ? 'Billing & Inventory' : 'बिलिंग एवं भंडार प्रबंधन');
 
             searchAndSortProducts();
             filterAndDisplayHistory();
